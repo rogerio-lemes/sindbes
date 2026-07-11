@@ -1,0 +1,115 @@
+import Link from 'next/link'
+import { SITE, SERVICES, INSTITUCIONAL } from '@/lib/constants'
+import { MapPin, Phone, Clock, Mail, Shield } from 'lucide-react'
+
+export default function Footer() {
+  return (
+    <footer className="bg-[#1a1025] text-gray-300">
+      <div className="max-w-[1200px] mx-auto px-4 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+          <div>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold">
+                S
+              </div>
+              <span className="font-bold text-white text-lg">{SITE.shortName}</span>
+            </div>
+            <p className="text-[11px] uppercase tracking-widest text-gray-500 mb-3">
+              Sindicato da Beleza | Uberlândia
+            </p>
+            <p className="text-sm text-gray-400 leading-relaxed mb-6">
+              Representando e fortalecendo profissionais e empresas da beleza em Uberlândia com treinamentos, assessoria e benefícios exclusivos.
+            </p>
+            <button
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-secondary text-white font-semibold rounded-lg text-sm hover:bg-secondary-dark transition-colors"
+              id="pwa-footer-btn"
+            >
+              📲 Baixar nosso App
+            </button>
+          </div>
+
+          <div>
+            <h3 className="text-white font-semibold mb-4">Institucional</h3>
+            <ul className="space-y-2">
+              <li><Link href="/" className="text-sm text-gray-400 hover:text-white hover:underline transition-colors">Home</Link></li>
+              <li><Link href="/institucional" className="text-sm text-gray-400 hover:text-white hover:underline transition-colors">Institucional</Link></li>
+              {INSTITUCIONAL.map((s) => (
+                <li key={s.slug}>
+                  <Link href={`/${s.slug}`} className="text-sm text-gray-400 hover:text-white hover:underline transition-colors">
+                    {s.nome}
+                  </Link>
+                </li>
+              ))}
+              <li><Link href="/blog" className="text-sm text-gray-400 hover:text-white hover:underline transition-colors">Blog</Link></li>
+              <li><Link href="/contato" className="text-sm text-gray-400 hover:text-white hover:underline transition-colors">Contato</Link></li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-white font-semibold mb-4">Serviços</h3>
+            <ul className="space-y-2">
+              {SERVICES.map((s) => (
+                <li key={s.slug}>
+                  <Link href={`/${s.slug}`} className="text-sm text-gray-400 hover:text-white hover:underline transition-colors">
+                    {s.nome}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-white font-semibold mb-4">Contato</h3>
+            <ul className="space-y-3">
+              <li className="flex items-start gap-2 text-sm">
+                <MapPin className="w-4 h-4 mt-0.5 text-secondary shrink-0" />
+                <span>{SITE.address}</span>
+              </li>
+              <li className="flex items-center gap-2 text-sm">
+                <Phone className="w-4 h-4 text-secondary shrink-0" />
+                <a href={`tel:${SITE.phone}`} className="hover:text-white transition-colors">
+                  {SITE.whatsappDisplay}
+                </a>
+              </li>
+              <li className="flex items-start gap-2 text-sm">
+                <Clock className="w-4 h-4 mt-0.5 text-secondary shrink-0" />
+                <span>{SITE.horario}</span>
+              </li>
+              <li className="flex items-center gap-2 text-sm">
+                <Mail className="w-4 h-4 text-secondary shrink-0" />
+                <span>Disponível pelo formulário do site</span>
+              </li>
+              <li className="flex items-center gap-2 text-sm mt-2">
+                <Shield className="w-4 h-4 text-secondary shrink-0" />
+                <span>Seus dados protegidos pela LGPD</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div className="border-t border-gray-800">
+        <div className="max-w-[1200px] mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-2 text-xs text-gray-500">
+          <div className="flex flex-wrap items-center gap-2">
+            <span>CNPJ: {SITE.cnpj}</span>
+            <span className="hidden md:inline">|</span>
+            <Link href="/politica-de-privacidade" className="hover:text-white hover:underline transition-colors">Política de Privacidade</Link>
+            <span>·</span>
+            <Link href="/termos-de-uso" className="hover:text-white hover:underline transition-colors">Termos de Uso</Link>
+          </div>
+          <div>
+            Desenvolvido por{' '}
+            <a
+              href="https://www.mercadoopen.com.br"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-bold text-gray-400 hover:text-white transition-colors"
+            >
+              Mercado Open
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  )
+}
