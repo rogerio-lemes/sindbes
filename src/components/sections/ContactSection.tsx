@@ -50,14 +50,14 @@ export default function ContactSection() {
               <div className="relative h-[400px] md:h-[500px] rounded-2xl overflow-hidden">
                 <Image
                   src={IMAGES.atendente}
-                  alt="Atendente Sindbes pronta para ajudar"
+                  alt="Wagner, atendente do Sindbes pronto para ajudar"
                   fill
                   className="object-cover"
                 />
               </div>
               <div className="mt-4 text-center">
-                <p className="font-semibold text-text">Júlia</p>
-                <p className="text-sm text-gray-500">Está online e pronta pra te ajudar 💬</p>
+                <p className="font-semibold text-text">Wagner</p>
+                <p className="text-sm text-gray-500">Está online e pronto pra te ajudar 💬</p>
               </div>
             </div>
           </div>

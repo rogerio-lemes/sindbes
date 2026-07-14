@@ -16,34 +16,114 @@ export const SITE = {
 }
 
 export const COLORS = {
-  primary: '#8B1A4A',
-  secondary: '#D4A853',
-  accent: '#F5E6D3',
-  text: '#1A1A1A',
+  primary: '#2E9E8D',
+  secondary: '#6E5A97',
+  accent: '#DCEFEC',
+  text: '#1B2444',
   white: '#FFFFFF',
-  bgAlt: '#FAF7F4',
+  bgAlt: '#F1F8F6',
 }
 
 export const SERVICES = [
-  { nome: 'Treinamentos e qualificações profissionais', slug: 'treinamentos-e-qualificacoes-profissionais' },
-  { nome: 'Assessoria jurídica e contábil para empresas da beleza', slug: 'assessoria-juridica-e-contabil-para-empresas-da-be' },
-  { nome: 'Benefícios para associados', slug: 'beneficios-para-associados' },
-  { nome: 'Plano de Saúde', slug: 'plano-de-saude' },
-  { nome: 'Qualificação em gestão financeira', slug: 'qualificacao-em-gestao-financeira' },
-  { nome: 'Qualificação em gestão de pessoas', slug: 'qualificacao-em-gestao-de-pessoas' },
-  { nome: 'Planejamento empresarial para empresas da beleza', slug: 'planejamento-empresarial-para-empresas-da-beleza' },
-  { nome: 'Plano Odontológico', slug: 'plano-odontologico' },
-  { nome: 'Regularização e Certificação Profissional', slug: 'regularizacao-e-certificacao-profissional' },
-  { nome: 'Acesso de Crédito', slug: 'acesso-de-credito' },
+  {
+    nome: 'Treinamentos e qualificações profissionais',
+    slug: 'treinamentos-e-qualificacoes-profissionais',
+    seoTitle: 'Treinamentos para Salão de Beleza | Sindbes Uberlândia',
+    seoDescription: 'Treinamentos e qualificações profissionais para salões, barbearias e clínicas de estética em Uberlândia, com certificados reconhecidos pelo Sindbes.',
+  },
+  {
+    nome: 'Assessoria jurídica e contábil para empresas da beleza',
+    slug: 'assessoria-juridica-e-contabil-para-empresas-da-be',
+    seoTitle: 'Assessoria Jurídica e Contábil para Salão | Sindbes',
+    seoDescription: 'Assessoria jurídica e contábil especializada no setor da beleza em Uberlândia. Proteja seu salão de processos e irregularidades com o Sindbes.',
+  },
+  {
+    nome: 'Benefícios para associados',
+    slug: 'beneficios-para-associados',
+    seoTitle: 'Benefícios Exclusivos para Associados | Sindbes',
+    seoDescription: 'Benefícios exclusivos para associados do Sindbes: planos de saúde, odontológico, crédito, assessoria e treinamentos para o setor da beleza.',
+  },
+  {
+    nome: 'Plano de Saúde',
+    slug: 'plano-de-saude',
+    seoTitle: 'Plano de Saúde para Profissionais da Beleza | Sindbes',
+    seoDescription: 'Plano de saúde com condições exclusivas para profissionais e empresas da beleza de Uberlândia, negociado pelo Sindbes. Cobertura ampla e acessível.',
+  },
+  {
+    nome: 'Qualificação em gestão financeira',
+    slug: 'qualificacao-em-gestao-financeira',
+    seoTitle: 'Qualificação em Gestão Financeira | Sindbes Beleza',
+    seoDescription: 'Qualificação em gestão financeira para salões e clínicas de beleza. Aprenda a controlar o caixa e lucrar mais com os treinamentos do Sindbes.',
+  },
+  {
+    nome: 'Qualificação em gestão de pessoas',
+    slug: 'qualificacao-em-gestao-de-pessoas',
+    seoTitle: 'Qualificação em Gestão de Pessoas | Sindbes Beleza',
+    seoDescription: 'Qualificação em gestão de pessoas para o setor da beleza. Contrate, lidere e retenha talentos no seu salão com o apoio do Sindbes em Uberlândia.',
+  },
+  {
+    nome: 'Planejamento empresarial para empresas da beleza',
+    slug: 'planejamento-empresarial-para-empresas-da-beleza',
+    seoTitle: 'Planejamento Empresarial para Salões de Beleza | Sindbes',
+    seoDescription: 'Planejamento empresarial para salões, barbearias e clínicas de estética. Estruture o crescimento do seu negócio da beleza com o Sindbes.',
+  },
+  {
+    nome: 'Plano Odontológico',
+    slug: 'plano-odontologico',
+    seoTitle: 'Plano Odontológico para a Beleza | Sindbes Uberlândia',
+    seoDescription: 'Plano odontológico com valores especiais para associados do Sindbes. Cuide do sorriso da sua equipe e da sua família em Uberlândia.',
+  },
+  {
+    nome: 'Regularização e Certificação Profissional',
+    slug: 'regularizacao-e-certificacao-profissional',
+    seoTitle: 'Regularização e Certificação Profissional | Sindbes',
+    seoDescription: 'Regularização e certificação profissional para o setor da beleza em Uberlândia. Deixe seu negócio em dia e valorizado com o apoio do Sindbes.',
+  },
+  {
+    nome: 'Acesso de Crédito',
+    slug: 'acesso-de-credito',
+    seoTitle: 'Acesso a Crédito para Salão de Beleza | Sindbes',
+    seoDescription: 'Acesso a crédito facilitado para profissionais e empresas da beleza de Uberlândia. Invista e faça seu salão crescer com o apoio do Sindbes.',
+  },
 ]
 
 export const BLOG_ARTICLES = [
-  { titulo: 'Assessoria jurídica para salão de beleza: como escolher sem errar e evitar processos trabalhistas', slug: 'assessoria-juridica-para-salao-de-beleza-como-esco' },
-  { titulo: 'Cursos área da beleza: quais sinais de que sua equipe precisa de qualificação agora', slug: 'cursos-area-da-beleza-quais-sinais-de-que-sua-equi' },
-  { titulo: 'Assessoria contábil salão de beleza: quanto custa e como contratar com segurança em Uberlândia', slug: 'assessoria-contabil-salao-de-beleza-quanto-custa-e' },
-  { titulo: 'O que é o Sindicato da área da beleza e por que donos de salão em Uberlândia estão se filiando', slug: 'o-que-e-o-sindicato-da-area-da-beleza-e-por-que-do' },
-  { titulo: 'Qualificação beleza e estética vale a pena? O que avaliar antes de investir no seu salão', slug: 'qualificacao-beleza-e-estetica-vale-a-pena-o-que-a' },
-  { titulo: 'Benefícios para associados Sindibes: passo a passo para contratar e aproveitar planos, assessoria e treinamentos', slug: 'beneficios-para-associados-sindibes-passo-a-passo-' },
+  {
+    titulo: 'Assessoria jurídica para salão de beleza: como escolher sem errar e evitar processos trabalhistas',
+    slug: 'assessoria-juridica-para-salao-de-beleza-como-esco',
+    seoTitle: 'Assessoria Jurídica para Salão de Beleza | Sindbes',
+    seoDescription: 'Saiba como escolher a assessoria jurídica certa para seu salão de beleza e evitar processos trabalhistas. Guia prático do Sindbes Uberlândia.',
+  },
+  {
+    titulo: 'Cursos área da beleza: quais sinais de que sua equipe precisa de qualificação agora',
+    slug: 'cursos-area-da-beleza-quais-sinais-de-que-sua-equi',
+    seoTitle: 'Cursos na Área da Beleza para sua Equipe | Sindbes',
+    seoDescription: 'Descubra os sinais de que sua equipe da beleza precisa de qualificação e como os cursos do Sindbes elevam o padrão do seu salão em Uberlândia.',
+  },
+  {
+    titulo: 'Assessoria contábil salão de beleza: quanto custa e como contratar com segurança em Uberlândia',
+    slug: 'assessoria-contabil-salao-de-beleza-quanto-custa-e',
+    seoTitle: 'Assessoria Contábil para Salão de Beleza | Sindbes',
+    seoDescription: 'Entenda quanto custa a assessoria contábil para salão de beleza e como contratar com segurança em Uberlândia. Guia completo do Sindbes.',
+  },
+  {
+    titulo: 'O que é o Sindicato da área da beleza e por que donos de salão em Uberlândia estão se filiando',
+    slug: 'o-que-e-o-sindicato-da-area-da-beleza-e-por-que-do',
+    seoTitle: 'O que é o Sindicato da Beleza? | Sindbes Uberlândia',
+    seoDescription: 'Saiba o que é o sindicato da beleza e por que donos de salão em Uberlândia estão se filiando ao Sindbes. Conheça as vantagens e benefícios reais.',
+  },
+  {
+    titulo: 'Qualificação beleza e estética vale a pena? O que avaliar antes de investir no seu salão',
+    slug: 'qualificacao-beleza-e-estetica-vale-a-pena-o-que-a',
+    seoTitle: 'Qualificação em Beleza e Estética Vale a Pena? | Sindbes',
+    seoDescription: 'Qualificação em beleza e estética vale a pena? Veja o que avaliar antes de investir na capacitação da sua equipe. Dicas do Sindbes Uberlândia.',
+  },
+  {
+    titulo: 'Benefícios para associados Sindibes: passo a passo para contratar e aproveitar planos, assessoria e treinamentos',
+    slug: 'beneficios-para-associados-sindibes-passo-a-passo-',
+    seoTitle: 'Benefícios para Associados: Passo a Passo | Sindbes',
+    seoDescription: 'Passo a passo para contratar e aproveitar os benefícios de associado do Sindbes: planos, assessoria e treinamentos para o setor da beleza.',
+  },
 ]
 
 export const INSTITUCIONAL = [
@@ -75,6 +155,7 @@ export const IMAGES = {
   vitrine3: '/images/vitrine3.jpg',
   atendente: '/images/atendente.jpg',
   sobre: '/images/sobre.jpg',
+  equipe: '/images/equipe.jpg',
   contato: '/images/contato.jpg',
   diferencial1: '/images/diferencial1.jpg',
   diferencial2: '/images/diferencial2.jpg',

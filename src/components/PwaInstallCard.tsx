@@ -47,7 +47,7 @@ export default function PwaInstallCard() {
   const isIOS = typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent)
 
   return (
-    <div className="fixed bottom-20 right-5 z-[45] max-w-[320px] animate-slide-in-right">
+    <div className="fixed bottom-24 left-5 z-[45] w-[300px] max-w-[calc(100vw-2.5rem)] animate-fade-up">
       <div className="bg-white rounded-2xl shadow-2xl p-5 border-l-4 border-primary relative">
         <button
           onClick={dismiss}
@@ -81,12 +81,12 @@ export default function PwaInstallCard() {
       </div>
 
       <style jsx>{`
-        @keyframes slideInRight {
-          from { transform: translateX(120%); opacity: 0; }
-          to { transform: translateX(0); opacity: 1; }
+        @keyframes fadeUp {
+          from { transform: translateY(16px); opacity: 0; }
+          to { transform: translateY(0); opacity: 1; }
         }
-        .animate-slide-in-right {
-          animation: slideInRight 0.5s ease-out;
+        .animate-fade-up {
+          animation: fadeUp 0.4s ease-out both;
         }
       `}</style>
     </div>

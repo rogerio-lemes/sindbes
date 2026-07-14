@@ -7,13 +7,14 @@ import Testimonials from '@/components/sections/Testimonials'
 import BlogPreview from '@/components/sections/BlogPreview'
 import Faq from '@/components/sections/Faq'
 import CtaBanner from '@/components/sections/CtaBanner'
+import ParceirosSlider from '@/components/sections/ParceirosSlider'
 import ContactSection from '@/components/sections/ContactSection'
 import MapLocation from '@/components/sections/MapLocation'
 import EeatBio from '@/components/sections/EeatBio'
 
 export const metadata: Metadata = {
-  title: 'Sindbes - Sindicato da Beleza | Treinamentos, Assessoria e Benefícios em Uberlândia',
-  description: 'Sindbes, o Sindicato da Beleza de Uberlândia. Treinamentos profissionais, assessoria jurídica e contábil, planos de saúde e odontológico, crédito e benefícios para profissionais e empresas da beleza.',
+  title: 'Sindbes | Sindicato da Beleza de Uberlândia MG',
+  description: 'Sindbes, o Sindicato da Beleza de Uberlândia. Treinamentos, assessoria jurídica e contábil, planos de saúde, crédito e benefícios para o setor da beleza.',
   alternates: { canonical: '/' },
 }
 
@@ -26,6 +27,7 @@ export default function HomePage() {
       <About />
       <Testimonials />
       <CtaBanner />
+      <ParceirosSlider />
       <BlogPreview />
       <Faq />
       <EeatBio />

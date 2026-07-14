@@ -6,7 +6,7 @@ import MapLocation from '@/components/sections/MapLocation'
 import { MessageCircle, Phone, Mail, MapPin, Clock, AtSign, ArrowRight, Headset } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: `Contato | ${SITE.name}`,
+  title: 'Contato | Fale com o Sindbes em Uberlândia',
   description: `Entre em contato com o ${SITE.name}. Agende uma visita, tire suas dúvidas ou solicite um orçamento pelo WhatsApp, telefone ou formulário.`,
   alternates: { canonical: '/contato' },
 }

@@ -16,7 +16,7 @@ export default function CtaBanner({
     <section className="py-16 gradient-primary">
       <div className="max-w-[1200px] mx-auto px-4 text-center">
         <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-          {title} <span className="text-secondary">{highlight}</span>
+          {title} <span className="text-[#BFEDE6]">{highlight}</span>
         </h2>
         <p className="text-white/80 max-w-xl mx-auto mb-8">{description}</p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">

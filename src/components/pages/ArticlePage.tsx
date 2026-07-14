@@ -6,6 +6,7 @@ import { SITE, BLOG_ARTICLES, IMAGES, SERVICES, whatsappUrl } from '@/lib/consta
 import { ARTICLE_CONTENT } from '@/lib/article-content'
 import ScrollSpyNav from '@/components/ScrollSpyNav'
 import Breadcrumbs from '@/components/Breadcrumbs'
+import ArticleAudioPlayer from '@/components/ArticleAudioPlayer'
 import { ArrowRight, Calendar, Clock, Share2, User } from 'lucide-react'
 
 interface Props {
@@ -28,6 +29,14 @@ export default function ArticlePage({ article, image }: Props) {
   const relatedService = content?.relatedService
     ? SERVICES.find((s) => s.slug === content.relatedService)
     : null
+
+  // Texto completo do artigo para leitura em áudio
+  const audioText = [
+    article.titulo,
+    content?.intro || '',
+    ...(content?.sections?.flatMap((s) => [`${s.title} ${s.highlightWord || ''}`, ...s.paragraphs]) || []),
+    content?.conclusion || '',
+  ].filter(Boolean).join('. ')
 
   function handleShare() {
     if (typeof navigator !== 'undefined' && navigator.share) {
@@ -108,6 +117,9 @@ export default function ArticlePage({ article, image }: Props) {
                 <Share2 className="w-4 h-4" /> Compartilhar
               </button>
             </div>
+
+            {/* Player de áudio do artigo */}
+            <ArticleAudioPlayer text={audioText} />
 
             <div className="relative h-[300px] md:h-[450px] rounded-2xl overflow-hidden mb-8">
               <Image src={image} alt={article.titulo} fill className="object-cover" priority />

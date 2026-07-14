@@ -62,7 +62,7 @@ export default function HeroCarousel() {
             className="object-cover"
             priority={i === 0}
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/25" />
         </div>
       ))}
 
@@ -70,7 +70,7 @@ export default function HeroCarousel() {
         <div className="max-w-xl">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-4">
             {slide.headline}{' '}
-            <span className="text-secondary">{slide.highlight}</span>
+            <span className="text-[#8FD9CE]">{slide.highlight}</span>
           </h1>
           <p className="text-lg text-white/90 mb-8 leading-relaxed">
             {slide.description}

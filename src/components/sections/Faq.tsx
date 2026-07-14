@@ -45,37 +45,40 @@ export default function Faq() {
         </div>
 
         <div className="space-y-3 scroll-reveal">
-          {faqs.map((faq, i) => (
-            <div
-              key={i}
-              className={`bg-white rounded-xl overflow-hidden transition-shadow ${openIndex === i ? 'shadow-md ring-1 ring-primary/20' : 'shadow-sm'}`}
-            >
-              <button
-                onClick={() => setOpenIndex(openIndex === i ? null : i)}
-                className="w-full flex items-center justify-between p-5 text-left"
+          {faqs.map((faq, i) => {
+            const open = openIndex === i
+            return (
+              <div
+                key={i}
+                className={`rounded-xl overflow-hidden transition-all duration-300 ${open ? 'gradient-primary shadow-lg' : 'bg-white shadow-sm'}`}
               >
-                <span className={`font-semibold text-sm pr-4 ${openIndex === i ? 'text-primary' : 'text-text'}`}>
-                  {faq.q}
-                </span>
-                <ChevronDown
-                  className={`w-5 h-5 shrink-0 transition-transform text-gray-400 ${openIndex === i ? 'rotate-180 text-primary' : ''}`}
-                />
-              </button>
-              {openIndex === i && (
-                <div className="px-5 pb-5">
-                  <p className="text-sm text-gray-600 leading-relaxed mb-3">{faq.a}</p>
-                  <a
-                    href={whatsappUrl(`Olá! Tenho uma dúvida sobre: ${faq.q}`)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex text-xs font-semibold text-secondary hover:text-secondary-dark"
-                  >
-                    Ainda tem dúvida? Fale conosco →
-                  </a>
-                </div>
-              )}
-            </div>
-          ))}
+                <button
+                  onClick={() => setOpenIndex(open ? null : i)}
+                  className="w-full flex items-center justify-between p-5 text-left"
+                >
+                  <span className={`font-semibold text-sm pr-4 ${open ? 'text-white' : 'text-text'}`}>
+                    {faq.q}
+                  </span>
+                  <ChevronDown
+                    className={`w-5 h-5 shrink-0 transition-transform ${open ? 'rotate-180 text-white' : 'text-gray-400'}`}
+                  />
+                </button>
+                {open && (
+                  <div className="px-5 pb-5">
+                    <p className="text-sm text-white/90 leading-relaxed mb-3">{faq.a}</p>
+                    <a
+                      href={whatsappUrl(`Olá! Tenho uma dúvida sobre: ${faq.q}`)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex text-xs font-semibold text-white hover:text-white/80 underline underline-offset-2"
+                    >
+                      Ainda tem dúvida? Fale conosco →
+                    </a>
+                  </div>
+                )}
+              </div>
+            )
+          })}
         </div>
       </div>
     </section>

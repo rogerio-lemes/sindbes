@@ -5,7 +5,7 @@ import { User, Phone, Send, GripHorizontal } from 'lucide-react'
 import { SITE, SERVICES, whatsappUrl } from '@/lib/constants'
 
 export default function MobileCaptureBar() {
-  const [collapsed, setCollapsed] = useState(false)
+  const [collapsed, setCollapsed] = useState(true)
   const [nome, setNome] = useState('')
   const [telefone, setTelefone] = useState('')
   const [servico, setServico] = useState('')

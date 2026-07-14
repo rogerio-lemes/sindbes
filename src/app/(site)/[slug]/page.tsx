@@ -42,8 +42,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const service = SERVICES.find((s) => s.slug === slug)
   if (service) {
     return {
-      title: `${service.nome} | ${SITE.name}`,
-      description: `${service.nome} em Uberlândia. Conheça os serviços do Sindbes para profissionais e empresas da beleza.`,
+      title: service.seoTitle,
+      description: service.seoDescription,
       alternates: { canonical: `/${slug}` },
     }
   }
@@ -51,8 +51,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const article = BLOG_ARTICLES.find((a) => a.slug === slug)
   if (article) {
     return {
-      title: `${article.titulo} | ${SITE.name}`,
-      description: `${article.titulo}. Artigo do blog do Sindbes sobre o setor da beleza em Uberlândia.`,
+      title: article.seoTitle,
+      description: article.seoDescription,
       alternates: { canonical: `/${slug}` },
     }
   }

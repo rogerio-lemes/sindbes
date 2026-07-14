@@ -49,11 +49,11 @@ export default function Diferenciais() {
                   className="object-cover"
                 />
               </div>
-              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
-                <item.icon className="w-6 h-6 text-primary" />
+              <div className="relative -mt-12 mb-4 w-16 h-16 rounded-2xl gradient-primary flex items-center justify-center shadow-xl shadow-primary/30 ring-4 ring-white">
+                <item.icon className="w-8 h-8 text-white" strokeWidth={1.75} />
               </div>
-              <h3 className="font-bold text-lg mb-2">{item.title}</h3>
-              <p className="text-gray-500 text-sm leading-relaxed">{item.description}</p>
+              <h3 className="font-bold text-lg mb-2 text-text">{item.title}</h3>
+              <p className="text-gray-600 text-sm leading-relaxed">{item.description}</p>
             </div>
           ))}
         </div>

@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
-import { BLOG_ARTICLES, IMAGES, SITE } from '@/lib/constants'
+import { BLOG_ARTICLES, IMAGES } from '@/lib/constants'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import { ArrowRight } from 'lucide-react'
 
@@ -15,8 +15,8 @@ const blogImages: Record<string, string> = {
 }
 
 export const metadata: Metadata = {
-  title: `Blog | ${SITE.name}`,
-  description: 'Artigos sobre gestão, qualificação, assessoria e dicas para profissionais e empresas da beleza em Uberlândia.',
+  title: 'Blog | Dicas de Gestão e Beleza | Sindbes Uberlândia',
+  description: 'Artigos sobre gestão, qualificação, assessoria jurídica e contábil e dicas para profissionais e empresas da beleza em Uberlândia. Blog do Sindbes.',
   alternates: { canonical: '/blog' },
 }
 

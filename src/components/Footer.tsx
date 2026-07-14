@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { SITE, SERVICES, INSTITUCIONAL } from '@/lib/constants'
 import { MapPin, Phone, Clock, Mail, Shield } from 'lucide-react'
+import Logo from '@/components/Logo'
 
 export default function Footer() {
   return (
@@ -8,12 +9,7 @@ export default function Footer() {
       <div className="max-w-[1200px] mx-auto px-4 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           <div>
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold">
-                S
-              </div>
-              <span className="font-bold text-white text-lg">{SITE.shortName}</span>
-            </div>
+            <Logo variant="light" className="h-14 w-auto mb-4" />
             <p className="text-[11px] uppercase tracking-widest text-gray-500 mb-3">
               Sindicato da Beleza | Uberlândia
             </p>
@@ -40,6 +36,8 @@ export default function Footer() {
                   </Link>
                 </li>
               ))}
+              <li><Link href="/eventos" className="text-sm text-gray-400 hover:text-white hover:underline transition-colors">Eventos</Link></li>
+              <li><Link href="/parceiros" className="text-sm text-gray-400 hover:text-white hover:underline transition-colors">Parceiros</Link></li>
               <li><Link href="/blog" className="text-sm text-gray-400 hover:text-white hover:underline transition-colors">Blog</Link></li>
               <li><Link href="/contato" className="text-sm text-gray-400 hover:text-white hover:underline transition-colors">Contato</Link></li>
             </ul>

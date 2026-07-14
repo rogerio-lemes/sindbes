@@ -71,8 +71,8 @@ VALUES (
   'adm.sindibes@gmail.com',
   'Uberlândia, MG',
   '@sindbes',
-  '#8B1A4A',
-  '#D4A853',
+  '#2E9E8D',
+  '#6E5A97',
   NULL,
   'https://maps.google.com/?q=Sindbes+Uberlândia'
 );

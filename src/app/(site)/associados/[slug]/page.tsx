@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation'
 import { SITE } from '@/lib/constants'
 import { ASSOCIADOS, getAssociado } from '@/lib/associados'
 import Breadcrumbs from '@/components/Breadcrumbs'
+import Gallery from '@/components/Gallery'
 import AssociadoContactForm from '@/components/AssociadoContactForm'
 import { MapPin, Phone, Clock, Mail, AtSign, MessageCircle, Sparkles, Images, Info } from 'lucide-react'
 
@@ -17,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const a = getAssociado(slug)
   if (!a) return {}
   return {
-    title: `${a.nome} | Filiado ${SITE.shortName}`,
+    title: `${a.nome} | ${a.categoria} - Filiado Sindbes`,
     description: `${a.nome} - ${a.categoria} em Uberlândia, filiado ao ${SITE.name}. ${a.descricao.slice(0, 120)}`,
     alternates: { canonical: `/associados/${a.slug}` },
   }
@@ -71,12 +72,8 @@ export default async function AssociadoPage({ params }: { params: Promise<{ slug
               <Images className="w-5 h-5 text-primary" />
               <h2 className="text-xl font-bold bicolor-title">Galeria de <span>fotos</span></h2>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-10">
-              {a.fotos.map((foto, i) => (
-                <div key={i} className={`relative rounded-xl overflow-hidden ${i === 0 ? 'col-span-2 md:col-span-2 h-64' : 'h-40'}`}>
-                  <Image src={foto} alt={`${a.nome} - foto ${i + 1}`} fill className="object-cover hover:scale-105 transition-transform duration-500" />
-                </div>
-              ))}
+            <div className="mb-10">
+              <Gallery images={a.fotos} alt={a.nome} />
             </div>
 
             {/* Mapa */}

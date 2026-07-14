@@ -10,6 +10,7 @@ import MapLocation from '@/components/sections/MapLocation'
 import EeatBio from '@/components/sections/EeatBio'
 import ProBadge from '@/components/sections/ProBadge'
 import ScrollSpyNav from '@/components/ScrollSpyNav'
+import ServiceFaq from '@/components/pages/ServiceFaq'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import { CheckCircle2, ArrowRight, AlertTriangle, ShieldCheck } from 'lucide-react'
 
@@ -50,7 +51,7 @@ export default function ServicePage({ service, image }: Props) {
             </div>
             <h1 className="text-3xl md:text-5xl font-bold text-white leading-tight mb-4">
               {content?.headline || service.nome}{' '}
-              <span className="text-secondary">{content?.highlightWord || ''}</span>
+              <span className="text-[#8FD9CE]">{content?.highlightWord || ''}</span>
             </h1>
             <p className="text-lg text-white/90 mb-6">
               {content?.heroDescription || `Conheça como o Sindbes pode ajudar sua empresa da beleza com ${service.nome.toLowerCase()} em Uberlândia.`}
@@ -149,7 +150,7 @@ export default function ServicePage({ service, image }: Props) {
 
               {/* Promotional Banner */}
               <div className="bg-gradient-to-r from-primary to-primary-dark rounded-2xl p-8 text-white scroll-reveal">
-                <span className="inline-block bg-secondary/20 text-secondary text-xs font-bold px-3 py-1 rounded-full mb-3">
+                <span className="inline-block bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full mb-3 backdrop-blur-sm">
                   Oferta para associados
                 </span>
                 <h3 className="text-xl font-bold mb-2">
@@ -260,37 +261,5 @@ export default function ServicePage({ service, image }: Props) {
         }}
       />
     </>
-  )
-}
-
-function ServiceFaq({ items, serviceName }: { items: { q: string; a: string }[]; serviceName: string }) {
-  return (
-    <div className="space-y-3">
-      {items.map((item, i) => (
-        <ServiceFaqItem key={i} item={item} serviceName={serviceName} />
-      ))}
-    </div>
-  )
-}
-
-function ServiceFaqItem({ item, serviceName }: { item: { q: string; a: string }; serviceName: string }) {
-  return (
-    <details className="bg-white rounded-xl shadow-sm group">
-      <summary className="flex items-center justify-between p-5 cursor-pointer list-none">
-        <span className="font-semibold text-sm pr-4 group-open:text-primary">{item.q}</span>
-        <span className="text-gray-400 group-open:rotate-180 transition-transform">▼</span>
-      </summary>
-      <div className="px-5 pb-5">
-        <p className="text-sm text-gray-600 leading-relaxed mb-3">{item.a}</p>
-        <a
-          href={whatsappUrl(`Olá! Tenho uma dúvida sobre ${serviceName}: ${item.q}. 📍 Origem: ${serviceName}`)}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex text-xs font-semibold text-secondary hover:text-secondary-dark"
-        >
-          Ainda tem dúvida? Fale conosco →
-        </a>
-      </div>
-    </details>
   )
 }

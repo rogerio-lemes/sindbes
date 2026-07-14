@@ -4,7 +4,8 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Menu, X, ChevronDown } from 'lucide-react'
-import { SITE, SERVICES, INSTITUCIONAL, ASSOCIADOS_MENU, CURRICULOS_MENU } from '@/lib/constants'
+import { SERVICES, INSTITUCIONAL, ASSOCIADOS_MENU, CURRICULOS_MENU } from '@/lib/constants'
+import Logo from '@/components/Logo'
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -16,14 +17,8 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-100">
       <div className="max-w-[1200px] mx-auto px-4 flex items-center justify-between h-16 md:h-20">
-        <Link href="/" className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold text-lg">
-            S
-          </div>
-          <div>
-            <span className="font-bold text-primary text-lg leading-tight block">{SITE.shortName}</span>
-            <span className="text-[10px] uppercase tracking-widest text-gray-500 leading-tight">Sindicato da Beleza</span>
-          </div>
+        <Link href="/" className="flex items-center">
+          <Logo className="h-11 md:h-12 w-auto" />
         </Link>
 
         <nav className="hidden lg:flex items-center gap-1">
@@ -127,6 +122,12 @@ export default function Header() {
             )}
           </div>
 
+          <Link href="/eventos" className="px-3 py-2 text-sm font-medium text-text hover:text-primary transition-colors">
+            Eventos
+          </Link>
+          <Link href="/parceiros" className="px-3 py-2 text-sm font-medium text-text hover:text-primary transition-colors">
+            Parceiros
+          </Link>
           <Link href="/blog" className="px-3 py-2 text-sm font-medium text-text hover:text-primary transition-colors">
             Blog
           </Link>
@@ -211,6 +212,20 @@ export default function Header() {
               {s.nome}
             </Link>
           ))}
+          <Link
+            href="/eventos"
+            className="block px-6 py-3 text-sm font-medium hover:bg-bg-alt"
+            onClick={() => setMobileOpen(false)}
+          >
+            Eventos
+          </Link>
+          <Link
+            href="/parceiros"
+            className="block px-6 py-3 text-sm font-medium hover:bg-bg-alt"
+            onClick={() => setMobileOpen(false)}
+          >
+            Parceiros
+          </Link>
           <Link
             href="/blog"
             className="block px-6 py-3 text-sm font-medium hover:bg-bg-alt"

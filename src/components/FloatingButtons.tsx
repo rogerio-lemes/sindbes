@@ -18,6 +18,23 @@ export default function FloatingButtons() {
     <>
       {/* Floating stack: bottom-right */}
       <div className="fixed bottom-6 right-6 z-40 flex flex-col items-center gap-3">
+        {/* IA de atendimento (Wagner) — primeiro */}
+        <a
+          href={whatsappUrl(`Olá! Vim pelo site da ${SITE.name} e quero falar com o atendimento.`)}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-14 h-14 rounded-full overflow-hidden border-2 border-secondary shadow-lg hover:scale-110 transition-transform"
+          aria-label="Atendimento Sindbes"
+        >
+          <Image
+            src={IMAGES.atendente}
+            alt="Atendimento Sindbes"
+            width={56}
+            height={56}
+            className="object-cover w-full h-full"
+          />
+        </a>
+
         <a
           href={whatsappUrl(`Olá! Vim pelo site da ${SITE.name} e gostaria de mais informações.`)}
           target="_blank"
@@ -30,21 +47,11 @@ export default function FloatingButtons() {
 
         <a
           href={`tel:${SITE.phone}`}
-          className="w-12 h-12 rounded-full bg-primary flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+          className="w-14 h-14 rounded-full bg-primary flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
           aria-label="Ligar"
         >
-          <Phone className="w-5 h-5 text-white" />
+          <Phone className="w-6 h-6 text-white" />
         </a>
-
-        <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-secondary shadow-lg">
-          <Image
-            src={IMAGES.atendente}
-            alt="Atendente Sindbes"
-            width={40}
-            height={40}
-            className="object-cover w-full h-full"
-          />
-        </div>
       </div>
 
       {/* Back to top: bottom-left */}
