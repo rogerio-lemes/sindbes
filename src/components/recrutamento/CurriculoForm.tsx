@@ -28,7 +28,7 @@ export default function CurriculoForm() {
       await fetch('/api/recrutamento', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tipo: 'curriculo', ...form }),
+        body: JSON.stringify({ ...form, tipoRegistro: 'curriculo' }),
       })
     } catch { /* mostra confirmação mesmo se a API falhar */ }
     setEnviando(false)

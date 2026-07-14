@@ -5,9 +5,9 @@ import { P } from '@/lib/constants'
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { tipo, ...dados } = body // tipo: 'curriculo' | 'vaga'
+    const { tipoRegistro, ...dados } = body // tipoRegistro: 'curriculo' | 'vaga'
 
-    const tabela = tipo === 'vaga' ? `${P}vagas` : `${P}curriculos`
+    const tabela = tipoRegistro === 'vaga' ? `${P}vagas` : `${P}curriculos`
 
     try {
       const supabase = createClient(

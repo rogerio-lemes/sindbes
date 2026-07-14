@@ -22,7 +22,7 @@ export default function VagaForm() {
       await fetch('/api/recrutamento', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tipo: 'vaga', ...form }),
+        body: JSON.stringify({ ...form, tipoRegistro: 'vaga' }),
       })
     } catch { /* mostra confirmação mesmo se a API falhar */ }
     setEnviando(false)
