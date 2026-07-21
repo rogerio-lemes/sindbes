@@ -3,13 +3,16 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { X, MessageCircle, Phone, Clock } from 'lucide-react'
-import { SITE, SERVICES, IMAGES, whatsappUrl } from '@/lib/constants'
+import { useTenant, useWhatsappUrl } from '@/components/TenantProvider'
 
 export default function ExitPopup() {
+  const { config, servicos } = useTenant()
   const [show, setShow] = useState(false)
   const [nome, setNome] = useState('')
   const [telefone, setTelefone] = useState('')
   const [servico, setServico] = useState('')
+
+  const consultoriaUrl = useWhatsappUrl('Olá! Quero minha consultoria gratuita sobre meu negócio.')
 
   useEffect(() => {
     const dismissed = sessionStorage.getItem('exit_popup_dismissed')
@@ -48,11 +51,14 @@ export default function ExitPopup() {
       body: JSON.stringify({ nome, telefone, origem: `Exit Popup - ${origem}`, pagina_slug: window.location.pathname }),
     }).catch(() => {})
 
-    window.open(whatsappUrl(msg), '_blank')
+    const whatsUrl = `https://wa.me/${config.whatsapp}?text=${encodeURIComponent(msg)}`
+    window.open(whatsUrl, '_blank')
     dismiss()
   }
 
   if (!show) return null
+
+  const nomeAtendente = config.atendente_nome || 'Atendente'
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
@@ -67,18 +73,23 @@ export default function ExitPopup() {
           <X className="w-5 h-5" />
         </button>
 
-        {/* Lado da pessoa + contatos */}
         <div className="hidden md:flex flex-col">
           <div className="relative flex-1 min-h-[300px]">
-            <Image src={IMAGES.atendente} alt="Wagner, especialista do Sindbes" fill className="object-cover object-top" />
+            {config.atendente_foto_url ? (
+              <Image src={config.atendente_foto_url} alt={nomeAtendente} fill className="object-cover object-top" unoptimized />
+            ) : (
+              <div className="w-full h-full bg-primary/10 flex items-center justify-center">
+                <span className="text-6xl font-bold text-primary/30">{nomeAtendente[0]}</span>
+              </div>
+            )}
             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4">
-              <p className="text-white font-bold">Wagner</p>
-              <p className="text-white/80 text-xs">Especialista do Sindbes</p>
+              <p className="text-white font-bold">{nomeAtendente}</p>
+              <p className="text-white/80 text-xs">Especialista do {config.nome}</p>
             </div>
           </div>
           <div className="p-4 space-y-2 bg-bg-alt">
             <a
-              href={whatsappUrl('Olá! Quero minha consultoria gratuita sobre meu negócio da beleza.')}
+              href={consultoriaUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 w-full py-3 bg-[#25D366] text-white font-semibold rounded-xl text-sm hover:opacity-90 transition-opacity"
@@ -86,7 +97,7 @@ export default function ExitPopup() {
               <MessageCircle className="w-4 h-4" /> Falar no WhatsApp
             </a>
             <a
-              href={`tel:${SITE.phone}`}
+              href={`tel:${config.phone || config.whatsapp}`}
               className="flex items-center justify-center gap-2 w-full py-3 gradient-primary text-white font-semibold rounded-xl text-sm hover:opacity-90 transition-opacity"
             >
               <Phone className="w-4 h-4" /> Ligar agora
@@ -94,14 +105,13 @@ export default function ExitPopup() {
           </div>
         </div>
 
-        {/* Lado do formulário + urgência */}
         <div className="p-7 md:p-8">
           <span className="inline-flex items-center gap-1.5 text-xs font-bold text-secondary bg-secondary/10 px-3 py-1 rounded-full mb-4">
             <Clock className="w-3.5 h-3.5" /> Oferta por tempo limitado
           </span>
           <h3 className="text-2xl font-bold text-text leading-tight">Espere! Antes de ir embora…</h3>
           <p className="text-sm text-gray-500 mt-2 mb-5 leading-relaxed">
-            Garanta agora uma <strong className="text-primary">consultoria 100% gratuita</strong> sobre como fortalecer o seu negócio da beleza. São <strong>poucas vagas por semana</strong> — não deixe essa passar!
+            Garanta agora uma <strong className="text-primary">consultoria 100% gratuita</strong> sobre como fortalecer o seu negócio. São <strong>poucas vagas por semana</strong> — não deixe essa passar!
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-3">
@@ -118,7 +128,7 @@ export default function ExitPopup() {
               className="w-full h-12 px-4 rounded-xl border border-gray-200 text-base text-gray-600 focus:border-primary focus:ring-1 focus:ring-primary outline-none appearance-none bg-white"
             >
               <option value="">Tipo de serviço...</option>
-              {SERVICES.map((s) => (
+              {servicos.map((s) => (
                 <option key={s.slug} value={s.nome}>{s.nome}</option>
               ))}
             </select>

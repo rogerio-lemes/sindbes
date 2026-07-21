@@ -1,25 +1,59 @@
+import Image from 'next/image'
+
 interface Props {
   variant?: 'dark' | 'light'
   className?: string
+  // Dados do tenant (logo dinâmico)
+  logoUrl?: string | null
+  nome?: string
+  tagline?: string | null
 }
 
 /**
- * Logomarca SINDIBES - Beleza e Estética.
- * Recriação vetorial na identidade da marca (swoosh teal + wordmark).
- * Para usar a arte original, salve o arquivo em /public/logo.png e troque
- * este componente por <img src="/logo.png" ... />.
+ * Logomarca dinâmica por tenant.
+ * Se o tenant tiver logo_url (imagem no Storage), renderiza <img>.
+ * Senão, gera um wordmark SVG a partir do nome + tagline do tenant.
+ * Fallback padrão: "SINDIBES" + "Beleza e Estética" (compatibilidade).
  */
-export default function Logo({ variant = 'dark', className = '' }: Props) {
-  const wordColor = variant === 'light' ? '#FFFFFF' : '#1B2444'
-  const tagColor = variant === 'light' ? '#DCEFEC' : '#6E5A97'
-  const lineColor = variant === 'light' ? 'rgba(255,255,255,0.5)' : '#1B2444'
+export default function Logo({
+  variant = 'dark',
+  className = '',
+  logoUrl,
+  nome,
+  tagline,
+}: Props) {
+  // Se o tenant tem logo (imagem), usa
+  if (logoUrl) {
+    return (
+      <Image
+        src={logoUrl}
+        alt={nome || 'Logo'}
+        width={200}
+        height={64}
+        className={className}
+        priority
+        unoptimized
+      />
+    )
+  }
+
+  // Fallback: wordmark SVG gerado a partir do nome do tenant
+  const displayName = nome || 'SINDIBES'
+  const displayTagline = tagline || 'Beleza e Estética'
+  const wordColor = variant === 'light' ? '#FFFFFF' : 'var(--color-text, #1B2444)'
+  const tagColor = variant === 'light' ? 'var(--color-accent, #DCEFEC)' : 'var(--color-secondary, #6E5A97)'
+  const lineColor = variant === 'light' ? 'rgba(255,255,255,0.5)' : 'var(--color-text, #1B2444)'
+
+  // Calcular largura aproximada do nome para SVG responsivo
+  const nameLen = displayName.length
+  const svgWidth = Math.max(300, 92 + nameLen * 24)
 
   return (
-    <svg viewBox="0 0 300 96" className={className} role="img" aria-label="SINDIBES - Beleza e Estética" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox={`0 0 ${svgWidth} 96`} className={className} role="img" aria-label={`${displayName} - ${displayTagline}`} xmlns="http://www.w3.org/2000/svg">
       <defs>
         <linearGradient id="swoosh" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#A9D9D2" />
-          <stop offset="100%" stopColor="#6FBEB4" />
+          <stop offset="0%" stopColor="var(--color-accent, #A9D9D2)" />
+          <stop offset="100%" stopColor="var(--color-primary, #6FBEB4)" />
         </linearGradient>
       </defs>
 
@@ -49,9 +83,13 @@ export default function Logo({ variant = 'dark', className = '' }: Props) {
       />
 
       {/* Wordmark */}
-      <text x="92" y="52" fontFamily="Montserrat, sans-serif" fontSize="40" fontWeight="700" letterSpacing="2" fill={wordColor}>SINDIBES</text>
-      <line x1="93" y1="63" x2="288" y2="63" stroke={lineColor} strokeWidth="1.5" />
-      <text x="94" y="86" fontFamily="Montserrat, sans-serif" fontSize="21" fontWeight="500" fill={tagColor}>Beleza e Estética</text>
+      <text x="92" y="52" fontFamily="Montserrat, sans-serif" fontSize="40" fontWeight="700" letterSpacing="2" fill={wordColor}>
+        {displayName.toUpperCase()}
+      </text>
+      <line x1="93" y1="63" x2={svgWidth - 12} y2="63" stroke={lineColor} strokeWidth="1.5" />
+      <text x="94" y="86" fontFamily="Montserrat, sans-serif" fontSize="21" fontWeight="500" fill={tagColor}>
+        {displayTagline}
+      </text>
     </svg>
   )
 }

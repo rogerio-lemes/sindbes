@@ -3,10 +3,13 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { X } from 'lucide-react'
-import { SITE, IMAGES, whatsappUrl } from '@/lib/constants'
+import { useTenant, useWhatsappUrl } from '@/components/TenantProvider'
 
 export default function WhatsAppChat() {
+  const { config } = useTenant()
   const [open, setOpen] = useState(false)
+
+  const chatUrl = useWhatsappUrl(`Olá ${config.atendente_nome || 'atendente'}! Vim pelo site da ${config.nome} e gostaria de mais informações.`)
 
   useEffect(() => {
     const timer = setTimeout(() => setOpen(true), 8000)
@@ -15,21 +18,30 @@ export default function WhatsAppChat() {
 
   if (!open) return null
 
+  const nomeAtendente = config.atendente_nome || 'Atendente'
+
   return (
     <div className="hidden md:block fixed bottom-24 right-6 z-[42] w-[320px] animate-slide-in-right">
       <div className="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-100">
         <div className="bg-[#075E54] p-4 flex items-center gap-3">
           <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white/30">
-            <Image
-              src={IMAGES.atendente}
-              alt="Atendente"
-              width={40}
-              height={40}
-              className="object-cover w-full h-full"
-            />
+            {config.atendente_foto_url ? (
+              <Image
+                src={config.atendente_foto_url}
+                alt={nomeAtendente}
+                width={40}
+                height={40}
+                className="object-cover w-full h-full"
+                unoptimized
+              />
+            ) : (
+              <div className="w-full h-full bg-green-700 flex items-center justify-center text-white font-bold">
+                {nomeAtendente[0]}
+              </div>
+            )}
           </div>
           <div className="flex-1">
-            <p className="text-white font-semibold text-sm">Wagner</p>
+            <p className="text-white font-semibold text-sm">{nomeAtendente}</p>
             <p className="text-green-200 text-xs">Online agora</p>
           </div>
           <button
@@ -44,7 +56,7 @@ export default function WhatsAppChat() {
         <div className="p-4 bg-[#ECE5DD] min-h-[120px]">
           <div className="bg-white rounded-lg rounded-tl-none p-3 shadow-sm max-w-[90%]">
             <p className="text-sm text-gray-800">
-              Olá! 👋 Sou o Wagner, do {SITE.shortName}. Como posso ajudar você hoje?
+              Olá! 👋 Sou o {nomeAtendente}, do {config.nome}. Como posso ajudar você hoje?
             </p>
             <span className="text-[10px] text-gray-400 mt-1 block text-right">Agora</span>
           </div>
@@ -52,7 +64,7 @@ export default function WhatsAppChat() {
 
         <div className="p-3 border-t border-gray-100">
           <a
-            href={whatsappUrl(`Olá Wagner! Vim pelo site da ${SITE.name} e gostaria de mais informações.`)}
+            href={chatUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="block w-full text-center py-3 bg-[#25D366] text-white font-semibold rounded-xl text-sm hover:bg-[#1DA851] transition-colors"

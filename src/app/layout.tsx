@@ -9,18 +9,13 @@ const montserrat = Montserrat({
   variable: '--font-montserrat',
 })
 
+// Metadata default — será sobrescrita por páginas que chamam getTenant()
 export const metadata: Metadata = {
-  title: 'Sindbes - Sindicato da Beleza | Uberlândia MG',
-  description: 'Sindbes, o Sindicato da Beleza de Uberlândia. Treinamentos, assessoria jurídica e contábil, benefícios, planos de saúde e odontológico para profissionais e empresas da beleza.',
-  metadataBase: new URL('https://sindbes.vercel.app'),
+  title: 'Plataforma de Sites para Sindicatos',
+  description: 'Plataforma completa para sindicatos criarem e gerenciarem seus sites.',
   openGraph: {
     type: 'website',
     locale: 'pt_BR',
-    siteName: 'Sindbes - Sindicato da Beleza',
-  },
-  other: {
-    'geo.region': 'BR-MG',
-    'geo.placename': 'Uberlândia',
   },
 }
 
@@ -32,8 +27,6 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={montserrat.variable}>
       <head>
-        <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#2E9E8D" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       </head>

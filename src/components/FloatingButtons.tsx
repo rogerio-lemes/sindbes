@@ -3,10 +3,14 @@
 import { useState, useEffect } from 'react'
 import { MessageCircle, Phone, ArrowUp } from 'lucide-react'
 import Image from 'next/image'
-import { SITE, IMAGES, whatsappUrl } from '@/lib/constants'
+import { useTenant, useWhatsappUrl } from '@/components/TenantProvider'
 
 export default function FloatingButtons() {
+  const { config } = useTenant()
   const [showBackTop, setShowBackTop] = useState(false)
+
+  const whatsUrl1 = useWhatsappUrl(`Olá! Vim pelo site da ${config.nome} e quero falar com o atendimento.`)
+  const whatsUrl2 = useWhatsappUrl(`Olá! Vim pelo site da ${config.nome} e gostaria de mais informações.`)
 
   useEffect(() => {
     const onScroll = () => setShowBackTop(window.scrollY > 600)
@@ -16,27 +20,33 @@ export default function FloatingButtons() {
 
   return (
     <>
-      {/* Floating stack: bottom-right */}
       <div className="fixed bottom-6 right-6 z-40 flex flex-col items-center gap-3">
-        {/* IA de atendimento (Wagner) — primeiro */}
+        {/* Atendente IA */}
         <a
-          href={whatsappUrl(`Olá! Vim pelo site da ${SITE.name} e quero falar com o atendimento.`)}
+          href={whatsUrl1}
           target="_blank"
           rel="noopener noreferrer"
           className="w-14 h-14 rounded-full overflow-hidden border-2 border-secondary shadow-lg hover:scale-110 transition-transform"
-          aria-label="Atendimento Sindbes"
+          aria-label={`Atendimento ${config.nome}`}
         >
-          <Image
-            src={IMAGES.atendente}
-            alt="Atendimento Sindbes"
-            width={56}
-            height={56}
-            className="object-cover w-full h-full"
-          />
+          {config.atendente_foto_url ? (
+            <Image
+              src={config.atendente_foto_url}
+              alt={`Atendimento ${config.nome}`}
+              width={56}
+              height={56}
+              className="object-cover w-full h-full"
+              unoptimized
+            />
+          ) : (
+            <div className="w-full h-full bg-secondary flex items-center justify-center text-white font-bold text-lg">
+              {(config.atendente_nome || 'A')[0]}
+            </div>
+          )}
         </a>
 
         <a
-          href={whatsappUrl(`Olá! Vim pelo site da ${SITE.name} e gostaria de mais informações.`)}
+          href={whatsUrl2}
           target="_blank"
           rel="noopener noreferrer"
           className="w-14 h-14 rounded-full bg-[#25D366] flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
@@ -46,7 +56,7 @@ export default function FloatingButtons() {
         </a>
 
         <a
-          href={`tel:${SITE.phone}`}
+          href={`tel:${config.phone || config.whatsapp}`}
           className="w-14 h-14 rounded-full bg-primary flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
           aria-label="Ligar"
         >
@@ -54,7 +64,6 @@ export default function FloatingButtons() {
         </a>
       </div>
 
-      {/* Back to top: bottom-left */}
       {showBackTop && (
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}

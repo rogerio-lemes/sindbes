@@ -1,10 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import { User, Phone, Send, GripHorizontal } from 'lucide-react'
-import { SITE, SERVICES, whatsappUrl } from '@/lib/constants'
+import { User, Phone, Send } from 'lucide-react'
+import { useTenant, useWhatsappUrl } from '@/components/TenantProvider'
 
 export default function MobileCaptureBar() {
+  const { config, servicos } = useTenant()
   const [collapsed, setCollapsed] = useState(true)
   const [nome, setNome] = useState('')
   const [telefone, setTelefone] = useState('')
@@ -21,7 +22,8 @@ export default function MobileCaptureBar() {
     e.preventDefault()
     const origem = document.title || window.location.pathname
     const msg = `Olá! Meu nome é ${nome}, telefone: ${telefone}.${servico ? ` Interesse: ${servico}.` : ''} 📍 Origem: ${origem}`
-    window.open(whatsappUrl(msg), '_blank')
+    const url = `https://wa.me/${config.whatsapp}?text=${encodeURIComponent(msg)}`
+    window.open(url, '_blank')
   }
 
   return (
@@ -42,11 +44,7 @@ export default function MobileCaptureBar() {
             <div className="relative">
               <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
-                type="text"
-                placeholder="Seu nome"
-                value={nome}
-                onChange={(e) => setNome(e.target.value)}
-                required
+                type="text" placeholder="Seu nome" value={nome} onChange={(e) => setNome(e.target.value)} required
                 className="w-full h-12 pl-10 pr-4 rounded-xl border border-gray-200 text-base focus:border-primary focus:ring-1 focus:ring-primary outline-none"
               />
             </div>
@@ -54,22 +52,17 @@ export default function MobileCaptureBar() {
             <div className="relative">
               <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
-                type="tel"
-                placeholder="(00) 00000-0000"
-                value={telefone}
-                onChange={(e) => setTelefone(maskPhone(e.target.value))}
-                required
+                type="tel" placeholder="(00) 00000-0000" value={telefone} onChange={(e) => setTelefone(maskPhone(e.target.value))} required
                 className="w-full h-12 pl-10 pr-4 rounded-xl border border-gray-200 text-base focus:border-primary focus:ring-1 focus:ring-primary outline-none"
               />
             </div>
 
             <select
-              value={servico}
-              onChange={(e) => setServico(e.target.value)}
+              value={servico} onChange={(e) => setServico(e.target.value)}
               className="w-full h-12 px-4 rounded-xl border border-gray-200 text-base text-gray-600 focus:border-primary focus:ring-1 focus:ring-primary outline-none appearance-none bg-white"
             >
               <option value="">Tipo de serviço...</option>
-              {SERVICES.map((s) => (
+              {servicos.map((s) => (
                 <option key={s.slug} value={s.nome}>{s.nome}</option>
               ))}
             </select>

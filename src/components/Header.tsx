@@ -2,12 +2,13 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import { Menu, X, ChevronDown } from 'lucide-react'
-import { SERVICES, INSTITUCIONAL, ASSOCIADOS_MENU, CURRICULOS_MENU } from '@/lib/constants'
+import { useTenant } from '@/components/TenantProvider'
+import { INSTITUCIONAL, ASSOCIADOS_MENU, CURRICULOS_MENU } from '@/lib/constants'
 import Logo from '@/components/Logo'
 
 export default function Header() {
+  const { config, servicos } = useTenant()
   const [mobileOpen, setMobileOpen] = useState(false)
   const [servicesOpen, setServicesOpen] = useState(false)
   const [instOpen, setInstOpen] = useState(false)
@@ -18,7 +19,12 @@ export default function Header() {
     <header className="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-100">
       <div className="max-w-[1200px] mx-auto px-4 flex items-center justify-between h-16 md:h-20">
         <Link href="/" className="flex items-center">
-          <Logo className="h-11 md:h-12 w-auto" />
+          <Logo
+            className="h-11 md:h-12 w-auto"
+            logoUrl={config.logo_url}
+            nome={config.nome}
+            tagline={config.tagline}
+          />
         </Link>
 
         <nav className="hidden lg:flex items-center gap-1">
@@ -36,7 +42,7 @@ export default function Header() {
             </button>
             {servicesOpen && (
               <div className="absolute top-full left-0 w-80 bg-white rounded-xl shadow-2xl border border-gray-100 py-2 z-50">
-                {SERVICES.map((s) => (
+                {servicos.map((s) => (
                   <Link
                     key={s.slug}
                     href={`/${s.slug}`}
@@ -153,23 +159,14 @@ export default function Header() {
 
       {mobileOpen && (
         <div className="lg:hidden bg-white border-t border-gray-100 pb-4">
-          <Link
-            href="/"
-            className="block px-6 py-3 text-sm font-medium hover:bg-bg-alt"
-            onClick={() => setMobileOpen(false)}
-          >
+          <Link href="/" className="block px-6 py-3 text-sm font-medium hover:bg-bg-alt" onClick={() => setMobileOpen(false)}>
             Home
           </Link>
           <div className="px-6 py-2">
             <span className="text-xs font-semibold uppercase tracking-wider text-gray-400">Serviços</span>
           </div>
-          {SERVICES.map((s) => (
-            <Link
-              key={s.slug}
-              href={`/${s.slug}`}
-              className="block px-8 py-2.5 text-sm hover:bg-bg-alt hover:text-primary"
-              onClick={() => setMobileOpen(false)}
-            >
+          {servicos.map((s) => (
+            <Link key={s.slug} href={`/${s.slug}`} className="block px-8 py-2.5 text-sm hover:bg-bg-alt hover:text-primary" onClick={() => setMobileOpen(false)}>
               {s.nome}
             </Link>
           ))}
@@ -177,12 +174,7 @@ export default function Header() {
             <span className="text-xs font-semibold uppercase tracking-wider text-gray-400">Institucional</span>
           </div>
           {INSTITUCIONAL.map((s) => (
-            <Link
-              key={s.slug}
-              href={`/${s.slug}`}
-              className="block px-8 py-2.5 text-sm hover:bg-bg-alt hover:text-primary"
-              onClick={() => setMobileOpen(false)}
-            >
+            <Link key={s.slug} href={`/${s.slug}`} className="block px-8 py-2.5 text-sm hover:bg-bg-alt hover:text-primary" onClick={() => setMobileOpen(false)}>
               {s.nome}
             </Link>
           ))}
@@ -190,12 +182,7 @@ export default function Header() {
             <span className="text-xs font-semibold uppercase tracking-wider text-gray-400">Associados</span>
           </div>
           {ASSOCIADOS_MENU.map((s) => (
-            <Link
-              key={s.slug}
-              href={`/${s.slug}`}
-              className="block px-8 py-2.5 text-sm hover:bg-bg-alt hover:text-primary"
-              onClick={() => setMobileOpen(false)}
-            >
+            <Link key={s.slug} href={`/${s.slug}`} className="block px-8 py-2.5 text-sm hover:bg-bg-alt hover:text-primary" onClick={() => setMobileOpen(false)}>
               {s.nome}
             </Link>
           ))}
@@ -203,49 +190,16 @@ export default function Header() {
             <span className="text-xs font-semibold uppercase tracking-wider text-gray-400">Currículos</span>
           </div>
           {CURRICULOS_MENU.map((s) => (
-            <Link
-              key={s.slug}
-              href={`/${s.slug}`}
-              className="block px-8 py-2.5 text-sm hover:bg-bg-alt hover:text-primary"
-              onClick={() => setMobileOpen(false)}
-            >
+            <Link key={s.slug} href={`/${s.slug}`} className="block px-8 py-2.5 text-sm hover:bg-bg-alt hover:text-primary" onClick={() => setMobileOpen(false)}>
               {s.nome}
             </Link>
           ))}
-          <Link
-            href="/eventos"
-            className="block px-6 py-3 text-sm font-medium hover:bg-bg-alt"
-            onClick={() => setMobileOpen(false)}
-          >
-            Eventos
-          </Link>
-          <Link
-            href="/parceiros"
-            className="block px-6 py-3 text-sm font-medium hover:bg-bg-alt"
-            onClick={() => setMobileOpen(false)}
-          >
-            Parceiros
-          </Link>
-          <Link
-            href="/blog"
-            className="block px-6 py-3 text-sm font-medium hover:bg-bg-alt"
-            onClick={() => setMobileOpen(false)}
-          >
-            Blog
-          </Link>
-          <Link
-            href="/contato"
-            className="block px-6 py-3 text-sm font-medium hover:bg-bg-alt"
-            onClick={() => setMobileOpen(false)}
-          >
-            Contato
-          </Link>
+          <Link href="/eventos" className="block px-6 py-3 text-sm font-medium hover:bg-bg-alt" onClick={() => setMobileOpen(false)}>Eventos</Link>
+          <Link href="/parceiros" className="block px-6 py-3 text-sm font-medium hover:bg-bg-alt" onClick={() => setMobileOpen(false)}>Parceiros</Link>
+          <Link href="/blog" className="block px-6 py-3 text-sm font-medium hover:bg-bg-alt" onClick={() => setMobileOpen(false)}>Blog</Link>
+          <Link href="/contato" className="block px-6 py-3 text-sm font-medium hover:bg-bg-alt" onClick={() => setMobileOpen(false)}>Contato</Link>
           <div className="px-6 pt-2">
-            <Link
-              href="/contato"
-              className="block text-center py-3 text-sm font-semibold text-white bg-primary rounded-xl"
-              onClick={() => setMobileOpen(false)}
-            >
+            <Link href="/contato" className="block text-center py-3 text-sm font-semibold text-white bg-primary rounded-xl" onClick={() => setMobileOpen(false)}>
               Fale Conosco
             </Link>
           </div>
