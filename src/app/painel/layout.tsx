@@ -1,10 +1,10 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Painel Administrativo',
+  title: 'Super Admin — Plataforma',
   robots: 'noindex, nofollow',
 }
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+export default function PainelLayout({ children }: { children: React.ReactNode }) {
   return <>{children}</>
 }
