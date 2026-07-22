@@ -3,22 +3,23 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { IMAGES, whatsappUrl, SITE } from '@/lib/constants'
+import { IMAGES } from '@/lib/constants'
+import { useTenant, useWhatsappUrl } from '@/components/TenantProvider'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 const slides = [
   {
     image: IMAGES.hero1,
-    alt: 'Treinamentos profissionais Sindbes Uberlândia',
+    alt: 'Treinamentos profissionais',
     headline: 'Qualifique sua equipe',
     highlight: 'com quem entende de beleza',
-    description: 'Treinamentos, certificações e capacitação para profissionais e empresas da beleza em Uberlândia.',
+    description: 'Treinamentos, certificações e capacitação para profissionais e empresas da beleza.',
     cta: 'Conheça nossos treinamentos',
     href: '/treinamentos-e-qualificacoes-profissionais',
   },
   {
     image: IMAGES.hero2,
-    alt: 'Equipe salão de beleza qualificação Sindbes',
+    alt: 'Assessoria completa para negócios',
     headline: 'Assessoria completa',
     highlight: 'para seu negócio crescer',
     description: 'Jurídico, contábil, planejamento e gestão: tudo que seu salão precisa em um só lugar.',
@@ -27,17 +28,19 @@ const slides = [
   },
   {
     image: IMAGES.hero3,
-    alt: 'Benefícios associados Sindbes sindicato beleza',
+    alt: 'Benefícios exclusivos para associados',
     headline: 'Benefícios exclusivos',
     highlight: 'para associados',
-    description: 'Planos de saúde, odontológico, crédito facilitado e muito mais para quem faz parte do Sindbes.',
+    description: 'Planos de saúde, odontológico, crédito facilitado e muito mais para quem faz parte.',
     cta: 'Veja os benefícios',
     href: '/beneficios-para-associados',
   },
 ]
 
 export default function HeroCarousel() {
+  const { config } = useTenant()
   const [current, setCurrent] = useState(0)
+  const whatsUrl = useWhatsappUrl(`Olá! Vim pelo site da ${config.nome} e gostaria de mais informações.`)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -83,7 +86,7 @@ export default function HeroCarousel() {
               {slide.cta}
             </Link>
             <a
-              href={whatsappUrl(`Olá! Vim pelo site da ${SITE.name} e gostaria de mais informações.`)}
+              href={whatsUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center px-8 py-4 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-xl text-base border border-white/30 hover:bg-white/20 transition-colors"

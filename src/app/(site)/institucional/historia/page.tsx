@@ -1,13 +1,16 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { SITE } from '@/lib/constants'
+import { getTenant } from '@/lib/tenant'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import { Target, Eye, Heart, Flag } from 'lucide-react'
 
-export const metadata: Metadata = {
-  title: `História do Sindicato | ${SITE.name}`,
-  description: `Conheça a história do ${SITE.name}, o Sindicato da Beleza de Uberlândia: fundação, marcos e a missão de fortalecer o setor da beleza.`,
-  alternates: { canonical: '/institucional/historia' },
+export async function generateMetadata(): Promise<Metadata> {
+  const { config } = await getTenant()
+  return {
+    title: `História do Sindicato | ${config.nome}`,
+    description: `Conheça a história do ${config.nome}: fundação, marcos e a missão de fortalecer o setor da beleza.`,
+    alternates: { canonical: '/institucional/historia' },
+  }
 }
 
 const timeline = [
@@ -41,7 +44,7 @@ export default function HistoriaPage() {
 
         <div className="prose-custom space-y-4 mb-16">
           <p className="text-gray-600 leading-relaxed">
-            O <strong>{SITE.name}</strong> surgiu da necessidade de dar voz e representatividade a um dos setores que mais crescem e empregam em Uberlândia: o da beleza. Salões de cabeleireiro, barbearias, esmalterias, clínicas de estética e profissionais autônomos encontraram no sindicato um espaço de união, apoio e defesa de seus direitos.
+            O <strong>Sindicato da Beleza</strong> surgiu da necessidade de dar voz e representatividade a um dos setores que mais crescem e empregam em Uberlândia: o da beleza. Salões de cabeleireiro, barbearias, esmalterias, clínicas de estética e profissionais autônomos encontraram no sindicato um espaço de união, apoio e defesa de seus direitos.
           </p>
           <p className="text-gray-600 leading-relaxed">
             Desde a fundação, o Sindbes trabalha para transformar a realidade da categoria: negocia condições melhores, oferece qualificação profissional, orienta juridicamente e contabilmente os negócios e cria benefícios que fazem diferença real no dia a dia de quem vive da beleza.

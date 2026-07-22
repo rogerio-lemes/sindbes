@@ -1,13 +1,17 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { SITE, INSTITUCIONAL } from '@/lib/constants'
+import { INSTITUCIONAL } from '@/lib/constants'
+import { getTenant } from '@/lib/tenant'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import { BookOpen, MessageSquareQuote, Users, LandmarkIcon, ArrowRight } from 'lucide-react'
 
-export const metadata: Metadata = {
-  title: `Institucional | ${SITE.name}`,
-  description: `Conheça a história, a diretoria e a estrutura institucional do ${SITE.name}, o Sindicato da Beleza de Uberlândia.`,
-  alternates: { canonical: '/institucional' },
+export async function generateMetadata(): Promise<Metadata> {
+  const { config } = await getTenant()
+  return {
+    title: `Institucional | ${config.nome}`,
+    description: `Conheça a história, a diretoria e a estrutura institucional do ${config.nome}.`,
+    alternates: { canonical: '/institucional' },
+  }
 }
 
 const icons = [BookOpen, MessageSquareQuote, Users, LandmarkIcon]

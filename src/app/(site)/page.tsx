@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import { getTenant } from '@/lib/tenant'
 import HeroCarousel from '@/components/sections/HeroCarousel'
 import ServicesGrid from '@/components/sections/ServicesGrid'
 import Diferenciais from '@/components/sections/Diferenciais'
@@ -11,11 +12,15 @@ import ParceirosSlider from '@/components/sections/ParceirosSlider'
 import ContactSection from '@/components/sections/ContactSection'
 import MapLocation from '@/components/sections/MapLocation'
 import EeatBio from '@/components/sections/EeatBio'
+import HomeStructuredData from './HomeStructuredData'
 
-export const metadata: Metadata = {
-  title: 'Sindbes | Sindicato da Beleza de Uberlândia MG',
-  description: 'Sindbes, o Sindicato da Beleza de Uberlândia. Treinamentos, assessoria jurídica e contábil, planos de saúde, crédito e benefícios para o setor da beleza.',
-  alternates: { canonical: '/' },
+export async function generateMetadata(): Promise<Metadata> {
+  const { config } = await getTenant()
+  return {
+    title: `${config.nome} | ${config.tagline || 'Sindicato da Beleza'}`,
+    description: `${config.nome}. Treinamentos, assessoria jurídica e contábil, planos de saúde, crédito e benefícios para o setor da beleza${config.cidade ? ` em ${config.cidade}` : ''}.`,
+    alternates: { canonical: '/' },
+  }
 }
 
 export default function HomePage() {
@@ -33,46 +38,7 @@ export default function HomePage() {
       <EeatBio />
       <ContactSection />
       <MapLocation />
-
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'LocalBusiness',
-            name: 'Sindbes - Sindicato da Beleza',
-            description: 'Sindicato representando profissionais e empresas da beleza em Uberlândia, MG.',
-            url: 'https://sindbes.vercel.app',
-            telephone: '+5534984468553',
-            email: 'adm.sindibes@gmail.com',
-            address: {
-              '@type': 'PostalAddress',
-              addressLocality: 'Uberlândia',
-              addressRegion: 'MG',
-              addressCountry: 'BR',
-            },
-            geo: {
-              '@type': 'GeoCoordinates',
-              latitude: '-18.9186',
-              longitude: '-48.2772',
-            },
-            openingHoursSpecification: [
-              {
-                '@type': 'OpeningHoursSpecification',
-                dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-                opens: '08:00',
-                closes: '18:00',
-              },
-              {
-                '@type': 'OpeningHoursSpecification',
-                dayOfWeek: 'Saturday',
-                opens: '08:00',
-                closes: '12:00',
-              },
-            ],
-          }),
-        }}
-      />
+      <HomeStructuredData />
     </>
   )
 }

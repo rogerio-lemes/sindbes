@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import { CURRICULOS_EXEMPLO, FUNCOES, NIVEIS_EXPERIENCIA } from '@/lib/recrutamento'
-import { SITE } from '@/lib/constants'
+import { useTenant } from '@/components/TenantProvider'
 import { Search, MapPin, Award, CalendarClock, MessageCircle, Filter, X } from 'lucide-react'
 
 function iniciais(nome: string) {
@@ -10,6 +10,7 @@ function iniciais(nome: string) {
 }
 
 export default function CurriculosList() {
+  const { config } = useTenant()
   const [busca, setBusca] = useState('')
   const [funcao, setFuncao] = useState('')
   const [exp, setExp] = useState('')
@@ -81,7 +82,7 @@ export default function CurriculosList() {
                 <li className="flex items-center gap-2"><CalendarClock className="w-3.5 h-3.5 text-secondary" /> Disponibilidade: {c.disponibilidade}</li>
               </ul>
               <a
-                href={`https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(`Olá! Vi o currículo de ${c.nome} (${c.funcao}) no site do Sindbes e gostaria de mais informações.`)}`}
+                href={`https://wa.me/${config.whatsapp}?text=${encodeURIComponent(`Olá! Vi o currículo de ${c.nome} (${c.funcao}) no site e gostaria de mais informações.`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 w-full py-2.5 gradient-primary text-white text-sm font-semibold rounded-xl hover:opacity-90 transition-opacity"

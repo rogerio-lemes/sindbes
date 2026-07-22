@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { PARCEIROS, getParceiro } from '@/lib/parceiros'
-import { SITE } from '@/lib/constants'
+import { getTenant } from '@/lib/tenant'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import { CheckCircle2, Globe, MessageCircle, BadgePercent, Sparkles, ArrowRight, Handshake } from 'lucide-react'
 
@@ -163,7 +163,7 @@ export default async function ParceiroPage({ params }: { params: Promise<{ slug:
             name: p.nome,
             description: p.resumo,
             url: p.siteUrl || undefined,
-            memberOf: { '@type': 'Organization', name: SITE.name },
+            memberOf: { '@type': 'Organization', name: 'Sindicato da Beleza' },
           }),
         }}
       />

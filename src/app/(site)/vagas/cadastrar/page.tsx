@@ -1,13 +1,16 @@
 import { Metadata } from 'next'
-import { SITE } from '@/lib/constants'
+import { getTenant } from '@/lib/tenant'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import VagaForm from '@/components/recrutamento/VagaForm'
 import { Briefcase } from 'lucide-react'
 
-export const metadata: Metadata = {
-  title: `Cadastrar Vaga | ${SITE.name}`,
-  description: `Divulgue sua vaga de trabalho no ${SITE.name} e encontre profissionais da beleza qualificados em Uberlândia.`,
-  alternates: { canonical: '/vagas/cadastrar' },
+export async function generateMetadata(): Promise<Metadata> {
+  const { config } = await getTenant()
+  return {
+    title: `Cadastrar Vaga | ${config.nome}`,
+    description: `Divulgue sua vaga de trabalho no ${config.nome}.`,
+    alternates: { canonical: '/vagas/cadastrar' },
+  }
 }
 
 export default function CadastrarVagaPage() {

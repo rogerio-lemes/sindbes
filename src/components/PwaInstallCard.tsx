@@ -2,9 +2,10 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { X } from 'lucide-react'
-import { SITE } from '@/lib/constants'
+import { useTenant } from '@/components/TenantProvider'
 
 export default function PwaInstallCard() {
+  const { config } = useTenant()
   const [show, setShow] = useState(false)
   const deferredPrompt = useRef<any>(null)
 
@@ -63,7 +64,7 @@ export default function PwaInstallCard() {
         </div>
 
         <p className="text-sm text-gray-500 mb-4">
-          Tenha a {SITE.name} na palma da mão: agende, receba novidades e ofertas por notificação push.
+          Tenha o {config.nome} na palma da mão: agende, receba novidades e ofertas por notificação push.
         </p>
 
         {isIOS ? (

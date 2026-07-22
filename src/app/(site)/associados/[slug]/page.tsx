@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
-import { SITE } from '@/lib/constants'
+import { getTenant } from '@/lib/tenant'
 import { ASSOCIADOS, getAssociado } from '@/lib/associados'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import Gallery from '@/components/Gallery'
@@ -17,9 +17,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params
   const a = getAssociado(slug)
   if (!a) return {}
+  const { config } = await getTenant()
   return {
-    title: `${a.nome} | ${a.categoria} - Filiado Sindbes`,
-    description: `${a.nome} - ${a.categoria} em Uberlândia, filiado ao ${SITE.name}. ${a.descricao.slice(0, 120)}`,
+    title: `${a.nome} | ${a.categoria} - Filiado ${config.nome}`,
+    description: `${a.nome} - ${a.categoria}, filiado ao ${config.nome}. ${a.descricao.slice(0, 120)}`,
     alternates: { canonical: `/associados/${a.slug}` },
   }
 }
@@ -65,7 +66,7 @@ export default async function AssociadoPage({ params }: { params: Promise<{ slug
               <h2 className="text-xl font-bold bicolor-title">Sobre o <span>estabelecimento</span></h2>
             </div>
             <p className="text-gray-600 leading-relaxed mb-4">{a.descricao}</p>
-            <p className="text-sm text-gray-400 mb-10">Filiado ao {SITE.name} desde {a.desde}.</p>
+            <p className="text-sm text-gray-400 mb-10">Filiado desde {a.desde}.</p>
 
             {/* Galeria */}
             <div className="flex items-center gap-2 mb-4">
@@ -176,7 +177,7 @@ export default async function AssociadoPage({ params }: { params: Promise<{ slug
             description: a.descricao,
             address: { '@type': 'PostalAddress', streetAddress: a.endereco, addressLocality: 'Uberlândia', addressRegion: 'MG', addressCountry: 'BR' },
             telephone: a.telefoneDisplay,
-            memberOf: { '@type': 'Organization', name: SITE.name },
+            memberOf: { '@type': 'Organization', name: 'Sindicato da Beleza' },
           }),
         }}
       />

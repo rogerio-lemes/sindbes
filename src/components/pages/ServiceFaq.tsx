@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { ChevronDown } from 'lucide-react'
-import { whatsappUrl } from '@/lib/constants'
+import { useTenant } from '@/components/TenantProvider'
 
 interface Props {
   items: { q: string; a: string }[]
@@ -10,6 +10,7 @@ interface Props {
 }
 
 export default function ServiceFaq({ items, serviceName }: Props) {
+  const { config } = useTenant()
   const [openIndex, setOpenIndex] = useState<number | null>(null)
 
   return (
@@ -32,7 +33,7 @@ export default function ServiceFaq({ items, serviceName }: Props) {
               <div className="px-5 pb-5">
                 <p className="text-sm text-white/90 leading-relaxed mb-3">{item.a}</p>
                 <a
-                  href={whatsappUrl(`Olá! Tenho uma dúvida sobre ${serviceName}: ${item.q}. 📍 Origem: ${serviceName}`)}
+                  href={`https://wa.me/${config.whatsapp}?text=${encodeURIComponent(`Olá! Tenho uma dúvida sobre ${serviceName}: ${item.q}. 📍 Origem: ${serviceName}`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex text-xs font-semibold text-white hover:text-white/80 underline underline-offset-2"

@@ -1,14 +1,17 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { SITE } from '@/lib/constants'
+import { getTenant } from '@/lib/tenant'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import CurriculosList from '@/components/recrutamento/CurriculosList'
 import { Users, Plus } from 'lucide-react'
 
-export const metadata: Metadata = {
-  title: `Buscar Currículos | ${SITE.name}`,
-  description: `Encontre profissionais da beleza em Uberlândia: cabeleireiros, barbeiros, manicures, esteticistas e mais. Banco de talentos do ${SITE.name}.`,
-  alternates: { canonical: '/curriculos' },
+export async function generateMetadata(): Promise<Metadata> {
+  const { config } = await getTenant()
+  return {
+    title: `Buscar Currículos | ${config.nome}`,
+    description: `Encontre profissionais da beleza${config.cidade ? ` em ${config.cidade}` : ''}. Banco de talentos do ${config.nome}.`,
+    alternates: { canonical: '/curriculos' },
+  }
 }
 
 export default function BuscarCurriculosPage() {

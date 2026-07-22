@@ -1,13 +1,16 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { SITE } from '@/lib/constants'
+import { getTenant } from '@/lib/tenant'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import { Quote, User } from 'lucide-react'
 
-export const metadata: Metadata = {
-  title: `Palavra do Presidente | ${SITE.name}`,
-  description: `Mensagem da presidência do ${SITE.name} sobre o compromisso com os profissionais e empresas da beleza de Uberlândia.`,
-  alternates: { canonical: '/institucional/palavra-do-presidente' },
+export async function generateMetadata(): Promise<Metadata> {
+  const { config } = await getTenant()
+  return {
+    title: `Palavra do Presidente | ${config.nome}`,
+    description: `Mensagem da presidência do ${config.nome} sobre o compromisso com os profissionais e empresas da beleza.`,
+    alternates: { canonical: '/institucional/palavra-do-presidente' },
+  }
 }
 
 export default function PalavraPresidentePage() {
@@ -41,7 +44,7 @@ export default function PalavraPresidentePage() {
             <Quote className="w-10 h-10 text-secondary/40 mb-4" />
             <div className="space-y-4 text-gray-600 leading-relaxed">
               <p>
-                É com grande satisfação que dou as boas-vindas a você que faz parte, ou deseja fazer parte, do <strong>{SITE.name}</strong>. O setor da beleza é movido por talento, dedicação e amor pela profissão, e o nosso papel é garantir que cada profissional e cada empresa tenham o apoio que merecem para crescer.
+                É com grande satisfação que dou as boas-vindas a você que faz parte, ou deseja fazer parte, do <strong>Sindicato da Beleza</strong>. O setor da beleza é movido por talento, dedicação e amor pela profissão, e o nosso papel é garantir que cada profissional e cada empresa tenham o apoio que merecem para crescer.
               </p>
               <p>
                 Ao longo de nossa trajetória, construímos uma entidade sólida, comprometida em representar a categoria com seriedade, oferecer qualificação de qualidade e criar benefícios reais que impactam positivamente o dia a dia de quem vive da beleza em Uberlândia.
@@ -56,7 +59,7 @@ export default function PalavraPresidentePage() {
 
             <div className="mt-8 pt-6 border-t border-gray-100">
               <p className="font-bold text-primary text-lg" style={{ fontFamily: 'cursive' }}>[Nome do Presidente]</p>
-              <p className="text-sm text-gray-500">Presidente do {SITE.name}</p>
+              <p className="text-sm text-gray-500">Presidente do Sindicato da Beleza</p>
             </div>
 
             <Link

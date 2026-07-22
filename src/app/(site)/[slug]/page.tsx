@@ -1,10 +1,11 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { SERVICES, BLOG_ARTICLES, IMAGES, SITE, whatsappUrl } from '@/lib/constants'
+import { BLOG_ARTICLES, IMAGES } from '@/lib/constants'
+import { getTenant, getServicos, getServicoPorSlug } from '@/lib/tenant'
 import ServicePage from '@/components/pages/ServicePage'
 import ArticlePage from '@/components/pages/ArticlePage'
 
-const serviceImages: Record<string, string> = {
+const fallbackServiceImages: Record<string, string> = {
   'treinamentos-e-qualificacoes-profissionais': IMAGES.servTreinamentos,
   'assessoria-juridica-e-contabil-para-empresas-da-be': IMAGES.servAssessoria,
   'beneficios-para-associados': IMAGES.servBeneficios,
@@ -30,20 +31,15 @@ type PageProps = {
   params: Promise<{ slug: string }>
 }
 
-export async function generateStaticParams() {
-  return [
-    ...SERVICES.map((s) => ({ slug: s.slug })),
-    ...BLOG_ARTICLES.map((a) => ({ slug: a.slug })),
-  ]
-}
-
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params
-  const service = SERVICES.find((s) => s.slug === slug)
-  if (service) {
+  const { id: tenantId, config } = await getTenant()
+
+  const servico = await getServicoPorSlug(tenantId, slug)
+  if (servico) {
     return {
-      title: service.seoTitle,
-      description: service.seoDescription,
+      title: servico.seo_title || `${servico.nome} | ${config.nome}`,
+      description: servico.seo_description || `${servico.nome} - ${config.nome}`,
       alternates: { canonical: `/${slug}` },
     }
   }
@@ -57,15 +53,17 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     }
   }
 
-  return { title: SITE.name }
+  return { title: config.nome }
 }
 
 export default async function SlugPage({ params }: PageProps) {
   const { slug } = await params
+  const { id: tenantId } = await getTenant()
 
-  const service = SERVICES.find((s) => s.slug === slug)
-  if (service) {
-    return <ServicePage service={service} image={serviceImages[slug] || IMAGES.vitrine1} />
+  const servico = await getServicoPorSlug(tenantId, slug)
+  if (servico) {
+    const image = servico.imagem_url || fallbackServiceImages[slug] || IMAGES.vitrine1
+    return <ServicePage service={servico} image={image} />
   }
 
   const article = BLOG_ARTICLES.find((a) => a.slug === slug)

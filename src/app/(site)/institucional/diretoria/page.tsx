@@ -1,12 +1,15 @@
 import { Metadata } from 'next'
-import { SITE } from '@/lib/constants'
+import { getTenant } from '@/lib/tenant'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import { User, Crown } from 'lucide-react'
 
-export const metadata: Metadata = {
-  title: `Diretoria 2026–2028 | ${SITE.name}`,
-  description: `Conheça a diretoria e o conselho fiscal do ${SITE.name} para a gestão 2026–2028, que representam a categoria da beleza em Uberlândia.`,
-  alternates: { canonical: '/institucional/diretoria' },
+export async function generateMetadata(): Promise<Metadata> {
+  const { config } = await getTenant()
+  return {
+    title: `Diretoria 2026–2028 | ${config.nome}`,
+    description: `Conheça a diretoria e o conselho fiscal do ${config.nome} para a gestão 2026–2028.`,
+    alternates: { canonical: '/institucional/diretoria' },
+  }
 }
 
 const diretoriaExecutiva = [
@@ -60,7 +63,7 @@ export default function DiretoriaPage() {
             Diretoria vigente <span>2026 – 2028</span>
           </h1>
           <p className="text-gray-500 mt-4">
-            Conheça os profissionais eleitos para representar e conduzir o {SITE.name} durante a gestão 2026–2028.
+            Conheça os profissionais eleitos para representar e conduzir o sindicato durante a gestão 2026–2028.
           </p>
         </div>
 

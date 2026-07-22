@@ -1,15 +1,18 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
-import { SITE } from '@/lib/constants'
+import { getTenant } from '@/lib/tenant'
 import { ASSOCIADOS } from '@/lib/associados'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import { Sparkles, MapPin, ArrowRight, Store, BadgeCheck } from 'lucide-react'
 
-export const metadata: Metadata = {
-  title: `Filiados | ${SITE.name}`,
-  description: `Conheça os salões, barbearias, esmalterias e clínicas de estética filiados ao ${SITE.name} em Uberlândia. Vitrine de associados e novos filiados.`,
-  alternates: { canonical: '/associados' },
+export async function generateMetadata(): Promise<Metadata> {
+  const { config } = await getTenant()
+  return {
+    title: `Filiados | ${config.nome}`,
+    description: `Conheça os salões, barbearias e clínicas filiados ao ${config.nome}. Vitrine de associados e novos filiados.`,
+    alternates: { canonical: '/associados' },
+  }
 }
 
 function AssociadoCard({ a, i = 0 }: { a: (typeof ASSOCIADOS)[number]; i?: number }) {

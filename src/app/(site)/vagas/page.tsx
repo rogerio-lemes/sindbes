@@ -1,14 +1,17 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { SITE } from '@/lib/constants'
+import { getTenant } from '@/lib/tenant'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import VagasList from '@/components/recrutamento/VagasList'
 import { Briefcase, Plus } from 'lucide-react'
 
-export const metadata: Metadata = {
-  title: `Vagas de Emprego | ${SITE.name}`,
-  description: `Vagas de trabalho no setor da beleza em Uberlândia: salões, barbearias, esmalterias e clínicas de estética. Candidate-se pelo ${SITE.name}.`,
-  alternates: { canonical: '/vagas' },
+export async function generateMetadata(): Promise<Metadata> {
+  const { config } = await getTenant()
+  return {
+    title: `Vagas de Emprego | ${config.nome}`,
+    description: `Vagas de trabalho no setor da beleza${config.cidade ? ` em ${config.cidade}` : ''}. Candidate-se pelo ${config.nome}.`,
+    alternates: { canonical: '/vagas' },
+  }
 }
 
 export default function BuscarVagasPage() {

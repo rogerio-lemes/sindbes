@@ -1,11 +1,12 @@
 'use client'
 
 import { useState } from 'react'
-import { whatsappUrl } from '@/lib/constants'
+import { useTenant } from '@/components/TenantProvider'
 import ConfirmModal from '@/components/ConfirmModal'
 import { Send, MessageCircle } from 'lucide-react'
 
 export default function EventoRsvpForm({ eventoTitulo }: { eventoTitulo: string }) {
+  const { config } = useTenant()
   const [nome, setNome] = useState('')
   const [telefone, setTelefone] = useState('')
   const [enviando, setEnviando] = useState(false)
@@ -49,7 +50,7 @@ export default function EventoRsvpForm({ eventoTitulo }: { eventoTitulo: string 
           <Send className="w-4 h-4" /> {enviando ? 'Enviando...' : 'Confirmar presença'}
         </button>
         <a
-          href={whatsappUrl(`Olá! Quero confirmar minha presença no evento "${eventoTitulo}" do Sindbes.`)}
+          href={`https://wa.me/${config.whatsapp}?text=${encodeURIComponent(`Olá! Quero confirmar minha presença no evento "${eventoTitulo}".`)}`}
           target="_blank" rel="noopener noreferrer"
           className="flex items-center justify-center gap-2 w-full h-12 bg-[#25D366] text-white font-semibold rounded-xl hover:opacity-90 transition-opacity"
         >

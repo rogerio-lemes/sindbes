@@ -2,8 +2,9 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { SITE, BLOG_ARTICLES, IMAGES, SERVICES, whatsappUrl } from '@/lib/constants'
+import { BLOG_ARTICLES, IMAGES } from '@/lib/constants'
 import { ARTICLE_CONTENT } from '@/lib/article-content'
+import { useTenant, useWhatsappUrl } from '@/components/TenantProvider'
 import ScrollSpyNav from '@/components/ScrollSpyNav'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import ArticleAudioPlayer from '@/components/ArticleAudioPlayer'
@@ -24,13 +25,15 @@ const blogImages: Record<string, string> = {
 }
 
 export default function ArticlePage({ article, image }: Props) {
+  const { config, servicos } = useTenant()
   const content = ARTICLE_CONTENT[article.slug]
   const otherArticles = BLOG_ARTICLES.filter((a) => a.slug !== article.slug).slice(0, 3)
   const relatedService = content?.relatedService
-    ? SERVICES.find((s) => s.slug === content.relatedService)
+    ? servicos.find((s) => s.slug === content.relatedService)
     : null
 
-  // Texto completo do artigo para leitura em áudio
+  const sidebarWhatsUrl = useWhatsappUrl(`Olá! Li o artigo "${article.titulo}" e gostaria de mais informações. 📍 Origem: Blog - ${article.titulo}`)
+
   const audioText = [
     article.titulo,
     content?.intro || '',
@@ -52,7 +55,6 @@ export default function ArticlePage({ article, image }: Props) {
 
       <article className="max-w-[1200px] mx-auto px-4 pb-16">
         <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-8">
-          {/* Sidebar */}
           <aside className="hidden lg:block">
             <div className="sticky top-24 space-y-6">
               <div className="bg-bg-alt rounded-xl p-5">
@@ -71,7 +73,7 @@ export default function ArticlePage({ article, image }: Props) {
               </div>
 
               <a
-                href={whatsappUrl(`Olá! Li o artigo "${article.titulo}" e gostaria de mais informações. 📍 Origem: Blog - ${article.titulo}`)}
+                href={sidebarWhatsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block w-full text-center py-3 gradient-primary text-white font-semibold rounded-xl text-sm hover:opacity-90 transition-opacity"
@@ -99,7 +101,6 @@ export default function ArticlePage({ article, image }: Props) {
             </div>
           </aside>
 
-          {/* Content */}
           <div>
             <span className="inline-block px-3 py-1 bg-primary text-white text-xs font-semibold rounded-full mb-4">
               Blog
@@ -110,7 +111,7 @@ export default function ArticlePage({ article, image }: Props) {
             </h1>
 
             <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 mb-6">
-              <span className="flex items-center gap-1"><User className="w-4 h-4" /> Equipe Sindbes</span>
+              <span className="flex items-center gap-1"><User className="w-4 h-4" /> Equipe {config.nome}</span>
               <span className="flex items-center gap-1"><Calendar className="w-4 h-4" /> Jul 2026</span>
               <span className="flex items-center gap-1"><Clock className="w-4 h-4" /> 8 min de leitura</span>
               <button onClick={handleShare} className="flex items-center gap-1 hover:text-primary transition-colors">
@@ -118,21 +119,19 @@ export default function ArticlePage({ article, image }: Props) {
               </button>
             </div>
 
-            {/* Player de áudio do artigo */}
             <ArticleAudioPlayer text={audioText} />
 
             <div className="relative h-[300px] md:h-[450px] rounded-2xl overflow-hidden mb-8">
               <Image src={image} alt={article.titulo} fill className="object-cover" priority />
             </div>
 
-            {/* CTA 1 */}
             <div className="bg-bg-alt rounded-xl p-6 mb-8 flex flex-col sm:flex-row items-center gap-4">
               <div className="flex-1">
                 <p className="font-semibold text-sm">Quer resolver isso agora?</p>
                 <p className="text-xs text-gray-500">Fale com nossa equipe pelo WhatsApp.</p>
               </div>
               <a
-                href={whatsappUrl(`Olá! Li o artigo "${article.titulo}" e preciso de ajuda. 📍 Origem: Blog`)}
+                href={`https://wa.me/${config.whatsapp}?text=${encodeURIComponent(`Olá! Li o artigo "${article.titulo}" e preciso de ajuda. 📍 Origem: Blog`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-6 py-3 gradient-cta text-white font-semibold rounded-xl text-sm whitespace-nowrap"
@@ -141,14 +140,12 @@ export default function ArticlePage({ article, image }: Props) {
               </a>
             </div>
 
-            {/* Intro */}
             <div id="intro" className="mb-8">
               <p className="text-gray-600 leading-relaxed text-lg">
-                {content?.intro || 'Se você chegou até aqui, provavelmente está buscando respostas concretas sobre como fortalecer seu negócio no setor da beleza. Este artigo foi preparado pela equipe do Sindbes para ajudar profissionais e empresários como você.'}
+                {content?.intro || `Se você chegou até aqui, provavelmente está buscando respostas concretas sobre como fortalecer seu negócio no setor da beleza. Este artigo foi preparado pela equipe do ${config.nome} para ajudar profissionais e empresários como você.`}
               </p>
             </div>
 
-            {/* Article sections */}
             {content?.sections ? (
               content.sections.map((section, i) => (
                 <div key={i} id={`section-${i}`} className="mb-8 space-y-4">
@@ -159,10 +156,9 @@ export default function ArticlePage({ article, image }: Props) {
                     <p key={j} className="text-gray-600 leading-relaxed">{p}</p>
                   ))}
 
-                  {/* CTA mid-article (after 2nd section) */}
                   {i === 1 && (
                     <a
-                      href={whatsappUrl(`Quero saber mais sobre o assunto do artigo "${article.titulo}". 📍 Origem: Blog`)}
+                      href={`https://wa.me/${config.whatsapp}?text=${encodeURIComponent(`Quero saber mais sobre o assunto do artigo "${article.titulo}". 📍 Origem: Blog`)}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 px-6 py-3 gradient-primary text-white font-semibold rounded-xl text-sm hover:opacity-90 transition-opacity mt-4"
@@ -176,12 +172,11 @@ export default function ArticlePage({ article, image }: Props) {
               <div id="conteudo" className="mb-8 space-y-4">
                 <h2 className="text-xl font-bold bicolor-title">O que você precisa <span>saber</span></h2>
                 <p className="text-gray-600 leading-relaxed">
-                  O mercado da beleza em Uberlândia cresce a cada ano, mas com ele crescem também os desafios. O Sindbes existe para ser seu parceiro nessa jornada.
+                  O mercado da beleza cresce a cada ano, mas com ele crescem também os desafios. O {config.nome} existe para ser seu parceiro nessa jornada.
                 </p>
               </div>
             )}
 
-            {/* Conclusion */}
             <div id="conclusao" className="mb-8">
               <h2 className="text-xl font-bold bicolor-title">Próximos <span>passos</span></h2>
               <p className="text-gray-600 leading-relaxed mt-4">
@@ -189,15 +184,14 @@ export default function ArticlePage({ article, image }: Props) {
               </p>
             </div>
 
-            {/* CTA Footer Banner */}
             <div className="bg-gradient-to-r from-primary to-primary-dark rounded-2xl p-8 text-white mb-12">
               <h3 className="text-xl font-bold mb-2">Gostou do conteúdo?</h3>
               <p className="text-white/80 text-sm mb-4">
-                Fale com o Sindbes e descubra como aplicar essas informações no seu negócio.
+                Fale com o {config.nome} e descubra como aplicar essas informações no seu negócio.
               </p>
               <div className="flex flex-col sm:flex-row gap-3">
                 <a
-                  href={whatsappUrl(`Olá! Li o artigo "${article.titulo}" e quero conversar. 📍 Origem: Blog`)}
+                  href={`https://wa.me/${config.whatsapp}?text=${encodeURIComponent(`Olá! Li o artigo "${article.titulo}" e quero conversar. 📍 Origem: Blog`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center px-6 py-3 bg-secondary text-white font-semibold rounded-xl text-sm"
@@ -215,21 +209,19 @@ export default function ArticlePage({ article, image }: Props) {
               </div>
             </div>
 
-            {/* Author Bio E-E-A-T */}
             <div className="bg-bg-alt rounded-2xl p-6 flex flex-col sm:flex-row gap-4 mb-12">
               <div className="w-16 h-16 rounded-full overflow-hidden shrink-0 border-2 border-secondary/20">
-                <Image src={IMAGES.sobre} alt="Equipe Sindbes" width={64} height={64} className="object-cover w-full h-full" />
+                <Image src={IMAGES.sobre} alt={`Equipe ${config.nome}`} width={64} height={64} className="object-cover w-full h-full" />
               </div>
               <div>
-                <p className="font-bold text-sm">Equipe Sindbes</p>
-                <p className="text-xs text-gray-500 mb-2">Sindicato da Beleza de Uberlândia</p>
+                <p className="font-bold text-sm">Equipe {config.nome}</p>
+                <p className="text-xs text-gray-500 mb-2">{config.tagline || config.nome}</p>
                 <p className="text-sm text-gray-600 leading-relaxed">
-                  Conteúdo produzido pela equipe de especialistas do Sindbes, com base na experiência real de atender centenas de profissionais e empresas da beleza em Uberlândia. Cada artigo é revisado por profissionais do setor jurídico, contábil e de gestão.
+                  Conteúdo produzido pela equipe de especialistas do {config.nome}, com base na experiência real de atender centenas de profissionais e empresas da beleza{config.cidade ? ` em ${config.cidade}` : ''}. Cada artigo é revisado por profissionais do setor jurídico, contábil e de gestão.
                 </p>
               </div>
             </div>
 
-            {/* Related articles */}
             <div>
               <h3 className="text-xl font-bold mb-6 bicolor-title">Veja <span>também</span></h3>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
@@ -267,22 +259,8 @@ export default function ArticlePage({ article, image }: Props) {
             '@context': 'https://schema.org',
             '@type': 'Article',
             headline: article.titulo,
-            author: { '@type': 'Person', name: 'Equipe Sindbes' },
-            publisher: { '@type': 'Organization', name: SITE.name },
-          }),
-        }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'BreadcrumbList',
-            itemListElement: [
-              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://sindbes.vercel.app/' },
-              { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://sindbes.vercel.app/blog' },
-              { '@type': 'ListItem', position: 3, name: article.titulo, item: `https://sindbes.vercel.app/${article.slug}` },
-            ],
+            author: { '@type': 'Person', name: `Equipe ${config.nome}` },
+            publisher: { '@type': 'Organization', name: config.nome },
           }),
         }}
       />

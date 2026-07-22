@@ -2,10 +2,11 @@
 
 import { useMemo, useState } from 'react'
 import { VAGAS_EXEMPLO, FUNCOES, TIPOS_CONTRATO } from '@/lib/recrutamento'
-import { SITE } from '@/lib/constants'
+import { useTenant } from '@/components/TenantProvider'
 import { Search, MapPin, DollarSign, Briefcase, Store, Clock, MessageCircle, Filter, X } from 'lucide-react'
 
 export default function VagasList() {
+  const { config } = useTenant()
   const [busca, setBusca] = useState('')
   const [funcao, setFuncao] = useState('')
   const [tipo, setTipo] = useState('')
@@ -74,7 +75,7 @@ export default function VagasList() {
                 <span className="flex items-center gap-1.5"><DollarSign className="w-3.5 h-3.5 text-secondary" /> {v.salario}</span>
               </div>
               <a
-                href={`https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(`Olá! Tenho interesse na vaga "${v.titulo}" (${v.empresa}) divulgada no site do Sindbes.`)}`}
+                href={`https://wa.me/${config.whatsapp}?text=${encodeURIComponent(`Olá! Tenho interesse na vaga "${v.titulo}" (${v.empresa}) divulgada no site.`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 w-full py-2.5 gradient-primary text-white text-sm font-semibold rounded-xl hover:opacity-90 transition-opacity"

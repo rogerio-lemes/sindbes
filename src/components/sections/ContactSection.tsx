@@ -2,14 +2,17 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
-import { IMAGES, SITE, SERVICES, whatsappUrl } from '@/lib/constants'
+import { useTenant } from '@/components/TenantProvider'
 
 export default function ContactSection() {
+  const { config, servicos } = useTenant()
   const [nome, setNome] = useState('')
   const [whatsapp, setWhatsapp] = useState('')
   const [email, setEmail] = useState('')
   const [servico, setServico] = useState('')
   const [loading, setLoading] = useState(false)
+
+  const nomeAtendente = config.atendente_nome || 'Atendente'
 
   function maskPhone(value: string) {
     const digits = value.replace(/\D/g, '').slice(0, 11)
@@ -33,7 +36,7 @@ export default function ContactSection() {
     } catch {}
 
     const msg = `Olá! Meu nome é ${nome}. WhatsApp: ${whatsapp}. Email: ${email}.${servico ? ` Interesse: ${servico}.` : ''} 📍 Origem: ${origem}`
-    window.open(whatsappUrl(msg), '_blank')
+    window.open(`https://wa.me/${config.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank')
     setLoading(false)
   }
 
@@ -48,15 +51,22 @@ export default function ContactSection() {
             </h2>
             <div className="relative max-w-md mx-auto lg:mx-0">
               <div className="relative h-[400px] md:h-[500px] rounded-2xl overflow-hidden">
-                <Image
-                  src={IMAGES.atendente}
-                  alt="Wagner, atendente do Sindbes pronto para ajudar"
-                  fill
-                  className="object-cover"
-                />
+                {config.atendente_foto_url ? (
+                  <Image
+                    src={config.atendente_foto_url}
+                    alt={`${nomeAtendente}, atendente do ${config.nome}`}
+                    fill
+                    className="object-cover"
+                    unoptimized
+                  />
+                ) : (
+                  <div className="w-full h-full bg-primary/10 flex items-center justify-center">
+                    <span className="text-8xl font-bold text-primary/30">{nomeAtendente[0]}</span>
+                  </div>
+                )}
               </div>
               <div className="mt-4 text-center">
-                <p className="font-semibold text-text">Wagner</p>
+                <p className="font-semibold text-text">{nomeAtendente}</p>
                 <p className="text-sm text-gray-500">Está online e pronto pra te ajudar 💬</p>
               </div>
             </div>
@@ -123,7 +133,7 @@ export default function ContactSection() {
                     className="w-full h-12 px-4 rounded-xl border border-gray-200 focus:border-primary focus:ring-1 focus:ring-primary outline-none appearance-none bg-white"
                   >
                     <option value="">Selecione...</option>
-                    {SERVICES.map((s) => (
+                    {servicos.map((s) => (
                       <option key={s.slug} value={s.nome}>{s.nome}</option>
                     ))}
                   </select>

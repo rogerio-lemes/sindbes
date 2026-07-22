@@ -1,12 +1,15 @@
 import { Metadata } from 'next'
-import { SITE } from '@/lib/constants'
+import { getTenant } from '@/lib/tenant'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import { User, Crown } from 'lucide-react'
 
-export const metadata: Metadata = {
-  title: `Galeria de Presidentes | ${SITE.name}`,
-  description: `Conheça os presidentes que fizeram a história do ${SITE.name}, o Sindicato da Beleza de Uberlândia.`,
-  alternates: { canonical: '/institucional/galeria-de-presidentes' },
+export async function generateMetadata(): Promise<Metadata> {
+  const { config } = await getTenant()
+  return {
+    title: `Galeria de Presidentes | ${config.nome}`,
+    description: `Conheça os presidentes que fizeram a história do ${config.nome}.`,
+    alternates: { canonical: '/institucional/galeria-de-presidentes' },
+  }
 }
 
 // Preencher com os dados reais no painel administrativo

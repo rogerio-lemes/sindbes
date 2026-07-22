@@ -1,5 +1,7 @@
+'use client'
+
 import Link from 'next/link'
-import { whatsappUrl, SITE } from '@/lib/constants'
+import { useTenant, useWhatsappUrl } from '@/components/TenantProvider'
 
 interface Props {
   title?: string
@@ -10,18 +12,23 @@ interface Props {
 export default function CtaBanner({
   title = 'Pronto para fortalecer',
   highlight = 'seu negócio?',
-  description = 'Converse com nossa equipe e descubra como o Sindbes pode ajudar sua empresa da beleza a crescer com segurança e economia.',
+  description,
 }: Props) {
+  const { config } = useTenant()
+  const whatsUrl = useWhatsappUrl(`Olá! Quero saber mais sobre o ${config.nome}.`)
+
+  const desc = description || `Converse com nossa equipe e descubra como o ${config.nome} pode ajudar sua empresa da beleza a crescer com segurança e economia.`
+
   return (
     <section className="py-16 gradient-primary">
       <div className="max-w-[1200px] mx-auto px-4 text-center">
         <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
           {title} <span className="text-[#BFEDE6]">{highlight}</span>
         </h2>
-        <p className="text-white/80 max-w-xl mx-auto mb-8">{description}</p>
+        <p className="text-white/80 max-w-xl mx-auto mb-8">{desc}</p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <a
-            href={whatsappUrl(`Olá! Quero saber mais sobre o ${SITE.name}.`)}
+            href={whatsUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center px-8 py-4 gradient-cta text-white font-semibold rounded-xl hover:opacity-90 transition-opacity"

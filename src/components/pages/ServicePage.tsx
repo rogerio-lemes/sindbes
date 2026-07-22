@@ -1,7 +1,9 @@
+'use client'
+
 import Image from 'next/image'
 import Link from 'next/link'
-import { SITE, SERVICES, whatsappUrl, IMAGES } from '@/lib/constants'
 import { SERVICE_CONTENT } from '@/lib/service-content'
+import { useTenant, useWhatsappUrl } from '@/components/TenantProvider'
 import ContactSection from '@/components/sections/ContactSection'
 import Faq from '@/components/sections/Faq'
 import CtaBanner from '@/components/sections/CtaBanner'
@@ -20,8 +22,12 @@ interface Props {
 }
 
 export default function ServicePage({ service, image }: Props) {
+  const { config, servicos } = useTenant()
   const content = SERVICE_CONTENT[service.slug]
-  const otherServices = SERVICES.filter((s) => s.slug !== service.slug).slice(0, 4)
+  const otherServices = servicos.filter((s) => s.slug !== service.slug).slice(0, 4)
+
+  const whatsMsg = `Olá! Quero saber mais sobre ${service.nome}. 📍 Origem: ${service.nome}`
+  const whatsUrl = useWhatsappUrl(whatsMsg)
 
   const sections = [
     { id: 'hero-srv', label: 'Início' },
@@ -40,7 +46,6 @@ export default function ServicePage({ service, image }: Props) {
 
       <Breadcrumbs items={[{ label: service.nome }]} />
 
-      {/* Hero */}
       <section id="hero-srv" className="relative h-[400px] md:h-[500px] overflow-hidden">
         <Image src={image} alt={service.nome} fill className="object-cover" priority />
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
@@ -54,10 +59,10 @@ export default function ServicePage({ service, image }: Props) {
               <span className="text-[#8FD9CE]">{content?.highlightWord || ''}</span>
             </h1>
             <p className="text-lg text-white/90 mb-6">
-              {content?.heroDescription || `Conheça como o Sindbes pode ajudar sua empresa da beleza com ${service.nome.toLowerCase()} em Uberlândia.`}
+              {content?.heroDescription || `Conheça como o ${config.nome} pode ajudar sua empresa da beleza com ${service.nome.toLowerCase()}.`}
             </p>
             <a
-              href={whatsappUrl(`Olá! Quero saber mais sobre ${service.nome}. 📍 Origem: ${service.nome}`)}
+              href={whatsUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center px-8 py-4 gradient-cta text-white font-semibold rounded-xl hover:opacity-90 transition-opacity"
@@ -68,7 +73,6 @@ export default function ServicePage({ service, image }: Props) {
         </div>
       </section>
 
-      {/* DBO: Pain */}
       <section id="problema" className="py-16">
         <div className="max-w-[1200px] mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
@@ -82,7 +86,7 @@ export default function ServicePage({ service, image }: Props) {
                   {content?.painTitle || <>Por que isso <span>importa</span>?</>}
                 </h2>
                 <p className="text-gray-600 leading-relaxed mb-6">
-                  {content?.painText || 'Entenda os riscos de não agir e como o Sindbes pode ajudar.'}
+                  {content?.painText || `Entenda os riscos de não agir e como o ${config.nome} pode ajudar.`}
                 </p>
 
                 {content?.painPoints && (
@@ -97,17 +101,16 @@ export default function ServicePage({ service, image }: Props) {
                 )}
               </div>
 
-              {/* DBO: Benefit */}
               <div id="solucao" className="scroll-reveal">
                 <div className="flex items-center gap-2 mb-4">
                   <ShieldCheck className="w-5 h-5 text-green-600" />
                   <span className="text-xs font-semibold uppercase tracking-widest text-green-600">A solução</span>
                 </div>
                 <h2 className="text-2xl md:text-3xl font-bold mb-4 bicolor-title">
-                  {content?.benefitTitle || <>O que o Sindbes <span>oferece</span></>}
+                  {content?.benefitTitle || <>O que o {config.nome} <span>oferece</span></>}
                 </h2>
                 <p className="text-gray-600 leading-relaxed mb-6">
-                  {content?.benefitText || 'Conheça os benefícios de contar com o Sindbes.'}
+                  {content?.benefitText || `Conheça os benefícios de contar com o ${config.nome}.`}
                 </p>
 
                 {content?.benefits && (
@@ -122,14 +125,13 @@ export default function ServicePage({ service, image }: Props) {
                 )}
               </div>
 
-              {/* CTA mid-page */}
               <div className="bg-bg-alt rounded-2xl p-6 flex flex-col sm:flex-row items-center gap-4 scroll-reveal">
                 <div className="flex-1">
                   <p className="font-semibold text-sm">Quer resolver isso agora?</p>
                   <p className="text-xs text-gray-500">Fale com nossa equipe pelo WhatsApp.</p>
                 </div>
                 <a
-                  href={whatsappUrl(`Olá! Quero saber mais sobre ${service.nome}. 📍 Origem: ${service.nome}`)}
+                  href={whatsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-6 py-3 gradient-cta text-white font-semibold rounded-xl text-sm whitespace-nowrap"
@@ -138,17 +140,15 @@ export default function ServicePage({ service, image }: Props) {
                 </a>
               </div>
 
-              {/* DBO: Objection */}
               <div id="objecao" className="scroll-reveal">
                 <h2 className="text-2xl md:text-3xl font-bold mb-4 bicolor-title">
                   {content?.objectionTitle || <>Investimento <span>inteligente</span></>}
                 </h2>
                 <p className="text-gray-600 leading-relaxed mb-6">
-                  {content?.objectionText || 'O Sindbes oferece condições exclusivas para associados.'}
+                  {content?.objectionText || `O ${config.nome} oferece condições exclusivas para associados.`}
                 </p>
               </div>
 
-              {/* Promotional Banner */}
               <div className="bg-gradient-to-r from-primary to-primary-dark rounded-2xl p-8 text-white scroll-reveal">
                 <span className="inline-block bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full mb-3 backdrop-blur-sm">
                   Oferta para associados
@@ -157,10 +157,10 @@ export default function ServicePage({ service, image }: Props) {
                   Condições especiais em {service.nome}
                 </h3>
                 <p className="text-white/80 text-sm mb-4">
-                  Associados Sindbes têm acesso a condições diferenciadas. Fale com nossa equipe e descubra como economizar.
+                  Associados {config.nome} têm acesso a condições diferenciadas. Fale com nossa equipe e descubra como economizar.
                 </p>
                 <a
-                  href={whatsappUrl(`Quero conhecer as condições especiais de ${service.nome}! 📍 Origem: ${service.nome}`)}
+                  href={`https://wa.me/${config.whatsapp}?text=${encodeURIComponent(`Quero conhecer as condições especiais de ${service.nome}! 📍 Origem: ${service.nome}`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-6 py-3 bg-secondary text-white font-semibold rounded-xl text-sm hover:bg-secondary-dark transition-colors"
@@ -169,7 +169,6 @@ export default function ServicePage({ service, image }: Props) {
                 </a>
               </div>
 
-              {/* FAQ specific */}
               {content?.faqItems && (
                 <div id="faq-srv" className="scroll-reveal">
                   <h2 className="text-2xl font-bold mb-6 bicolor-title">
@@ -180,7 +179,6 @@ export default function ServicePage({ service, image }: Props) {
               )}
             </div>
 
-            {/* Sidebar */}
             <aside className="space-y-6">
               <div className="bg-bg-alt rounded-2xl p-6 sticky top-24">
                 <h4 className="font-bold text-sm mb-4 uppercase tracking-wider text-gray-500">Outros serviços</h4>
@@ -206,7 +204,7 @@ export default function ServicePage({ service, image }: Props) {
                 <hr className="my-6 border-gray-200" />
 
                 <a
-                  href={whatsappUrl(`Olá! Quero mais informações sobre ${service.nome}. 📍 Origem: ${service.nome}`)}
+                  href={whatsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block w-full text-center py-3 gradient-primary text-white font-semibold rounded-xl text-sm hover:opacity-90 transition-opacity"
@@ -230,7 +228,7 @@ export default function ServicePage({ service, image }: Props) {
       <CtaBanner
         title="Precisa de"
         highlight={`${service.nome.toLowerCase()}?`}
-        description={`Fale com o Sindbes e descubra as melhores condições para ${service.nome.toLowerCase()} em Uberlândia.`}
+        description={`Fale com o ${config.nome} e descubra as melhores condições para ${service.nome.toLowerCase()}.`}
       />
       <ContactSection />
       <MapLocation />
@@ -242,21 +240,8 @@ export default function ServicePage({ service, image }: Props) {
             '@context': 'https://schema.org',
             '@type': 'Service',
             name: service.nome,
-            provider: { '@type': 'LocalBusiness', name: SITE.name },
-            areaServed: { '@type': 'City', name: 'Uberlândia' },
-          }),
-        }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'BreadcrumbList',
-            itemListElement: [
-              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://sindbes.vercel.app/' },
-              { '@type': 'ListItem', position: 2, name: service.nome, item: `https://sindbes.vercel.app/${service.slug}` },
-            ],
+            provider: { '@type': 'LocalBusiness', name: config.nome },
+            areaServed: config.cidade ? { '@type': 'City', name: config.cidade } : undefined,
           }),
         }}
       />

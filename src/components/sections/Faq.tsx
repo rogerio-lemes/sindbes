@@ -2,12 +2,12 @@
 
 import { useState } from 'react'
 import { ChevronDown } from 'lucide-react'
-import { whatsappUrl, SITE } from '@/lib/constants'
+import { useTenant, useWhatsappUrl } from '@/components/TenantProvider'
 
 const faqs = [
   {
-    q: 'Quem pode se associar ao Sindbes?',
-    a: 'Profissionais e empresas do setor da beleza de Uberlândia e região, incluindo salões, barbearias, clínicas de estética, e profissionais autônomos.',
+    q: 'Quem pode se associar?',
+    a: 'Profissionais e empresas do setor da beleza da região, incluindo salões, barbearias, clínicas de estética, e profissionais autônomos.',
   },
   {
     q: 'Quais benefícios o associado recebe?',
@@ -23,16 +23,21 @@ const faqs = [
   },
   {
     q: 'Posso contratar apenas o plano de saúde?',
-    a: 'Os planos de saúde e odontológico são benefícios exclusivos para associados. Ao se filiar, você já tem acesso a todos os benefícios do Sindbes.',
-  },
-  {
-    q: 'Como faço para me filiar?',
-    a: `Entre em contato pelo WhatsApp ${SITE.whatsappDisplay} ou pelo formulário do site. Nossa equipe vai explicar tudo e guiar seu cadastro.`,
+    a: 'Os planos de saúde e odontológico são benefícios exclusivos para associados. Ao se filiar, você já tem acesso a todos os benefícios.',
   },
 ]
 
 export default function Faq() {
+  const { config } = useTenant()
   const [openIndex, setOpenIndex] = useState<number | null>(null)
+
+  const allFaqs = [
+    ...faqs,
+    {
+      q: 'Como faço para me filiar?',
+      a: `Entre em contato pelo WhatsApp ${config.whatsapp_display || ''} ou pelo formulário do site. Nossa equipe vai explicar tudo e guiar seu cadastro.`,
+    },
+  ]
 
   return (
     <section className="py-20 bg-bg-alt">
@@ -45,7 +50,7 @@ export default function Faq() {
         </div>
 
         <div className="space-y-3 scroll-reveal">
-          {faqs.map((faq, i) => {
+          {allFaqs.map((faq, i) => {
             const open = openIndex === i
             return (
               <div
@@ -67,7 +72,7 @@ export default function Faq() {
                   <div className="px-5 pb-5">
                     <p className="text-sm text-white/90 leading-relaxed mb-3">{faq.a}</p>
                     <a
-                      href={whatsappUrl(`Olá! Tenho uma dúvida sobre: ${faq.q}`)}
+                      href={`https://wa.me/${config.whatsapp}?text=${encodeURIComponent(`Olá! Tenho uma dúvida sobre: ${faq.q}`)}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex text-xs font-semibold text-white hover:text-white/80 underline underline-offset-2"

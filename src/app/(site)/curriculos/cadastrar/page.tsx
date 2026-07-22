@@ -1,13 +1,16 @@
 import { Metadata } from 'next'
-import { SITE } from '@/lib/constants'
+import { getTenant } from '@/lib/tenant'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import CurriculoForm from '@/components/recrutamento/CurriculoForm'
 import { FileText } from 'lucide-react'
 
-export const metadata: Metadata = {
-  title: `Cadastrar Currículo | ${SITE.name}`,
-  description: `Cadastre seu currículo no banco de talentos do ${SITE.name} e conecte-se a vagas em salões, barbearias e clínicas de estética de Uberlândia.`,
-  alternates: { canonical: '/curriculos/cadastrar' },
+export async function generateMetadata(): Promise<Metadata> {
+  const { config } = await getTenant()
+  return {
+    title: `Cadastrar Currículo | ${config.nome}`,
+    description: `Cadastre seu currículo no banco de talentos do ${config.nome}.`,
+    alternates: { canonical: '/curriculos/cadastrar' },
+  }
 }
 
 export default function CadastrarCurriculoPage() {
