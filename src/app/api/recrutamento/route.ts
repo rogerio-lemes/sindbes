@@ -1,21 +1,29 @@
 import { NextResponse } from 'next/server'
 import { headers } from 'next/headers'
-import { getServiceClient } from '@/lib/supabase/server'
+import { getServiceClient, isSupabaseConfigured } from '@/lib/supabase/server'
+
+const FALLBACK_TENANT_ID = '00000000-0000-0000-0000-000000000001'
 
 async function resolveTenantId() {
+  if (!isSupabaseConfigured()) return FALLBACK_TENANT_ID
+
   const headerStore = await headers()
   const host = headerStore.get('x-tenant-host')
-  if (!host) return null
+  if (!host) return FALLBACK_TENANT_ID
 
-  const supabase = getServiceClient()
+  try {
+    const supabase = getServiceClient()
 
-  const { data: dominio } = await supabase
-    .from('dominios')
-    .select('tenant_id')
-    .eq('host', host)
-    .single()
+    const { data: dominio } = await supabase
+      .from('dominios')
+      .select('tenant_id')
+      .eq('host', host)
+      .single()
 
-  return dominio?.tenant_id ?? null
+    return dominio?.tenant_id ?? FALLBACK_TENANT_ID
+  } catch {
+    return FALLBACK_TENANT_ID
+  }
 }
 
 export async function POST(request: Request) {

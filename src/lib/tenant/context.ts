@@ -1,43 +1,87 @@
 import { cache } from 'react'
 import { headers } from 'next/headers'
 import { notFound } from 'next/navigation'
-import { getPublicClient } from '@/lib/supabase/server'
+import { getPublicClient, isSupabaseConfigured } from '@/lib/supabase/server'
+import { SITE, COLORS } from '@/lib/constants'
 import type { TenantWithConfig, TenantConfig } from './types'
+
+const SINDBES_FALLBACK: TenantWithConfig = {
+  id: '00000000-0000-0000-0000-000000000001',
+  slug: 'sindbes',
+  nome: SITE.name,
+  status: 'ativo',
+  plano: 'profissional',
+  config: {
+    tenant_id: '00000000-0000-0000-0000-000000000001',
+    nome: SITE.name,
+    tagline: SITE.tagline,
+    whatsapp: SITE.whatsapp,
+    whatsapp_display: SITE.whatsappDisplay,
+    phone: SITE.phone,
+    email: SITE.email,
+    endereco: SITE.address,
+    cidade: 'Uberlândia',
+    uf: 'MG',
+    instagram: SITE.instagram,
+    cnpj: null,
+    horario: SITE.horario,
+    google_maps_url: SITE.googleMapsUrl,
+    lat: null,
+    lng: null,
+    cor_primaria: COLORS.primary,
+    cor_primaria_dark: '#1E6E62',
+    cor_secundaria: COLORS.secondary,
+    cor_secundaria_dark: '#52406F',
+    cor_accent: COLORS.accent,
+    cor_text: COLORS.text,
+    cor_bg_alt: COLORS.bgAlt,
+    logo_url: null,
+    favicon_url: null,
+    meta: {},
+    atendente_nome: 'Wagner',
+    atendente_foto_url: null,
+  },
+}
 
 // Resolve o tenant a partir do header x-tenant-host injetado pelo middleware.
 // Memoizado com React.cache() — executa no máximo 1x por request.
 export const getTenant = cache(async (): Promise<TenantWithConfig> => {
+  if (!isSupabaseConfigured()) {
+    return SINDBES_FALLBACK
+  }
+
   const headerStore = await headers()
   const host = headerStore.get('x-tenant-host')
 
   if (!host) {
-    // Fallback: em dev sem middleware, tenta query param via cookie
     const tenantSlug = headerStore.get('x-tenant-slug')
     if (tenantSlug) {
       return getTenantBySlug(tenantSlug)
     }
-    console.error('[tenant] Nenhum x-tenant-host encontrado')
-    notFound()
+    return SINDBES_FALLBACK
   }
 
-  const supabase = getPublicClient()
+  try {
+    const supabase = getPublicClient()
 
-  // Buscar domínio → tenant → config
-  const { data: dominio } = await supabase
-    .from('dominios')
-    .select('tenant_id')
-    .eq('host', host)
-    .single()
+    const { data: dominio } = await supabase
+      .from('dominios')
+      .select('tenant_id')
+      .eq('host', host)
+      .single()
 
-  if (!dominio) {
-    console.error(`[tenant] Host não encontrado: ${host}`)
-    notFound()
+    if (!dominio) {
+      console.warn(`[tenant] Host não encontrado no banco: ${host} — usando fallback Sindbes`)
+      return SINDBES_FALLBACK
+    }
+
+    return getTenantById(dominio.tenant_id)
+  } catch (err) {
+    console.warn('[tenant] Erro ao consultar Supabase — usando fallback Sindbes:', err)
+    return SINDBES_FALLBACK
   }
-
-  return getTenantById(dominio.tenant_id)
 })
 
-// Buscar tenant por ID (interno)
 async function getTenantById(tenantId: string): Promise<TenantWithConfig> {
   const supabase = getPublicClient()
 
@@ -47,8 +91,8 @@ async function getTenantById(tenantId: string): Promise<TenantWithConfig> {
   ])
 
   if (!tenant || !config) {
-    console.error(`[tenant] Tenant não encontrado ou inativo: ${tenantId}`)
-    notFound()
+    console.warn(`[tenant] Tenant não encontrado ou inativo: ${tenantId} — usando fallback`)
+    return SINDBES_FALLBACK
   }
 
   return {
@@ -57,7 +101,6 @@ async function getTenantById(tenantId: string): Promise<TenantWithConfig> {
   }
 }
 
-// Buscar tenant por slug (para dev com ?tenant=slug)
 async function getTenantBySlug(slug: string): Promise<TenantWithConfig> {
   const supabase = getPublicClient()
 
@@ -69,8 +112,8 @@ async function getTenantBySlug(slug: string): Promise<TenantWithConfig> {
     .single()
 
   if (!tenant) {
-    console.error(`[tenant] Slug não encontrado: ${slug}`)
-    notFound()
+    console.warn(`[tenant] Slug não encontrado: ${slug} — usando fallback`)
+    return SINDBES_FALLBACK
   }
 
   return getTenantById(tenant.id)

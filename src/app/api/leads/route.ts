@@ -1,30 +1,41 @@
 import { NextResponse } from 'next/server'
 import { headers } from 'next/headers'
-import { getServiceClient } from '@/lib/supabase/server'
+import { getServiceClient, isSupabaseConfigured } from '@/lib/supabase/server'
 import { Resend } from 'resend'
+import { SITE } from '@/lib/constants'
+
+const FALLBACK_TENANT_ID = '00000000-0000-0000-0000-000000000001'
 
 async function resolveTenant() {
+  if (!isSupabaseConfigured()) {
+    return { tenant_id: FALLBACK_TENANT_ID, config: { nome: SITE.name, email: SITE.email } }
+  }
+
   const headerStore = await headers()
   const host = headerStore.get('x-tenant-host')
-  if (!host) return null
+  if (!host) return { tenant_id: FALLBACK_TENANT_ID, config: { nome: SITE.name, email: SITE.email } }
 
-  const supabase = getServiceClient()
+  try {
+    const supabase = getServiceClient()
 
-  const { data: dominio } = await supabase
-    .from('dominios')
-    .select('tenant_id')
-    .eq('host', host)
-    .single()
+    const { data: dominio } = await supabase
+      .from('dominios')
+      .select('tenant_id')
+      .eq('host', host)
+      .single()
 
-  if (!dominio) return null
+    if (!dominio) return { tenant_id: FALLBACK_TENANT_ID, config: { nome: SITE.name, email: SITE.email } }
 
-  const { data: config } = await supabase
-    .from('tenant_config')
-    .select('nome, email')
-    .eq('tenant_id', dominio.tenant_id)
-    .single()
+    const { data: config } = await supabase
+      .from('tenant_config')
+      .select('nome, email')
+      .eq('tenant_id', dominio.tenant_id)
+      .single()
 
-  return { tenant_id: dominio.tenant_id, config }
+    return { tenant_id: dominio.tenant_id, config }
+  } catch {
+    return { tenant_id: FALLBACK_TENANT_ID, config: { nome: SITE.name, email: SITE.email } }
+  }
 }
 
 export async function POST(request: Request) {
@@ -37,22 +48,24 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Tenant não encontrado' }, { status: 400 })
     }
 
-    const supabase = getServiceClient()
-
-    const { error } = await supabase
-      .from('leads')
-      .insert({
-        tenant_id: tenant.tenant_id,
-        nome,
-        telefone,
-        email,
-        mensagem: mensagem || null,
-        origem: origem || null,
-        pagina_slug: pagina_slug || null,
-      })
-
-    if (error) {
-      console.error('Lead insert error:', error)
+    if (isSupabaseConfigured()) {
+      try {
+        const supabase = getServiceClient()
+        const { error } = await supabase
+          .from('leads')
+          .insert({
+            tenant_id: tenant.tenant_id,
+            nome,
+            telefone,
+            email,
+            mensagem: mensagem || null,
+            origem: origem || null,
+            pagina_slug: pagina_slug || null,
+          })
+        if (error) console.error('Lead insert error:', error)
+      } catch (err) {
+        console.error('Supabase indisponível para leads:', err)
+      }
     }
 
     if (process.env.RESEND_API_KEY && process.env.RESEND_API_KEY !== '<RESEND_API_KEY>') {
