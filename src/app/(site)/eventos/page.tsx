@@ -9,8 +9,8 @@ import NewsletterForm from '@/components/eventos/NewsletterForm'
 import { CalendarDays, Clock, MapPin, Sparkles, ArrowRight, Images, Bell } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Eventos | Sindbes - Sindicato da Beleza',
-  description: 'Confira os próximos eventos, workshops, cursos e palestras do Sindbes em Uberlândia, além dos eventos já realizados. Confirme sua presença.',
+  title: 'Eventos | Sindibes - Sindicato da Beleza',
+  description: 'Confira os próximos eventos, workshops, cursos e palestras do Sindibes em Uberlândia, além dos eventos já realizados. Confirme sua presença.',
   alternates: { canonical: '/eventos' },
 }
 
@@ -25,13 +25,13 @@ export default function EventosPage() {
       {/* Hero */}
       <section className="max-w-[1200px] mx-auto px-4 pt-14 pb-8 text-center">
         <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-secondary">
-          <CalendarDays className="w-4 h-4" /> Agenda Sindbes
+          <CalendarDays className="w-4 h-4" /> Agenda Sindibes
         </span>
         <h1 className="text-3xl md:text-5xl font-bold mt-3 bicolor-title">
           Eventos que movem a <span>beleza</span>
         </h1>
         <p className="text-gray-500 mt-4 max-w-2xl mx-auto">
-          Workshops, cursos, palestras e encontros para profissionais e empresas da beleza de Uberlândia. Participe, aprenda e faça networking com o Sindbes.
+          Workshops, cursos, palestras e encontros para profissionais e empresas da beleza de Uberlândia. Participe, aprenda e faça networking com o Sindibes.
         </p>
       </section>
 
@@ -120,7 +120,7 @@ export default function EventosPage() {
           <span className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-white/15 backdrop-blur-sm mb-5">
             <Bell className="w-7 h-7 text-white" />
           </span>
-          <h2 className="text-2xl md:text-3xl font-bold mb-3">Receba as novidades do Sindbes</h2>
+          <h2 className="text-2xl md:text-3xl font-bold mb-3">Receba as novidades do Sindibes</h2>
           <p className="text-white/85 max-w-xl mx-auto mb-8">
             Cadastre-se e seja o primeiro a saber sobre eventos, treinamentos, benefícios e oportunidades para o setor da beleza em Uberlândia.
           </p>

@@ -53,7 +53,7 @@ export default function PalavraPresidentePage() {
                 Acreditamos na força da união. Juntos, temos mais voz para negociar melhores condições, mais estrutura para nos qualificarmos e mais segurança para empreender. Este sindicato é seu, e a nossa gestão está de portas abertas para ouvir, apoiar e caminhar ao seu lado.
               </p>
               <p>
-                Convido você a conhecer tudo o que o Sindbes tem a oferecer e a fazer parte dessa história de valorização da nossa categoria.
+                Convido você a conhecer tudo o que o Sindibes tem a oferecer e a fazer parte dessa história de valorização da nossa categoria.
               </p>
             </div>
 

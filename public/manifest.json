@@ -1,7 +1,7 @@
 {
-  "name": "Sindbes - Sindicato da Beleza",
-  "short_name": "Sindbes",
-  "description": "Sindbes, o Sindicato da Beleza de Uberlândia. Treinamentos, assessoria e benefícios.",
+  "name": "Sindibes - Sindicato da Beleza",
+  "short_name": "Sindibes",
+  "description": "Sindibes, o Sindicato da Beleza de Uberlândia. Treinamentos, assessoria e benefícios.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#FFFFFF",

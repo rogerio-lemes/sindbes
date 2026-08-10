@@ -71,11 +71,11 @@ export async function POST(request: Request) {
     if (process.env.RESEND_API_KEY && process.env.RESEND_API_KEY !== '<RESEND_API_KEY>') {
       try {
         const resend = new Resend(process.env.RESEND_API_KEY)
-        const toEmail = process.env.RESEND_TO_EMAIL || tenant.config?.email || 'contato@sindbes.com.br'
+        const toEmail = process.env.RESEND_TO_EMAIL || tenant.config?.email || 'contato@sindibes.com.br'
         const siteName = tenant.config?.nome || 'Site'
 
         await resend.emails.send({
-          from: process.env.RESEND_FROM_EMAIL || 'noreply@sindbes.com.br',
+          from: process.env.RESEND_FROM_EMAIL || 'noreply@sindibes.com.br',
           to: toEmail,
           subject: `Novo lead: ${nome} | ${origem || pagina_slug || 'Site'}`,
           html: `

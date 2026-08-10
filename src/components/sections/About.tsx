@@ -83,10 +83,10 @@ export default function About() {
             <div className="bg-bg-alt rounded-3xl p-8 md:p-10 shadow-sm border border-gray-100">
               <span className="text-xs font-semibold uppercase tracking-widest text-secondary">Sobre Nós</span>
               <h2 className="text-3xl md:text-4xl font-bold mt-2 mb-5 bicolor-title">
-                Quem é o <span>Sindbes</span>
+                Quem é o <span>Sindibes</span>
               </h2>
               <p className="text-gray-600 leading-relaxed mb-4">
-                O Sindbes é o Sindicato da Beleza de Uberlândia, uma entidade dedicada a representar, qualificar e fortalecer profissionais e empresas do setor da beleza: salões, barbearias, esmalterias, clínicas de estética e muito mais.
+                O Sindibes é o Sindicato da Beleza de Uberlândia, uma entidade dedicada a representar, qualificar e fortalecer profissionais e empresas do setor da beleza: salões, barbearias, esmalterias, clínicas de estética e muito mais.
               </p>
               <p className="text-gray-600 leading-relaxed mb-6">
                 Oferecemos treinamentos, assessoria jurídica e contábil, benefícios exclusivos como planos de saúde e odontológico, além de suporte completo para a regularização e crescimento do seu negócio.

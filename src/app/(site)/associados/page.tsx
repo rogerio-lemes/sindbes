@@ -63,7 +63,7 @@ export default function FiliadosPage() {
           <Store className="w-4 h-4" /> Rede de Filiados
         </span>
         <h1 className="text-3xl md:text-5xl font-bold mt-3 bicolor-title">
-          Conheça quem faz parte do <span>Sindbes</span>
+          Conheça quem faz parte do <span>Sindibes</span>
         </h1>
         <p className="text-gray-500 mt-4 max-w-2xl mx-auto">
           Salões, barbearias, esmalterias, clínicas de estética e profissionais da beleza que confiam no Sindicato da Beleza de Uberlândia. Apoie quem faz parte da nossa rede.
@@ -116,7 +116,7 @@ export default function FiliadosPage() {
         <div className="bg-gradient-to-r from-primary to-primary-dark rounded-3xl p-10 text-center text-white">
           <h2 className="text-2xl md:text-3xl font-bold mb-3">Sua empresa também pode estar aqui</h2>
           <p className="text-white/80 max-w-xl mx-auto mb-6">
-            Filie-se ao Sindbes e ganhe visibilidade na nossa vitrine de associados, além de treinamentos, assessoria e benefícios exclusivos.
+            Filie-se ao Sindibes e ganhe visibilidade na nossa vitrine de associados, além de treinamentos, assessoria e benefícios exclusivos.
           </p>
           <Link href="/contato" className="inline-flex items-center gap-2 px-8 py-4 bg-secondary text-white font-semibold rounded-xl hover:bg-secondary-dark transition-colors">
             Quero ser um filiado <ArrowRight className="w-4 h-4" />

@@ -73,14 +73,14 @@ export default function VagaForm() {
         <button type="submit" disabled={enviando} className="w-full py-4 gradient-primary text-white font-semibold rounded-xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-60">
           <Send className="w-4 h-4" /> {enviando ? 'Publicando...' : 'Publicar vaga'}
         </button>
-        <p className="text-[11px] text-gray-400 text-center">Sua vaga será divulgada na página de vagas do Sindbes para candidatos da região.</p>
+        <p className="text-[11px] text-gray-400 text-center">Sua vaga será divulgada na página de vagas do Sindibes para candidatos da região.</p>
       </form>
 
       <ConfirmModal
         open={modal}
         onClose={() => setModal(false)}
         titulo="Vaga publicada!"
-        mensagem="Sua vaga foi cadastrada com sucesso e será divulgada para os profissionais da beleza filiados ao Sindbes. Em breve você receberá candidaturas."
+        mensagem="Sua vaga foi cadastrada com sucesso e será divulgada para os profissionais da beleza filiados ao Sindibes. Em breve você receberá candidaturas."
         ctaLabel="Ver currículos disponíveis"
         ctaHref="/curriculos"
       />

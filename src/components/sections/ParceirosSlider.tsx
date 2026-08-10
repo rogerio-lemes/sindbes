@@ -29,7 +29,7 @@ export default function ParceirosSlider() {
             Vantagens exclusivas com nossos <span>parceiros</span>
           </h2>
           <p className="text-gray-500 mt-4 max-w-2xl mx-auto">
-            Ser associado do Sindbes é ter acesso a descontos e condições especiais com empresas parceiras selecionadas.
+            Ser associado do Sindibes é ter acesso a descontos e condições especiais com empresas parceiras selecionadas.
           </p>
         </div>
 

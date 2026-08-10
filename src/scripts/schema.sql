@@ -1,7 +1,7 @@
 -- ============================================================
 -- Schema multi-tenant — Plataforma de Sites de Sindicatos
 -- Aplicar uma única vez no Supabase (SQL Editor → Run)
--- NÃO altera/apaga as tabelas antigas sindbes_sindicato_da_bel_*
+-- NÃO altera/apaga as tabelas antigas sindibes_sindicato_da_bel_*
 -- ============================================================
 
 -- =========================
@@ -9,8 +9,8 @@
 -- =========================
 CREATE TABLE IF NOT EXISTS tenants (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  slug TEXT UNIQUE NOT NULL,          -- ex: 'sindbes', 'sindbarbearia'
-  nome TEXT NOT NULL,                 -- ex: 'Sindbes - Sindicato da Beleza'
+  slug TEXT UNIQUE NOT NULL,          -- ex: 'sindibes', 'sindbarbearia'
+  nome TEXT NOT NULL,                 -- ex: 'Sindibes - Sindicato da Beleza'
   status TEXT NOT NULL DEFAULT 'ativo', -- ativo | suspenso | cancelado
   plano TEXT DEFAULT 'basico',        -- basico | profissional | premium
   created_at TIMESTAMPTZ DEFAULT NOW(),
@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS tenants (
 CREATE TABLE IF NOT EXISTS dominios (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   tenant_id UUID NOT NULL REFERENCES tenants(id) ON DELETE CASCADE,
-  host TEXT UNIQUE NOT NULL,          -- ex: 'sindbes.plataforma.com.br' ou 'sindbes.com.br'
+  host TEXT UNIQUE NOT NULL,          -- ex: 'sindibes.plataforma.com.br' ou 'sindibes.com.br'
   is_primary BOOLEAN DEFAULT FALSE,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );

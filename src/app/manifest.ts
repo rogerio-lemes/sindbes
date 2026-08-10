@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next'
 
-// Manifest dinâmico — usa defaults (Sindbes) como fallback
+// Manifest dinâmico — usa defaults (Sindibes) como fallback
 // Em multi-tenant real, o manifest seria por tenant via rota customizada,
 // mas Next.js só suporta 1 manifest.ts. Para Fase 1, usamos defaults.
 // Fase 2: criar rota /api/manifest?tenant=slug para servir por tenant.

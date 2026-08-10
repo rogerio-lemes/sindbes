@@ -22,7 +22,7 @@ export default function NewsletterForm() {
           nome,
           email: isEmail ? contato : null,
           telefone: isEmail ? null : contato,
-          origem: 'Cadastro - Informações do Sindbes',
+          origem: 'Cadastro - Informações do Sindibes',
           pagina_slug: 'eventos',
         }),
       })
@@ -54,7 +54,7 @@ export default function NewsletterForm() {
         open={modal}
         onClose={() => setModal(false)}
         titulo="Cadastro realizado!"
-        mensagem="Pronto! Você vai receber em primeira mão as novidades, eventos e benefícios do Sindbes. Fique de olho no seu WhatsApp e e-mail."
+        mensagem="Pronto! Você vai receber em primeira mão as novidades, eventos e benefícios do Sindibes. Fique de olho no seu WhatsApp e e-mail."
       />
     </>
   )

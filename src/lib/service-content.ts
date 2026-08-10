@@ -32,7 +32,7 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
       'Perda de clientes para concorrentes mais atualizados',
     ],
     benefitTitle: 'Treinamentos que geram resultado',
-    benefitText: 'O Sindbes oferece treinamentos desenvolvidos por instrutores com experiência real em salões de Uberlândia. Cada programa é pensado para resolver problemas concretos do dia a dia e gerar retorno mensurável.',
+    benefitText: 'O Sindibes oferece treinamentos desenvolvidos por instrutores com experiência real em salões de Uberlândia. Cada programa é pensado para resolver problemas concretos do dia a dia e gerar retorno mensurável.',
     benefits: [
       'Certificação reconhecida pelo mercado',
       'Instrutores com experiência prática em salões',
@@ -42,7 +42,7 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
       'Acompanhamento pós-treinamento',
     ],
     objectionTitle: 'Quanto custa NÃO qualificar?',
-    objectionText: 'Muitos donos de salão adiam a qualificação por preocupação com o custo. Mas os números mostram que a falta de treinamento custa muito mais: clientes perdidos, retrabalho, rotatividade de equipe e multas por irregularidades. Com o Sindbes, o investimento tem condições exclusivas para associados.',
+    objectionText: 'Muitos donos de salão adiam a qualificação por preocupação com o custo. Mas os números mostram que a falta de treinamento custa muito mais: clientes perdidos, retrabalho, rotatividade de equipe e multas por irregularidades. Com o Sindibes, o investimento tem condições exclusivas para associados.',
     ctaText: 'Quero qualificar minha equipe',
     badgeType: 'certificado',
     badgeText: 'Certificação reconhecida',
@@ -66,7 +66,7 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
       'Impostos pagos a mais por falta de planejamento tributário',
     ],
     benefitTitle: 'Prevenção custa menos que correção',
-    benefitText: 'A assessoria do Sindbes é preventiva: identificamos riscos antes que virem problemas. Nossa equipe de advogados e contadores conhece as especificidades do setor da beleza e oferece orientação personalizada.',
+    benefitText: 'A assessoria do Sindibes é preventiva: identificamos riscos antes que virem problemas. Nossa equipe de advogados e contadores conhece as especificidades do setor da beleza e oferece orientação personalizada.',
     benefits: [
       'Advogados especializados em direito trabalhista do setor',
       'Contadores com experiência em salões e clínicas',
@@ -76,13 +76,13 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
       'Regularização completa da empresa',
     ],
     objectionTitle: 'Assessoria acessível para todos os portes',
-    objectionText: 'Muitos empresários acham que assessoria especializada é cara demais. No Sindbes, os associados têm acesso a assessoria jurídica e contábil com valores muito abaixo do mercado, viabilizando para salões de todos os tamanhos.',
+    objectionText: 'Muitos empresários acham que assessoria especializada é cara demais. No Sindibes, os associados têm acesso a assessoria jurídica e contábil com valores muito abaixo do mercado, viabilizando para salões de todos os tamanhos.',
     ctaText: 'Quero proteger meu negócio',
     badgeType: 'exclusivo',
     badgeText: 'Valores exclusivos para associados',
     faqItems: [
       { q: 'A assessoria inclui processos trabalhistas?', a: 'Sim, nossos advogados acompanham processos trabalhistas existentes e atuam na prevenção de novos, orientando sobre vínculos e contratos.' },
-      { q: 'Posso trocar meu contador pelo do Sindbes?', a: 'Sim, nossa contabilidade é especializada no setor da beleza e pode assumir a escrituração completa da sua empresa.' },
+      { q: 'Posso trocar meu contador pelo do Sindibes?', a: 'Sim, nossa contabilidade é especializada no setor da beleza e pode assumir a escrituração completa da sua empresa.' },
       { q: 'Como funciona o atendimento?', a: 'Você tem acesso a consultas presenciais, por telefone e WhatsApp, com horários flexíveis para não impactar sua rotina.' },
     ],
   },
@@ -90,7 +90,7 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
     slug: 'beneficios-para-associados',
     headline: 'Benefícios exclusivos para',
     highlightWord: 'associados',
-    heroDescription: 'Planos de saúde, odontológico, crédito e muito mais com condições que só o Sindbes oferece em Uberlândia.',
+    heroDescription: 'Planos de saúde, odontológico, crédito e muito mais com condições que só o Sindibes oferece em Uberlândia.',
     painTitle: 'Você está pagando caro demais?',
     painText: 'Profissionais e donos de salão pagam valores altíssimos em planos de saúde, odontológico e serviços essenciais. Sem poder de negociação coletiva, cada um fica à mercê dos preços de mercado.',
     painPoints: [
@@ -100,7 +100,7 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
       'Nenhum suporte ou orientação especializada',
     ],
     benefitTitle: 'O poder da negociação coletiva',
-    benefitText: 'O Sindbes negocia coletivamente com operadoras, bancos e prestadores de serviço, garantindo condições que nenhum profissional conseguiria sozinho. Todos os benefícios estão inclusos na associação.',
+    benefitText: 'O Sindibes negocia coletivamente com operadoras, bancos e prestadores de serviço, garantindo condições que nenhum profissional conseguiria sozinho. Todos os benefícios estão inclusos na associação.',
     benefits: [
       'Plano de saúde com desconto significativo',
       'Plano odontológico com cobertura ampla',
@@ -124,7 +124,7 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
     slug: 'plano-de-saude',
     headline: 'Plano de Saúde para',
     highlightWord: 'profissionais da beleza',
-    heroDescription: 'Cuide da saúde da sua equipe com planos negociados coletivamente pelo Sindbes, com valores muito abaixo do mercado.',
+    heroDescription: 'Cuide da saúde da sua equipe com planos negociados coletivamente pelo Sindibes, com valores muito abaixo do mercado.',
     painTitle: 'Saúde não pode esperar',
     painText: 'Profissionais da beleza trabalham de pé, com movimentos repetitivos e exposição a produtos químicos. Sem plano de saúde, qualquer problema vira uma emergência financeira que pode afastar você do trabalho por semanas.',
     painPoints: [
@@ -134,7 +134,7 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
       'Doenças ocupacionais sem acompanhamento',
     ],
     benefitTitle: 'Planos negociados pelo sindicato',
-    benefitText: 'O Sindbes negocia diretamente com as operadoras de saúde, conseguindo tabelas que seriam impossíveis para contratações individuais. Cobertura ampla, rede credenciada em Uberlândia e região.',
+    benefitText: 'O Sindibes negocia diretamente com as operadoras de saúde, conseguindo tabelas que seriam impossíveis para contratações individuais. Cobertura ampla, rede credenciada em Uberlândia e região.',
     benefits: [
       'Valores até 40% menores que planos individuais',
       'Rede credenciada completa em Uberlândia',
@@ -249,7 +249,7 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
     objectionText: 'Planejamento empresarial não significa preencher formulários e criar documentos que ninguém lê. No nosso programa, tudo é visual, prático e acompanhado. Você implementa enquanto aprende.',
     ctaText: 'Quero planejar meu crescimento',
     badgeType: 'exclusivo',
-    badgeText: 'Programa exclusivo Sindbes',
+    badgeText: 'Programa exclusivo Sindibes',
     faqItems: [
       { q: 'Funciona para salões pequenos?', a: 'Sim, o programa é adaptável para qualquer porte, de profissional autônomo a salões com dezenas de funcionários.' },
       { q: 'Inclui acompanhamento após o programa?', a: 'Sim, oferecemos acompanhamento mensal para ajudar na execução do plano criado.' },
@@ -260,7 +260,7 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
     slug: 'plano-odontologico',
     headline: 'Plano Odontológico para',
     highlightWord: 'profissionais da beleza',
-    heroDescription: 'O sorriso é ferramenta de trabalho no setor da beleza. Cuide dele com planos odontológicos acessíveis negociados pelo Sindbes.',
+    heroDescription: 'O sorriso é ferramenta de trabalho no setor da beleza. Cuide dele com planos odontológicos acessíveis negociados pelo Sindibes.',
     painTitle: 'Tratamento odontológico particular é caro',
     painText: 'Um tratamento de canal, uma coroa, uma limpeza regular: custos que se acumulam e afastam muitos profissionais do cuidado básico com a saúde bucal. E no setor da beleza, o sorriso é cartão de visitas.',
     painPoints: [
@@ -270,7 +270,7 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
       'Profissionais evitando ir ao dentista pelo custo',
     ],
     benefitTitle: 'Sorriso cuidado, atendimento confiante',
-    benefitText: 'O Sindbes negocia com operadoras odontológicas para garantir cobertura ampla e preços acessíveis. Consultas, limpezas, restaurações e muito mais sem pesar no orçamento.',
+    benefitText: 'O Sindibes negocia com operadoras odontológicas para garantir cobertura ampla e preços acessíveis. Consultas, limpezas, restaurações e muito mais sem pesar no orçamento.',
     benefits: [
       'Consultas e limpezas periódicas cobertas',
       'Restaurações e tratamentos de canal',
@@ -294,7 +294,7 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
     slug: 'regularizacao-e-certificacao-profissional',
     headline: 'Regularização e Certificação',
     highlightWord: 'Profissional',
-    heroDescription: 'Regularize sua empresa e certificações profissionais com o apoio do Sindbes. Evite multas e ganhe credibilidade.',
+    heroDescription: 'Regularize sua empresa e certificações profissionais com o apoio do Sindibes. Evite multas e ganhe credibilidade.',
     painTitle: 'Seu negócio está 100% regular?',
     painText: 'Fiscalização da vigilância sanitária, exigências trabalhistas, alvarás e licenças: a lista de obrigações é longa. Uma irregularidade pode gerar multas pesadas ou até o fechamento do estabelecimento.',
     painPoints: [
@@ -304,7 +304,7 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
       'Desconhecimento das exigências legais do setor',
     ],
     benefitTitle: 'Regularização completa e sem estresse',
-    benefitText: 'O Sindbes cuida de toda a documentação e certificação necessária para seu negócio funcionar 100% dentro da lei. Desde o alvará até a certificação individual de cada profissional.',
+    benefitText: 'O Sindibes cuida de toda a documentação e certificação necessária para seu negócio funcionar 100% dentro da lei. Desde o alvará até a certificação individual de cada profissional.',
     benefits: [
       'Levantamento completo das pendências',
       'Orientação sobre documentação necessária',
@@ -314,7 +314,7 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
       'Preparação para fiscalizações',
     ],
     objectionTitle: 'Regularizar é mais simples do que parece',
-    objectionText: 'Muitos empresários adiam a regularização por achar que é um processo burocrático e caro. Com o Sindbes, você tem um passo a passo claro, apoio em cada etapa e custos reduzidos para associados.',
+    objectionText: 'Muitos empresários adiam a regularização por achar que é um processo burocrático e caro. Com o Sindibes, você tem um passo a passo claro, apoio em cada etapa e custos reduzidos para associados.',
     ctaText: 'Quero regularizar meu negócio',
     badgeType: 'certificado',
     badgeText: 'Certificação oficial',
@@ -338,7 +338,7 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
       'Sem orientação para escolher a melhor opção',
     ],
     benefitTitle: 'Crédito inteligente para crescer',
-    benefitText: 'O Sindbes tem parcerias com instituições financeiras que oferecem linhas de crédito especiais para o setor da beleza. Juros menores, menos burocracia e orientação para usar o crédito da melhor forma.',
+    benefitText: 'O Sindibes tem parcerias com instituições financeiras que oferecem linhas de crédito especiais para o setor da beleza. Juros menores, menos burocracia e orientação para usar o crédito da melhor forma.',
     benefits: [
       'Taxas de juros reduzidas para associados',
       'Menos burocracia na aprovação',
@@ -351,7 +351,7 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
     objectionText: 'Nem todo crédito é bom. Antes de acessar qualquer linha, nossa equipe analisa sua situação e orienta sobre o momento certo e o valor ideal. Você só toma crédito quando faz sentido para o seu negócio.',
     ctaText: 'Quero conhecer as opções de crédito',
     badgeType: 'exclusivo',
-    badgeText: 'Condições exclusivas Sindbes',
+    badgeText: 'Condições exclusivas Sindibes',
     faqItems: [
       { q: 'Preciso ser MEI ou ter CNPJ?', a: 'Temos opções tanto para pessoa física quanto jurídica. Profissionais autônomos também podem acessar.' },
       { q: 'Qual o valor mínimo e máximo?', a: 'As linhas de crédito variam. Entre em contato para uma análise personalizada da sua necessidade.' },

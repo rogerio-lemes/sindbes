@@ -26,7 +26,7 @@ export default function CadastrarVagaPage() {
             Publique uma <span>vaga</span>
           </h1>
           <p className="text-gray-500 mt-4 max-w-xl mx-auto">
-            Divulgue gratuitamente sua vaga para os profissionais da beleza filiados ao Sindbes e encontre o talento certo para o seu negócio.
+            Divulgue gratuitamente sua vaga para os profissionais da beleza filiados ao Sindibes e encontre o talento certo para o seu negócio.
           </p>
         </div>
         <VagaForm />

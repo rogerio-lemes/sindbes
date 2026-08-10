@@ -89,7 +89,7 @@ export default function CurriculoForm() {
         open={modal}
         onClose={() => setModal(false)}
         titulo="Currículo cadastrado!"
-        mensagem="Seu currículo foi enviado com sucesso e já está disponível para as empresas filiadas ao Sindbes. Boa sorte na sua busca!"
+        mensagem="Seu currículo foi enviado com sucesso e já está disponível para as empresas filiadas ao Sindibes. Boa sorte na sua busca!"
         ctaLabel="Ver vagas disponíveis"
         ctaHref="/vagas"
       />

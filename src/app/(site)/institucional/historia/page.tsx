@@ -14,10 +14,10 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const timeline = [
-  { ano: '[Ano de fundação]', titulo: 'Fundação do Sindbes', texto: 'O Sindicato da Beleza de Uberlândia nasce da união de profissionais e empresários do setor, com o propósito de representar e defender os interesses da categoria.' },
+  { ano: '[Ano de fundação]', titulo: 'Fundação do Sindibes', texto: 'O Sindicato da Beleza de Uberlândia nasce da união de profissionais e empresários do setor, com o propósito de representar e defender os interesses da categoria.' },
   { ano: '[Ano]', titulo: 'Primeiras conquistas', texto: 'Início das negociações coletivas, convênios e parcerias que trouxeram benefícios concretos para os associados da beleza em Uberlândia.' },
   { ano: '[Ano]', titulo: 'Expansão dos serviços', texto: 'Ampliação da atuação com treinamentos, assessoria jurídica e contábil, planos de saúde e odontológico e apoio à regularização dos negócios.' },
-  { ano: '2026', titulo: 'Sindbes hoje', texto: 'Com centenas de associados ativos, o Sindbes se consolida como referência na representação e no fortalecimento do setor da beleza na região.' },
+  { ano: '2026', titulo: 'Sindibes hoje', texto: 'Com centenas de associados ativos, o Sindibes se consolida como referência na representação e no fortalecimento do setor da beleza na região.' },
 ]
 
 const valores = [
@@ -47,7 +47,7 @@ export default function HistoriaPage() {
             O <strong>Sindicato da Beleza</strong> surgiu da necessidade de dar voz e representatividade a um dos setores que mais crescem e empregam em Uberlândia: o da beleza. Salões de cabeleireiro, barbearias, esmalterias, clínicas de estética e profissionais autônomos encontraram no sindicato um espaço de união, apoio e defesa de seus direitos.
           </p>
           <p className="text-gray-600 leading-relaxed">
-            Desde a fundação, o Sindbes trabalha para transformar a realidade da categoria: negocia condições melhores, oferece qualificação profissional, orienta juridicamente e contabilmente os negócios e cria benefícios que fazem diferença real no dia a dia de quem vive da beleza.
+            Desde a fundação, o Sindibes trabalha para transformar a realidade da categoria: negocia condições melhores, oferece qualificação profissional, orienta juridicamente e contabilmente os negócios e cria benefícios que fazem diferença real no dia a dia de quem vive da beleza.
           </p>
         </div>
 
@@ -85,7 +85,7 @@ export default function HistoriaPage() {
         <div className="bg-gradient-to-r from-primary to-primary-dark rounded-2xl p-8 text-white text-center">
           <h3 className="text-xl font-bold mb-2">Faça parte dessa história</h3>
           <p className="text-white/80 text-sm mb-5 max-w-lg mx-auto">
-            Associe-se ao Sindbes e tenha acesso a treinamentos, assessoria e benefícios exclusivos para o seu negócio da beleza.
+            Associe-se ao Sindibes e tenha acesso a treinamentos, assessoria e benefícios exclusivos para o seu negócio da beleza.
           </p>
           <Link href="/contato" className="inline-flex px-8 py-3 bg-secondary text-white font-semibold rounded-xl hover:bg-secondary-dark transition-colors">
             Quero me associar

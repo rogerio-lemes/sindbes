@@ -38,15 +38,21 @@ export default function Logo({
   }
 
   // Fallback: wordmark SVG gerado a partir do nome do tenant
-  const displayName = nome || 'SINDIBES'
-  const displayTagline = tagline || 'Beleza e Estética'
+  // Se o nome contém " - ", usa só a parte antes como wordmark principal
+  const rawName = nome || 'SINDIBES'
+  const [shortName, nameSuffix] = rawName.includes(' - ')
+    ? rawName.split(' - ', 2)
+    : [rawName, null]
+  const displayName = shortName
+  const displayTagline = tagline || nameSuffix || 'Beleza e Estética'
   const wordColor = variant === 'light' ? '#FFFFFF' : 'var(--color-text, #1B2444)'
   const tagColor = variant === 'light' ? 'var(--color-accent, #DCEFEC)' : 'var(--color-secondary, #6E5A97)'
   const lineColor = variant === 'light' ? 'rgba(255,255,255,0.5)' : 'var(--color-text, #1B2444)'
 
-  // Calcular largura aproximada do nome para SVG responsivo
-  const nameLen = displayName.length
-  const svgWidth = Math.max(300, 92 + nameLen * 24)
+  // Calcular largura com base no maior entre nome e tagline
+  const nameWidth = 92 + displayName.length * 27
+  const taglineWidth = 94 + displayTagline.length * 13
+  const svgWidth = Math.max(340, nameWidth, taglineWidth)
 
   return (
     <svg viewBox={`0 0 ${svgWidth} 96`} className={className} role="img" aria-label={`${displayName} - ${displayTagline}`} xmlns="http://www.w3.org/2000/svg">

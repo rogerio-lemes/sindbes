@@ -26,7 +26,7 @@ export default function CadastrarCurriculoPage() {
             Cadastre seu <span>currículo</span>
           </h1>
           <p className="text-gray-500 mt-4 max-w-xl mx-auto">
-            Faça parte do banco de talentos do Sindbes e seja encontrado por salões, barbearias, esmalterias e clínicas de estética que buscam profissionais como você.
+            Faça parte do banco de talentos do Sindibes e seja encontrado por salões, barbearias, esmalterias e clínicas de estética que buscam profissionais como você.
           </p>
         </div>
         <CurriculoForm />

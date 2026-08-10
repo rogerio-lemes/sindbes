@@ -1,4 +1,4 @@
-const CACHE_NAME = 'sindbes-v1'
+const CACHE_NAME = 'sindibes-v1'
 const SHELL = ['/', '/manifest.json']
 
 self.addEventListener('install', (event) => {

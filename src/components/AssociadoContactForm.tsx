@@ -39,7 +39,7 @@ export default function AssociadoContactForm({ associadoNome, whatsapp }: Props)
     } catch {
       /* segue para o WhatsApp mesmo se a API falhar */
     }
-    const texto = `Olá! Vim pelo Sindbes e gostaria de falar com ${associadoNome}. Meu nome é ${nome}.`
+    const texto = `Olá! Vim pelo Sindibes e gostaria de falar com ${associadoNome}. Meu nome é ${nome}.`
     window.open(`https://wa.me/${whatsapp}?text=${encodeURIComponent(texto)}`, '_blank')
     setEnviando(false)
     setEnviado(true)

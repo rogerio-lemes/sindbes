@@ -17,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
 const icons = [BookOpen, MessageSquareQuote, Users, LandmarkIcon]
 const descriptions = [
   'A trajetória do Sindicato da Beleza de Uberlândia, desde a fundação até os dias de hoje.',
-  'Uma mensagem da presidência sobre o compromisso do Sindbes com a categoria.',
+  'Uma mensagem da presidência sobre o compromisso do Sindibes com a categoria.',
   'Conheça os presidentes que construíram a história da nossa entidade.',
   'A diretoria e o conselho fiscal que representam a categoria na gestão 2026–2028.',
 ]
@@ -34,7 +34,7 @@ export default function InstitucionalPage() {
             Quem somos e o que nos <span>representa</span>
           </h1>
           <p className="text-gray-500 mt-4">
-            O Sindbes é a entidade que representa, qualifica e fortalece os profissionais e empresas da beleza em Uberlândia. Conheça nossa história, nossa liderança e nossa estrutura.
+            O Sindibes é a entidade que representa, qualifica e fortalece os profissionais e empresas da beleza em Uberlândia. Conheça nossa história, nossa liderança e nossa estrutura.
           </p>
         </div>
 

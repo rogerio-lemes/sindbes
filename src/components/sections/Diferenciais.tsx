@@ -28,7 +28,7 @@ export default function Diferenciais() {
     <section className="py-20">
       <div className="max-w-[1200px] mx-auto px-4">
         <div className="text-center mb-12 scroll-reveal">
-          <span className="text-xs font-semibold uppercase tracking-widest text-secondary">Por que o Sindbes</span>
+          <span className="text-xs font-semibold uppercase tracking-widest text-secondary">Por que o Sindibes</span>
           <h2 className="text-3xl md:text-4xl font-bold mt-2 bicolor-title">
             Diferenciais que <span>transformam</span>
           </h2>

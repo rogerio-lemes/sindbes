@@ -15,8 +15,8 @@ const blogImages: Record<string, string> = {
 }
 
 export const metadata: Metadata = {
-  title: 'Blog | Dicas de Gestão e Beleza | Sindbes Uberlândia',
-  description: 'Artigos sobre gestão, qualificação, assessoria jurídica e contábil e dicas para profissionais e empresas da beleza em Uberlândia. Blog do Sindbes.',
+  title: 'Blog | Dicas de Gestão e Beleza | Sindibes Uberlândia',
+  description: 'Artigos sobre gestão, qualificação, assessoria jurídica e contábil e dicas para profissionais e empresas da beleza em Uberlândia. Blog do Sindibes.',
   alternates: { canonical: '/blog' },
 }
 
@@ -77,8 +77,8 @@ export default function BlogPage() {
             '@context': 'https://schema.org',
             '@type': 'BreadcrumbList',
             itemListElement: [
-              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://sindbes.vercel.app/' },
-              { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://sindbes.vercel.app/blog' },
+              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://sindibes.vercel.app/' },
+              { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://sindibes.vercel.app/blog' },
             ],
           }),
         }}

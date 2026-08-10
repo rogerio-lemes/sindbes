@@ -5,9 +5,9 @@ import { getPublicClient, isSupabaseConfigured } from '@/lib/supabase/server'
 import { SITE, COLORS } from '@/lib/constants'
 import type { TenantWithConfig, TenantConfig } from './types'
 
-const SINDBES_FALLBACK: TenantWithConfig = {
+const SINDIBES_FALLBACK: TenantWithConfig = {
   id: '00000000-0000-0000-0000-000000000001',
-  slug: 'sindbes',
+  slug: 'sindibes',
   nome: SITE.name,
   status: 'ativo',
   plano: 'profissional',
@@ -47,7 +47,7 @@ const SINDBES_FALLBACK: TenantWithConfig = {
 // Memoizado com React.cache() — executa no máximo 1x por request.
 export const getTenant = cache(async (): Promise<TenantWithConfig> => {
   if (!isSupabaseConfigured()) {
-    return SINDBES_FALLBACK
+    return SINDIBES_FALLBACK
   }
 
   const headerStore = await headers()
@@ -58,7 +58,7 @@ export const getTenant = cache(async (): Promise<TenantWithConfig> => {
     if (tenantSlug) {
       return getTenantBySlug(tenantSlug)
     }
-    return SINDBES_FALLBACK
+    return SINDIBES_FALLBACK
   }
 
   try {
@@ -71,14 +71,14 @@ export const getTenant = cache(async (): Promise<TenantWithConfig> => {
       .single()
 
     if (!dominio) {
-      console.warn(`[tenant] Host não encontrado no banco: ${host} — usando fallback Sindbes`)
-      return SINDBES_FALLBACK
+      console.warn(`[tenant] Host não encontrado no banco: ${host} — usando fallback Sindibes`)
+      return SINDIBES_FALLBACK
     }
 
     return getTenantById(dominio.tenant_id)
   } catch (err) {
-    console.warn('[tenant] Erro ao consultar Supabase — usando fallback Sindbes:', err)
-    return SINDBES_FALLBACK
+    console.warn('[tenant] Erro ao consultar Supabase — usando fallback Sindibes:', err)
+    return SINDIBES_FALLBACK
   }
 })
 
@@ -92,7 +92,7 @@ async function getTenantById(tenantId: string): Promise<TenantWithConfig> {
 
   if (!tenant || !config) {
     console.warn(`[tenant] Tenant não encontrado ou inativo: ${tenantId} — usando fallback`)
-    return SINDBES_FALLBACK
+    return SINDIBES_FALLBACK
   }
 
   return {
@@ -113,7 +113,7 @@ async function getTenantBySlug(slug: string): Promise<TenantWithConfig> {
 
   if (!tenant) {
     console.warn(`[tenant] Slug não encontrado: ${slug} — usando fallback`)
-    return SINDBES_FALLBACK
+    return SINDIBES_FALLBACK
   }
 
   return getTenantById(tenant.id)

@@ -38,7 +38,7 @@ export const ARTICLE_CONTENT: Record<string, ArticleContent> = {
         ],
       },
     ],
-    conclusion: 'A escolha da assessoria jurídica certa não é um luxo: é uma necessidade para qualquer salão que quer crescer sem sustos. Se você está em Uberlândia e quer uma orientação especializada no setor da beleza, o Sindbes oferece assessoria jurídica com profissionais que atendem exclusivamente empresas do nosso segmento.',
+    conclusion: 'A escolha da assessoria jurídica certa não é um luxo: é uma necessidade para qualquer salão que quer crescer sem sustos. Se você está em Uberlândia e quer uma orientação especializada no setor da beleza, o Sindibes oferece assessoria jurídica com profissionais que atendem exclusivamente empresas do nosso segmento.',
     tocItems: [
       { id: 'intro', label: 'Introdução' },
       { id: 'section-0', label: 'Por que especializada' },
@@ -78,7 +78,7 @@ export const ARTICLE_CONTENT: Record<string, ArticleContent> = {
         ],
       },
     ],
-    conclusion: 'Identificar o momento certo de investir em qualificação é o que separa salões que crescem de salões que estacionam. O Sindbes oferece treinamentos práticos e certificados para profissionais e equipes da beleza em Uberlândia, com condições especiais para associados.',
+    conclusion: 'Identificar o momento certo de investir em qualificação é o que separa salões que crescem de salões que estacionam. O Sindibes oferece treinamentos práticos e certificados para profissionais e equipes da beleza em Uberlândia, com condições especiais para associados.',
     tocItems: [
       { id: 'intro', label: 'Introdução' },
       { id: 'section-0', label: 'Sinais de alerta' },
@@ -105,7 +105,7 @@ export const ARTICLE_CONTENT: Record<string, ArticleContent> = {
         highlightWord: 'Uberlândia',
         paragraphs: [
           'Em Uberlândia, assessoria contábil para salões varia de R$ 300 a R$ 1.500/mês, dependendo do porte. MEIs pagam menos; empresas com mais funcionários, mais. O valor inclui obrigações mensais, folha e orientação.',
-          'O Sindbes oferece assessoria contábil especializada com valores diferenciados para associados, geralmente abaixo da média do mercado para o mesmo nível de serviço. É a vantagem da negociação coletiva.',
+          'O Sindibes oferece assessoria contábil especializada com valores diferenciados para associados, geralmente abaixo da média do mercado para o mesmo nível de serviço. É a vantagem da negociação coletiva.',
         ],
       },
       {
@@ -117,7 +117,7 @@ export const ARTICLE_CONTENT: Record<string, ArticleContent> = {
         ],
       },
     ],
-    conclusion: 'Assessoria contábil especializada é um investimento que protege seu salão e, frequentemente, se paga com a economia tributária que gera. Em Uberlândia, o Sindbes é a referência para profissionais da beleza que querem contabilidade de qualidade com custo justo.',
+    conclusion: 'Assessoria contábil especializada é um investimento que protege seu salão e, frequentemente, se paga com a economia tributária que gera. Em Uberlândia, o Sindibes é a referência para profissionais da beleza que querem contabilidade de qualidade com custo justo.',
     tocItems: [
       { id: 'intro', label: 'Introdução' },
       { id: 'section-0', label: 'O que faz' },
@@ -129,21 +129,21 @@ export const ARTICLE_CONTENT: Record<string, ArticleContent> = {
   },
   'o-que-e-o-sindicato-da-area-da-beleza-e-por-que-do': {
     slug: 'o-que-e-o-sindicato-da-area-da-beleza-e-por-que-do',
-    intro: 'Se você é dono de salão em Uberlândia e ainda não conhece o Sindbes, este artigo vai esclarecer o que é o sindicato da área da beleza, o que ele oferece na prática e por que centenas de profissionais da cidade já se filiaram. Sem teoria: fatos e benefícios concretos.',
+    intro: 'Se você é dono de salão em Uberlândia e ainda não conhece o Sindibes, este artigo vai esclarecer o que é o sindicato da área da beleza, o que ele oferece na prática e por que centenas de profissionais da cidade já se filiaram. Sem teoria: fatos e benefícios concretos.',
     sections: [
       {
-        title: 'O que é o Sindbes e o que ele faz na',
+        title: 'O que é o Sindibes e o que ele faz na',
         highlightWord: 'prática',
         paragraphs: [
-          'O Sindbes é o Sindicato da Beleza de Uberlândia, uma entidade que representa e apoia profissionais e empresas do setor da beleza. Na prática, isso significa acesso a benefícios coletivos, assessoria especializada, treinamentos e uma rede de suporte que profissionais sozinhos não conseguiriam ter.',
-          'Diferente do que muitos pensam, sindicato não é apenas sobre convenção coletiva. O Sindbes funciona como um hub de serviços: planos de saúde e odontológico com preços negociados, assessoria jurídica e contábil, programas de qualificação e acesso facilitado a crédito.',
+          'O Sindibes é o Sindicato da Beleza de Uberlândia, uma entidade que representa e apoia profissionais e empresas do setor da beleza. Na prática, isso significa acesso a benefícios coletivos, assessoria especializada, treinamentos e uma rede de suporte que profissionais sozinhos não conseguiriam ter.',
+          'Diferente do que muitos pensam, sindicato não é apenas sobre convenção coletiva. O Sindibes funciona como um hub de serviços: planos de saúde e odontológico com preços negociados, assessoria jurídica e contábil, programas de qualificação e acesso facilitado a crédito.',
         ],
       },
       {
         title: 'Por que donos de salão estão se',
         highlightWord: 'filiando',
         paragraphs: [
-          'A razão principal é econômica. Os benefícios que o Sindbes negocia coletivamente representam uma economia real que, na maioria dos casos, supera o valor da associação já no primeiro mês.',
+          'A razão principal é econômica. Os benefícios que o Sindibes negocia coletivamente representam uma economia real que, na maioria dos casos, supera o valor da associação já no primeiro mês.',
           'A segunda razão é segurança. Ter acesso a advogados e contadores que conhecem o setor evita problemas que podem custar dezenas de milhares de reais em processos e multas.',
           'A terceira razão é desenvolvimento. Os treinamentos e qualificações oferecidos elevam o nível da equipe e do negócio, gerando mais receita e competitividade.',
         ],
@@ -157,10 +157,10 @@ export const ARTICLE_CONTENT: Record<string, ArticleContent> = {
         ],
       },
     ],
-    conclusion: 'O Sindbes não é uma burocracia: é uma ferramenta prática para profissionais e donos de salão que querem economizar, se proteger e crescer. Se você está em Uberlândia e trabalha com beleza, a pergunta não é se vale a pena se filiar, mas quanto você está perdendo por não ser associado ainda.',
+    conclusion: 'O Sindibes não é uma burocracia: é uma ferramenta prática para profissionais e donos de salão que querem economizar, se proteger e crescer. Se você está em Uberlândia e trabalha com beleza, a pergunta não é se vale a pena se filiar, mas quanto você está perdendo por não ser associado ainda.',
     tocItems: [
       { id: 'intro', label: 'Introdução' },
-      { id: 'section-0', label: 'O que é o Sindbes' },
+      { id: 'section-0', label: 'O que é o Sindibes' },
       { id: 'section-1', label: 'Por que se filiar' },
       { id: 'section-2', label: 'Como funciona' },
       { id: 'conclusao', label: 'Conclusão' },
@@ -197,7 +197,7 @@ export const ARTICLE_CONTENT: Record<string, ArticleContent> = {
         ],
       },
     ],
-    conclusion: 'Qualificação é um dos melhores investimentos que um profissional ou dono de salão pode fazer, desde que feita com critério. O Sindbes oferece programas de qualificação desenhados especificamente para o setor da beleza de Uberlândia, com instrutores experientes e suporte pós-treinamento.',
+    conclusion: 'Qualificação é um dos melhores investimentos que um profissional ou dono de salão pode fazer, desde que feita com critério. O Sindibes oferece programas de qualificação desenhados especificamente para o setor da beleza de Uberlândia, com instrutores experientes e suporte pós-treinamento.',
     tocItems: [
       { id: 'intro', label: 'Introdução' },
       { id: 'section-0', label: 'Quando vale a pena' },
@@ -209,7 +209,7 @@ export const ARTICLE_CONTENT: Record<string, ArticleContent> = {
   },
   'beneficios-para-associados-sindibes-passo-a-passo-': {
     slug: 'beneficios-para-associados-sindibes-passo-a-passo-',
-    intro: 'Você já ouviu falar dos benefícios do Sindbes, mas quer entender exatamente como funciona na prática? Este guia mostra o passo a passo completo: da filiação ao uso de cada benefício, sem letras miúdas.',
+    intro: 'Você já ouviu falar dos benefícios do Sindibes, mas quer entender exatamente como funciona na prática? Este guia mostra o passo a passo completo: da filiação ao uso de cada benefício, sem letras miúdas.',
     sections: [
       {
         title: 'Passo 1: Como se',
@@ -223,8 +223,8 @@ export const ARTICLE_CONTENT: Record<string, ArticleContent> = {
         title: 'Passo 2: Ativando planos de saúde e',
         highlightWord: 'odontológico',
         paragraphs: [
-          'Após a filiação, você recebe orientação para escolher e ativar o plano de saúde e/ou odontológico. Os valores são negociados coletivamente pelo Sindbes e costumam ser significativamente menores que planos individuais.',
-          'Você pode incluir dependentes nas mesmas condições. A rede credenciada cobre Uberlândia e região, e o acompanhamento é feito pela equipe do Sindbes.',
+          'Após a filiação, você recebe orientação para escolher e ativar o plano de saúde e/ou odontológico. Os valores são negociados coletivamente pelo Sindibes e costumam ser significativamente menores que planos individuais.',
+          'Você pode incluir dependentes nas mesmas condições. A rede credenciada cobre Uberlândia e região, e o acompanhamento é feito pela equipe do Sindibes.',
         ],
       },
       {
@@ -233,11 +233,11 @@ export const ARTICLE_CONTENT: Record<string, ArticleContent> = {
         paragraphs: [
           'A assessoria jurídica e contábil pode ser acessada por agendamento. Você tem direito a consultas presenciais ou por WhatsApp, com profissionais especializados no setor da beleza.',
           'Os treinamentos são anunciados periodicamente. Associados têm prioridade na inscrição e valores reduzidos. Cada programa emite certificado reconhecido.',
-          'Para crédito, a equipe do Sindbes analisa sua situação e indica as melhores opções entre as instituições parceiras. Você tem orientação antes, durante e depois da tomada de crédito.',
+          'Para crédito, a equipe do Sindibes analisa sua situação e indica as melhores opções entre as instituições parceiras. Você tem orientação antes, durante e depois da tomada de crédito.',
         ],
       },
     ],
-    conclusion: 'Ser associado ao Sindbes é ter acesso a um ecossistema completo de suporte para seu negócio da beleza. Da saúde ao crédito, da assessoria ao treinamento: tudo negociado coletivamente para você pagar menos e ter mais. O primeiro passo é entrar em contato.',
+    conclusion: 'Ser associado ao Sindibes é ter acesso a um ecossistema completo de suporte para seu negócio da beleza. Da saúde ao crédito, da assessoria ao treinamento: tudo negociado coletivamente para você pagar menos e ter mais. O primeiro passo é entrar em contato.',
     tocItems: [
       { id: 'intro', label: 'Introdução' },
       { id: 'section-0', label: 'Como se filiar' },
