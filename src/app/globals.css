@@ -127,3 +127,21 @@ textarea {
 @media (prefers-reduced-motion: reduce) {
   .pin-pulse::before, .map-float, .live-dot { animation: none; }
 }
+
+/* Campo de formulário padrão */
+.input-field {
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  font-size: 0.875rem;
+  color: var(--color-text);
+  transition: border-color 0.15s, box-shadow 0.15s;
+  outline: none;
+}
+.input-field:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 20%, transparent);
+}
+.input-field.pl-9 { padding-left: 2.25rem; }
