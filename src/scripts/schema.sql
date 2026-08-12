@@ -84,6 +84,42 @@ CREATE TABLE IF NOT EXISTS perfis (
 CREATE INDEX IF NOT EXISTS idx_perfis_tenant ON perfis(tenant_id);
 
 -- =========================
+-- 4.1 DEPARTAMENTOS E PERMISSÕES GRANULARES
+-- =========================
+-- Catálogo fixo de permissões (chave = modulo.acao)
+CREATE TABLE IF NOT EXISTS permissoes (
+  chave TEXT PRIMARY KEY,
+  modulo TEXT NOT NULL,
+  acao TEXT NOT NULL,                 -- ver | editar
+  descricao TEXT,
+  ordem INT DEFAULT 0
+);
+
+-- Departamentos por tenant (Diretoria, Financeiro, Marketing...)
+CREATE TABLE IF NOT EXISTS departamentos (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  tenant_id UUID NOT NULL REFERENCES tenants(id) ON DELETE CASCADE,
+  nome TEXT NOT NULL,
+  descricao TEXT,
+  cor TEXT DEFAULT '#6E5A97',
+  ativo BOOLEAN DEFAULT TRUE,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(tenant_id, nome)
+);
+CREATE INDEX IF NOT EXISTS idx_departamentos_tenant ON departamentos(tenant_id);
+
+CREATE TABLE IF NOT EXISTS departamento_permissoes (
+  departamento_id UUID NOT NULL REFERENCES departamentos(id) ON DELETE CASCADE,
+  permissao_chave TEXT NOT NULL REFERENCES permissoes(chave) ON DELETE CASCADE,
+  PRIMARY KEY (departamento_id, permissao_chave)
+);
+
+-- Vínculo do perfil ao departamento. NULL = acesso total ao tenant.
+ALTER TABLE perfis ADD COLUMN IF NOT EXISTS departamento_id UUID REFERENCES departamentos(id) ON DELETE SET NULL;
+ALTER TABLE perfis ADD COLUMN IF NOT EXISTS ativo BOOLEAN DEFAULT TRUE;
+CREATE INDEX IF NOT EXISTS idx_perfis_departamento ON perfis(departamento_id);
+
+-- =========================
 -- 5. SERVIÇOS
 -- =========================
 CREATE TABLE IF NOT EXISTS servicos (
@@ -299,6 +335,59 @@ RETURNS BOOLEAN AS $$
       AND (papel = 'super_admin' OR (papel = 'admin_tenant' AND tenant_id = check_tenant_id))
   );
 $$ LANGUAGE sql SECURITY DEFINER STABLE;
+
+-- Permissão granular: perfil sem departamento mantém acesso total ao tenant.
+CREATE OR REPLACE FUNCTION has_permission_in_tenant(perm_key TEXT, check_tenant_id UUID)
+RETURNS BOOLEAN AS $$
+  SELECT is_super_admin() OR EXISTS (
+    SELECT 1 FROM perfis p
+    WHERE p.user_id = auth.uid()
+      AND p.tenant_id = check_tenant_id
+      AND p.papel = 'admin_tenant'
+      AND COALESCE(p.ativo, TRUE) = TRUE
+      AND (
+        p.departamento_id IS NULL
+        OR EXISTS (
+          SELECT 1 FROM departamento_permissoes dp
+          WHERE dp.departamento_id = p.departamento_id
+            AND dp.permissao_chave = perm_key
+        )
+      )
+  );
+$$ LANGUAGE sql SECURITY DEFINER STABLE;
+
+-- -------------------------------------------------------
+-- Policies: PERMISSÕES E DEPARTAMENTOS
+-- Gestão de acesso fica restrita a admin pleno (is_tenant_admin),
+-- nunca a permissão granular — evita autoconcessão de privilégio.
+-- -------------------------------------------------------
+ALTER TABLE permissoes ENABLE ROW LEVEL SECURITY;
+ALTER TABLE departamentos ENABLE ROW LEVEL SECURITY;
+ALTER TABLE departamento_permissoes ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Leitura autenticada permissoes" ON permissoes
+  FOR SELECT USING (auth.uid() IS NOT NULL);
+CREATE POLICY "Super admin gerencia catalogo permissoes" ON permissoes
+  FOR ALL USING (is_super_admin());
+
+CREATE POLICY "Admin do tenant le departamentos" ON departamentos
+  FOR SELECT USING (is_tenant_admin(tenant_id));
+CREATE POLICY "Admin do tenant gerencia departamentos" ON departamentos
+  FOR ALL USING (is_tenant_admin(tenant_id));
+
+CREATE POLICY "Admin do tenant le dep_permissoes" ON departamento_permissoes
+  FOR SELECT USING (
+    EXISTS (SELECT 1 FROM departamentos d WHERE d.id = departamento_id AND is_tenant_admin(d.tenant_id))
+  );
+CREATE POLICY "Admin do tenant gerencia dep_permissoes" ON departamento_permissoes
+  FOR ALL USING (
+    EXISTS (SELECT 1 FROM departamentos d WHERE d.id = departamento_id AND is_tenant_admin(d.tenant_id))
+  );
+
+CREATE POLICY "Admin do tenant le perfis do tenant" ON perfis
+  FOR SELECT USING (is_tenant_admin(tenant_id));
+CREATE POLICY "Admin do tenant gerencia perfis do tenant" ON perfis
+  FOR ALL USING (is_tenant_admin(tenant_id));
 
 -- -------------------------------------------------------
 -- Policies: TENANTS
