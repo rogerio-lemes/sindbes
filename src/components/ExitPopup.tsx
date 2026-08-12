@@ -15,22 +15,34 @@ export default function ExitPopup() {
   const consultoriaUrl = useWhatsappUrl('Olá! Quero minha consultoria gratuita sobre meu negócio.')
 
   useEffect(() => {
-    const dismissed = sessionStorage.getItem('exit_popup_dismissed')
-    if (dismissed) return
+    // Não mostrar se fechado nos últimos 7 dias
+    const COOLDOWN_DAYS = 7
+    const lastDismissed = localStorage.getItem('exit_popup_dismissed_at')
+    if (lastDismissed) {
+      const diff = Date.now() - Number(lastDismissed)
+      if (diff < COOLDOWN_DAYS * 24 * 60 * 60 * 1000) return
+    }
+
+    // Aguarda 10s na página antes de ativar o exit intent
+    let ready = false
+    const timer = setTimeout(() => { ready = true }, 10_000)
 
     function handleMouseLeave(e: MouseEvent) {
-      if (e.clientY <= 0 && !show) {
+      if (e.clientY <= 0 && ready && !show) {
         setShow(true)
       }
     }
 
     document.addEventListener('mouseleave', handleMouseLeave)
-    return () => document.removeEventListener('mouseleave', handleMouseLeave)
+    return () => {
+      clearTimeout(timer)
+      document.removeEventListener('mouseleave', handleMouseLeave)
+    }
   }, [show])
 
   function dismiss() {
     setShow(false)
-    sessionStorage.setItem('exit_popup_dismissed', 'true')
+    localStorage.setItem('exit_popup_dismissed_at', String(Date.now()))
   }
 
   function maskPhone(value: string) {
