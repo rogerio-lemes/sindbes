@@ -1,9 +1,16 @@
 import { Metadata } from 'next'
+import { Fragment } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { BLOG_ARTICLES, IMAGES } from '@/lib/constants'
 import Breadcrumbs from '@/components/Breadcrumbs'
+import BannerSlot from '@/components/blog/BannerSlot'
+import { getTenant } from '@/lib/tenant'
+import { getBanners } from '@/lib/tenant/banners'
 import { ArrowRight } from 'lucide-react'
+
+/** A cada N artigos, injeta um banner de anunciante na grade. */
+const ARTIGOS_POR_BANNER = 3
 
 const blogImages: Record<string, string> = {
   'assessoria-juridica-para-salao-de-beleza-como-esco': IMAGES.blog1,
@@ -20,7 +27,14 @@ export const metadata: Metadata = {
   alternates: { canonical: '/blog' },
 }
 
-export default function BlogPage() {
+export default async function BlogPage() {
+  const tenant = await getTenant()
+  const [bTopo, bGrid, bRodape] = await Promise.all([
+    getBanners(tenant.id, 'blog_topo'),
+    getBanners(tenant.id, 'blog_grid'),
+    getBanners(tenant.id, 'blog_rodape'),
+  ])
+
   return (
     <>
       <Breadcrumbs items={[{ label: 'Blog' }]} />
@@ -36,38 +50,62 @@ export default function BlogPage() {
           </p>
         </div>
 
+        {bTopo.length > 0 && (
+          <div className="mb-10">
+            <BannerSlot banner={bTopo[0]} formato="faixa" />
+          </div>
+        )}
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {BLOG_ARTICLES.map((a) => (
-            <Link
-              key={a.slug}
-              href={`/${a.slug}`}
-              className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow"
-            >
-              <div className="relative h-52 overflow-hidden">
-                <Image
-                  src={blogImages[a.slug] || IMAGES.blog1}
-                  alt={a.titulo}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                <div className="absolute top-3 left-3">
-                  <span className="bg-primary text-white text-xs font-semibold px-3 py-1 rounded-full">
-                    Blog
-                  </span>
-                </div>
-              </div>
-              <div className="p-6">
-                <p className="text-xs text-gray-400 mb-2">Jul 2026 · 8 min de leitura</p>
-                <h2 className="font-bold text-text group-hover:text-primary transition-colors leading-snug line-clamp-3 mb-3">
-                  {a.titulo}
-                </h2>
-                <span className="inline-flex items-center gap-1 text-sm text-secondary font-medium">
-                  Ler artigo <ArrowRight className="w-4 h-4" />
-                </span>
-              </div>
-            </Link>
-          ))}
+          {BLOG_ARTICLES.map((a, i) => {
+            // Banner ocupa uma célula da grade a cada ARTIGOS_POR_BANNER artigos
+            const posicaoBanner = Math.floor((i + 1) / ARTIGOS_POR_BANNER) - 1
+            const mostrarBanner =
+              (i + 1) % ARTIGOS_POR_BANNER === 0 && bGrid[posicaoBanner] !== undefined
+
+            return (
+              <Fragment key={a.slug}>
+                <Link
+                  href={`/${a.slug}`}
+                  className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow"
+                >
+                  <div className="relative h-52 overflow-hidden">
+                    <Image
+                      src={blogImages[a.slug] || IMAGES.blog1}
+                      alt={a.titulo}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute top-3 left-3">
+                      <span className="bg-primary text-white text-xs font-semibold px-3 py-1 rounded-full">
+                        Blog
+                      </span>
+                    </div>
+                  </div>
+                  <div className="p-6">
+                    <p className="text-xs text-gray-400 mb-2">Jul 2026 · 8 min de leitura</p>
+                    <h2 className="font-bold text-text group-hover:text-primary transition-colors leading-snug line-clamp-3 mb-3">
+                      {a.titulo}
+                    </h2>
+                    <span className="inline-flex items-center gap-1 text-sm text-secondary font-medium">
+                      Ler artigo <ArrowRight className="w-4 h-4" />
+                    </span>
+                  </div>
+                </Link>
+
+                {mostrarBanner && (
+                  <BannerSlot banner={bGrid[posicaoBanner]} formato="card" />
+                )}
+              </Fragment>
+            )
+          })}
         </div>
+
+        {bRodape.length > 0 && (
+          <div className="mt-12">
+            <BannerSlot banner={bRodape[0]} formato="faixa" />
+          </div>
+        )}
       </section>
 
       <script

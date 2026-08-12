@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import { getTenant } from '@/lib/tenant'
+import { getVitrineSlides } from '@/lib/tenant/vitrine'
 import HeroCarousel from '@/components/sections/HeroCarousel'
 import ServicesGrid from '@/components/sections/ServicesGrid'
 import Diferenciais from '@/components/sections/Diferenciais'
@@ -23,10 +24,13 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-export default function HomePage() {
+export default async function HomePage() {
+  const tenant = await getTenant()
+  const slides = await getVitrineSlides(tenant.id)
+
   return (
     <>
-      <HeroCarousel />
+      <HeroCarousel slides={slides} />
       <ServicesGrid />
       <Diferenciais />
       <About />

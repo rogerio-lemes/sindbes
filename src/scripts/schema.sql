@@ -120,6 +120,57 @@ ALTER TABLE perfis ADD COLUMN IF NOT EXISTS ativo BOOLEAN DEFAULT TRUE;
 CREATE INDEX IF NOT EXISTS idx_perfis_departamento ON perfis(departamento_id);
 
 -- =========================
+-- 4.2 VITRINE (slides do tenant) E BANNERS (anunciantes pagos)
+-- =========================
+CREATE TABLE IF NOT EXISTS vitrine_slides (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  tenant_id UUID NOT NULL REFERENCES tenants(id) ON DELETE CASCADE,
+  slider_key TEXT NOT NULL DEFAULT 'home_hero',  -- permite reaproveitar em outros carrosséis
+  imagem_url TEXT NOT NULL,
+  titulo TEXT,
+  destaque TEXT,                      -- trecho colorido do título
+  subtitulo TEXT,
+  link_url TEXT,
+  cta_texto TEXT,
+  ordem INT DEFAULT 0,
+  ativo BOOLEAN DEFAULT TRUE,
+  data_inicio DATE,                   -- vigência opcional
+  data_fim DATE,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_vitrine_tenant_slider ON vitrine_slides(tenant_id, slider_key, ordem);
+
+CREATE TABLE IF NOT EXISTS banners (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  tenant_id UUID NOT NULL REFERENCES tenants(id) ON DELETE CASCADE,
+  titulo TEXT,
+  anunciante_nome TEXT NOT NULL,
+  anunciante_contato TEXT,
+  imagem_url TEXT NOT NULL,
+  link_destino TEXT,
+  posicao TEXT NOT NULL,              -- blog_topo | blog_grid | blog_rodape | home_topbar
+  ordem INT DEFAULT 0,
+  data_inicio DATE NOT NULL,          -- período do contrato
+  data_fim DATE NOT NULL,
+  ativo BOOLEAN DEFAULT TRUE,         -- pausa manual, independe das datas
+  valor_contrato NUMERIC(10,2),
+  observacoes TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_banners_tenant_posicao ON banners(tenant_id, posicao, ordem);
+CREATE INDEX IF NOT EXISTS idx_banners_vigencia ON banners(data_inicio, data_fim);
+
+-- Métricas em tabela separada: evita contenção de UPDATE na linha do banner
+-- e preserva histórico temporal para relatórios.
+CREATE TABLE IF NOT EXISTS banner_eventos (
+  id BIGSERIAL PRIMARY KEY,
+  banner_id UUID NOT NULL REFERENCES banners(id) ON DELETE CASCADE,
+  tipo TEXT NOT NULL,                 -- impressao | clique
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_banner_eventos ON banner_eventos(banner_id, tipo, created_at DESC);
+
+-- =========================
 -- 5. SERVIÇOS
 -- =========================
 CREATE TABLE IF NOT EXISTS servicos (
@@ -390,6 +441,41 @@ CREATE POLICY "Admin do tenant gerencia perfis do tenant" ON perfis
   FOR ALL USING (is_tenant_admin(tenant_id));
 
 -- -------------------------------------------------------
+-- Policies: VITRINE E BANNERS
+-- Público vê apenas o que está vigente; admin vê tudo conforme permissão.
+-- -------------------------------------------------------
+ALTER TABLE vitrine_slides ENABLE ROW LEVEL SECURITY;
+ALTER TABLE banners ENABLE ROW LEVEL SECURITY;
+ALTER TABLE banner_eventos ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Leitura publica vitrine vigente" ON vitrine_slides
+  FOR SELECT USING (
+    ativo = TRUE
+    AND (data_inicio IS NULL OR CURRENT_DATE >= data_inicio)
+    AND (data_fim IS NULL OR CURRENT_DATE <= data_fim)
+  );
+CREATE POLICY "Admin le toda a vitrine" ON vitrine_slides
+  FOR SELECT USING (has_permission_in_tenant('vitrine.ver', tenant_id));
+CREATE POLICY "Admin gerencia vitrine" ON vitrine_slides
+  FOR ALL USING (has_permission_in_tenant('vitrine.editar', tenant_id))
+  WITH CHECK (has_permission_in_tenant('vitrine.editar', tenant_id));
+
+CREATE POLICY "Leitura publica banners vigentes" ON banners
+  FOR SELECT USING (ativo = TRUE AND CURRENT_DATE BETWEEN data_inicio AND data_fim);
+CREATE POLICY "Admin le todos banners" ON banners
+  FOR SELECT USING (has_permission_in_tenant('banners.ver', tenant_id));
+CREATE POLICY "Admin gerencia banners" ON banners
+  FOR ALL USING (has_permission_in_tenant('banners.editar', tenant_id))
+  WITH CHECK (has_permission_in_tenant('banners.editar', tenant_id));
+
+CREATE POLICY "Insert publico banner_eventos" ON banner_eventos
+  FOR INSERT WITH CHECK (tipo IN ('impressao', 'clique'));
+CREATE POLICY "Admin le banner_eventos" ON banner_eventos
+  FOR SELECT USING (
+    EXISTS (SELECT 1 FROM banners b WHERE b.id = banner_id AND has_permission_in_tenant('banners.ver', b.tenant_id))
+  );
+
+-- -------------------------------------------------------
 -- Policies: TENANTS
 -- -------------------------------------------------------
 CREATE POLICY "Leitura pública tenants" ON tenants
@@ -507,7 +593,56 @@ CREATE POLICY "Admin do tenant gerencia vagas" ON vagas
   FOR ALL USING (is_tenant_admin(tenant_id));
 
 -- ============================================================
--- Storage bucket (executar via Supabase Dashboard → Storage)
+-- Storage: bucket 'tenant-uploads'
+-- Caminho obrigatório: {tenant_id}/{pasta}/{arquivo}
+-- A policy de escrita compara o 1º segmento do path com perfis.tenant_id,
+-- garantindo que um tenant não grave na pasta de outro.
+-- ============================================================
+INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+VALUES (
+  'tenant-uploads', 'tenant-uploads', TRUE, 5242880,
+  ARRAY['image/jpeg','image/png','image/webp','image/gif','image/svg+xml']
+)
+ON CONFLICT (id) DO NOTHING;
+
+CREATE POLICY "Leitura publica tenant-uploads" ON storage.objects
+  FOR SELECT USING (bucket_id = 'tenant-uploads');
+
+CREATE POLICY "Upload no proprio tenant" ON storage.objects
+  FOR INSERT WITH CHECK (
+    bucket_id = 'tenant-uploads'
+    AND EXISTS (
+      SELECT 1 FROM perfis p
+      WHERE p.user_id = auth.uid()
+        AND COALESCE(p.ativo, TRUE) = TRUE
+        AND (p.papel = 'super_admin' OR p.tenant_id::text = (storage.foldername(name))[1])
+    )
+  );
+
+CREATE POLICY "Atualiza upload do proprio tenant" ON storage.objects
+  FOR UPDATE USING (
+    bucket_id = 'tenant-uploads'
+    AND EXISTS (
+      SELECT 1 FROM perfis p
+      WHERE p.user_id = auth.uid()
+        AND COALESCE(p.ativo, TRUE) = TRUE
+        AND (p.papel = 'super_admin' OR p.tenant_id::text = (storage.foldername(name))[1])
+    )
+  );
+
+CREATE POLICY "Remove upload do proprio tenant" ON storage.objects
+  FOR DELETE USING (
+    bucket_id = 'tenant-uploads'
+    AND EXISTS (
+      SELECT 1 FROM perfis p
+      WHERE p.user_id = auth.uid()
+        AND COALESCE(p.ativo, TRUE) = TRUE
+        AND (p.papel = 'super_admin' OR p.tenant_id::text = (storage.foldername(name))[1])
+    )
+  );
+
+-- ============================================================
+-- Storage bucket antigo (referência histórica)
 -- ============================================================
 -- Criar bucket 'tenants' com acesso público de leitura.
 -- Estrutura: tenants/{tenant_id}/logo.png, favicon.png, fotos/...
