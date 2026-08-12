@@ -2,26 +2,25 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
+import { useState } from 'react'
 import { BadgePercent, ExternalLink, MessageCircle, Sparkles } from 'lucide-react'
 import { PARCEIROS, type Parceiro } from '@/lib/parceiros'
 
-// ── seleção de parceiro ──────────────────────────────────────────────────
-// Pega parceiros reais (não exemplo) com capa. Rotaciona pelo slug do artigo.
-function hashSlug(slug: string): number {
-  let h = 0
-  for (let i = 0; i < slug.length; i++) h = (h * 31 + slug.charCodeAt(i)) >>> 0
-  return h
-}
-
-export function getParceiroBanner(articleSlug: string): Parceiro | null {
+// Pool de parceiros reais (não exemplo) com capa cadastrada.
+// Qualquer novo parceiro adicionado ao array entra automaticamente na rotação.
+function useRandomParceiro(): Parceiro | null {
   const pool = PARCEIROS.filter(p => !p.exemplo && p.capa)
-  if (!pool.length) return null
-  return pool[hashSlug(articleSlug) % pool.length]
+  // Inicializa com índice aleatório — muda a cada montagem do componente
+  const [parceiro] = useState<Parceiro | null>(() => {
+    if (!pool.length) return null
+    return pool[Math.floor(Math.random() * pool.length)]
+  })
+  return parceiro
 }
 
 // ── Banner sidebar (coluna estreita ~260 px) ─────────────────────────────
-export function PartnerBannerSidebar({ articleSlug }: { articleSlug: string }) {
-  const p = getParceiroBanner(articleSlug)
+export function PartnerBannerSidebar() {
+  const p = useRandomParceiro()
   if (!p) return null
 
   const waMsg = encodeURIComponent(`Olá! Vi o anúncio da ${p.nome} no site do Sindibes e quero saber mais sobre as condições para associados.`)
@@ -71,8 +70,8 @@ export function PartnerBannerSidebar({ articleSlug }: { articleSlug: string }) {
 }
 
 // ── Banner inline (largura total do artigo) ───────────────────────────────
-export function PartnerBannerInline({ articleSlug }: { articleSlug: string }) {
-  const p = getParceiroBanner(articleSlug)
+export function PartnerBannerInline() {
+  const p = useRandomParceiro()
   if (!p) return null
 
   const waMsg = encodeURIComponent(`Olá! Vi o anúncio da ${p.nome} no site do Sindibes e quero saber mais sobre as condições para associados.`)

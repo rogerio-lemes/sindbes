@@ -101,7 +101,7 @@ export default function ArticlePage({ article, image }: Props) {
               </div>
 
               {/* ── Banner parceiro sidebar ── */}
-              <PartnerBannerSidebar articleSlug={article.slug} />
+              <PartnerBannerSidebar />
             </div>
           </aside>
 
@@ -172,7 +172,7 @@ export default function ArticlePage({ article, image }: Props) {
                   )}
 
                   {/* ── Banner parceiro inline após seção 2 ── */}
-                  {i === 2 && <PartnerBannerInline articleSlug={article.slug} />}
+                  {i === 2 && <PartnerBannerInline />}
                 </div>
               ))
             ) : (
