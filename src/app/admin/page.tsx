@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { createClient, SupabaseClient } from '@supabase/supabase-js'
 import {
-  LogOut, Eye, Save, Trash2, Plus, Users, Settings, Briefcase,
+  LogOut, Eye, EyeOff, Save, Trash2, Plus, Users, Settings, Briefcase,
   FileText, Palette, Phone, Mail, MapPin, AtSign, Clock,
   ChevronDown, ChevronUp, Building2, GraduationCap,
 } from 'lucide-react'
@@ -23,6 +23,9 @@ export default function AdminPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [authError, setAuthError] = useState('')
+  const [recoveryMode, setRecoveryMode] = useState(false)
+  const [recoverySent, setRecoverySent] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
   const [tenantId, setTenantId] = useState<string | null>(null)
   const [tenantNome, setTenantNome] = useState('')
   const [activeTab, setActiveTab] = useState<Tab>('marca')
@@ -116,6 +119,16 @@ export default function AdminPage() {
     if (error) setAuthError(error.message)
   }
 
+  async function handleRecovery(e: React.FormEvent) {
+    e.preventDefault()
+    setAuthError('')
+    const { error } = await getSupabase().auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/admin/redefinir-senha`,
+    })
+    if (error) setAuthError(error.message)
+    else setRecoverySent(true)
+  }
+
   async function handleLogout() {
     await getSupabase().auth.signOut()
     setSession(null)
@@ -177,24 +190,81 @@ export default function AdminPage() {
               <Settings className="w-7 h-7" />
             </div>
             <h1 className="text-xl font-bold">Painel Administrativo</h1>
-            <p className="text-sm text-gray-500 mt-1">Acesso restrito</p>
+            <p className="text-sm text-gray-500 mt-1">{recoveryMode ? 'Recuperar senha' : 'Acesso restrito'}</p>
           </div>
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">E-mail</label>
-              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required
-                className="w-full h-12 px-4 rounded-xl border border-gray-200 focus:border-primary focus:ring-1 focus:ring-primary outline-none" />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Senha</label>
-              <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required
-                className="w-full h-12 px-4 rounded-xl border border-gray-200 focus:border-primary focus:ring-1 focus:ring-primary outline-none" />
-            </div>
-            {authError && <p className="text-sm text-red-500">{authError}</p>}
-            <button type="submit" className="w-full h-12 bg-primary text-white font-semibold rounded-xl hover:opacity-90 transition-opacity">
-              Entrar
-            </button>
-          </form>
+
+          {recoveryMode ? (
+            recoverySent ? (
+              <div className="text-center space-y-4">
+                <p className="text-sm text-gray-600">
+                  Enviamos um link de recuperação para <strong>{email}</strong>. Verifique sua caixa de entrada (e o spam) e clique no link para definir uma nova senha.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => { setRecoveryMode(false); setRecoverySent(false); setAuthError('') }}
+                  className="text-sm text-primary font-medium hover:underline"
+                >
+                  Voltar para o login
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleRecovery} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">E-mail</label>
+                  <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required
+                    className="w-full h-12 px-4 rounded-xl border border-gray-200 focus:border-primary focus:ring-1 focus:ring-primary outline-none" />
+                </div>
+                {authError && <p className="text-sm text-red-500">{authError}</p>}
+                <button type="submit" className="w-full h-12 bg-primary text-white font-semibold rounded-xl hover:opacity-90 transition-opacity">
+                  Enviar link de recuperação
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setRecoveryMode(false); setAuthError('') }}
+                  className="w-full text-center text-sm text-gray-500 hover:text-primary"
+                >
+                  Voltar para o login
+                </button>
+              </form>
+            )
+          ) : (
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">E-mail</label>
+                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required
+                  className="w-full h-12 px-4 rounded-xl border border-gray-200 focus:border-primary focus:ring-1 focus:ring-primary outline-none" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Senha</label>
+                <div className="relative">
+                  <input type={showPassword ? 'text' : 'password'} value={password} onChange={(e) => setPassword(e.target.value)} required
+                    className="w-full h-12 px-4 pr-12 rounded-xl border border-gray-200 focus:border-primary focus:ring-1 focus:ring-primary outline-none" />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((v) => !v)}
+                    className="absolute right-0 top-0 h-12 w-12 flex items-center justify-center text-gray-400 hover:text-gray-600"
+                    aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
+                    tabIndex={-1}
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+              </div>
+              <div className="text-right">
+                <button
+                  type="button"
+                  onClick={() => { setRecoveryMode(true); setAuthError('') }}
+                  className="text-sm text-primary hover:underline"
+                >
+                  Esqueci minha senha
+                </button>
+              </div>
+              {authError && <p className="text-sm text-red-500">{authError}</p>}
+              <button type="submit" className="w-full h-12 bg-primary text-white font-semibold rounded-xl hover:opacity-90 transition-opacity">
+                Entrar
+              </button>
+            </form>
+          )}
         </div>
       </div>
     )
