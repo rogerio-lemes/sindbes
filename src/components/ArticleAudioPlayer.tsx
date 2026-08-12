@@ -1,112 +1,214 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { Play, Pause, RotateCcw, Headphones, Gauge } from 'lucide-react'
+import { Play, Pause, RotateCcw, Headphones, Gauge, X, ChevronUp } from 'lucide-react'
 
 const SPEEDS = [0.75, 1, 1.25, 1.5, 2]
 
 export default function ArticleAudioPlayer({ text }: { text: string }) {
-  const [supported, setSupported] = useState(true)
-  const [playing, setPlaying] = useState(false)
-  const [rate, setRate] = useState(1)
-  const [idx, setIdx] = useState(0)
+  const [supported, setSupported]   = useState(true)
+  const [playing, setPlaying]       = useState(false)
+  const [rate, setRate]             = useState(1)
+  const [idx, setIdx]               = useState(0)
+  const [isVisible, setIsVisible]   = useState(true)   // player original visível?
+  const [miniOpen, setMiniOpen]     = useState(true)   // mini-player expandido?
 
-  const chunksRef = useRef<string[]>([])
-  const idxRef = useRef(0)
-  const rateRef = useRef(1)
-  const seqRef = useRef(0)
-  const playingRef = useRef(false)
-  const voiceRef = useRef<SpeechSynthesisVoice | null>(null)
+  const playerRef   = useRef<HTMLDivElement>(null)
+  const chunksRef   = useRef<string[]>([])
+  const idxRef      = useRef(0)
+  const rateRef     = useRef(1)
+  const seqRef      = useRef(0)
+  const playingRef  = useRef(false)
+  const voiceRef    = useRef<SpeechSynthesisVoice | null>(null)
 
+  // ── Inicialização ──────────────────────────────────────────────────────
   useEffect(() => {
     if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
-      setSupported(false)
-      return
+      setSupported(false); return
     }
     chunksRef.current = (text.replace(/\s+/g, ' ').match(/[^.!?]+[.!?]*/g) || [text])
-      .map((s) => s.trim())
-      .filter(Boolean)
+      .map(s => s.trim()).filter(Boolean)
 
     const pickVoice = () => {
       const voices = window.speechSynthesis.getVoices()
       voiceRef.current =
-        voices.find((v) => /pt[-_]?br/i.test(v.lang)) ||
-        voices.find((v) => /^pt/i.test(v.lang)) ||
-        null
+        voices.find(v => /pt[-_]?br/i.test(v.lang)) ||
+        voices.find(v => /^pt/i.test(v.lang)) || null
     }
     pickVoice()
     window.speechSynthesis.onvoiceschanged = pickVoice
-
-    return () => {
-      seqRef.current++
-      window.speechSynthesis.cancel()
-    }
+    return () => { seqRef.current++; window.speechSynthesis.cancel() }
   }, [text])
 
+  // ── IntersectionObserver: detecta quando player sai da tela ───────────
+  useEffect(() => {
+    const el = playerRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { threshold: 0.1 }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
+  // ── Síntese de voz ────────────────────────────────────────────────────
   const speakFrom = useCallback((start: number) => {
     const synth = window.speechSynthesis
     const mySeq = ++seqRef.current
     synth.cancel()
-
     const go = (j: number) => {
       if (mySeq !== seqRef.current) return
       if (j >= chunksRef.current.length) {
-        playingRef.current = false
-        setPlaying(false)
-        idxRef.current = 0
-        setIdx(0)
-        return
+        playingRef.current = false; setPlaying(false)
+        idxRef.current = 0; setIdx(0); return
       }
       const u = new SpeechSynthesisUtterance(chunksRef.current[j])
-      u.lang = 'pt-BR'
-      u.rate = rateRef.current
+      u.lang = 'pt-BR'; u.rate = rateRef.current
       if (voiceRef.current) u.voice = voiceRef.current
       u.onend = () => {
         if (mySeq !== seqRef.current) return
-        idxRef.current = j + 1
-        setIdx(j + 1)
-        go(j + 1)
+        idxRef.current = j + 1; setIdx(j + 1); go(j + 1)
       }
       synth.speak(u)
     }
-    // pequeno atraso evita bug do Chrome ao chamar speak logo após cancel
     setTimeout(() => go(start), 60)
   }, [])
 
-  function play() {
-    playingRef.current = true
-    setPlaying(true)
-    speakFrom(idxRef.current)
-  }
-  function pause() {
-    playingRef.current = false
-    setPlaying(false)
-    seqRef.current++
-    window.speechSynthesis.cancel()
-  }
+  function play()    { playingRef.current = true;  setPlaying(true);  speakFrom(idxRef.current) }
+  function pause()   { playingRef.current = false; setPlaying(false); seqRef.current++; window.speechSynthesis.cancel() }
   function reiniciar() {
-    seqRef.current++
-    window.speechSynthesis.cancel()
-    idxRef.current = 0
-    setIdx(0)
+    seqRef.current++; window.speechSynthesis.cancel()
+    idxRef.current = 0; setIdx(0)
     if (playingRef.current) speakFrom(0)
   }
   function changeRate(r: number) {
-    setRate(r)
-    rateRef.current = r
+    setRate(r); rateRef.current = r
     if (playingRef.current) speakFrom(idxRef.current)
   }
 
   if (!supported) return null
 
-  const total = chunksRef.current.length || 1
+  const total    = chunksRef.current.length || 1
   const progress = Math.min(100, Math.round((idx / total) * 100))
+  const showMini = playing && !isVisible   // mini-player só aparece ao tocar + fora da tela
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 md:p-5 mb-8">
+    <>
+      {/* ── Player fixo na posição original ── */}
+      <div ref={playerRef} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 md:p-5 mb-8">
+        <PlayerBody
+          playing={playing} rate={rate} progress={progress} idx={idx}
+          onPlayPause={() => playing ? pause() : play()}
+          onReiniciar={reiniciar}
+          onChangeRate={changeRate}
+        />
+      </div>
+
+      {/* ── Mini-player flutuante (acompanha scroll quando tocando) ── */}
+      {showMini && (
+        <div className={`fixed bottom-4 left-1/2 -translate-x-1/2 z-[100] w-[min(520px,calc(100vw-2rem))]
+          bg-white border border-gray-200 shadow-2xl rounded-2xl overflow-hidden
+          animate-in slide-in-from-bottom-4 duration-300`}>
+
+          {/* barra de progresso no topo */}
+          <div className="h-1 bg-gray-100">
+            <div className="h-full gradient-primary transition-all duration-300" style={{ width: `${progress}%` }} />
+          </div>
+
+          {miniOpen ? (
+            <div className="px-4 py-3">
+              {/* header mini-player */}
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => playing ? pause() : play()}
+                  className="w-10 h-10 rounded-full gradient-primary text-white flex items-center justify-center shadow flex-shrink-0"
+                >
+                  {playing ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 ml-0.5" />}
+                </button>
+
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-1.5 text-xs font-semibold text-text">
+                    <Headphones className="w-3.5 h-3.5 text-primary flex-shrink-0" />
+                    <span className="truncate">Ouvindo o artigo…</span>
+                    <span className="text-gray-400 font-normal ml-auto flex-shrink-0">{progress}%</span>
+                  </div>
+                  {/* velocidade compacta */}
+                  <div className="flex items-center gap-1.5 mt-1.5">
+                    <Gauge className="w-3 h-3 text-gray-400 flex-shrink-0" />
+                    <div className="flex gap-1">
+                      {SPEEDS.map(s => (
+                        <button key={s} onClick={() => changeRate(s)}
+                          className={`text-[10px] font-semibold px-2 py-0.5 rounded-md transition-colors ${
+                            rate === s ? 'bg-primary text-white' : 'bg-gray-100 text-gray-500 hover:bg-primary/10'
+                          }`}>
+                          {s}×
+                        </button>
+                      ))}
+                    </div>
+                    {idx > 0 && (
+                      <button onClick={reiniciar}
+                        className="ml-auto p-1 text-gray-400 hover:text-primary transition-colors"
+                        aria-label="Reiniciar">
+                        <RotateCcw className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-1 flex-shrink-0">
+                  <button onClick={() => setMiniOpen(false)}
+                    className="p-1.5 text-gray-400 hover:text-gray-600 transition-colors"
+                    aria-label="Minimizar">
+                    <ChevronUp className="w-4 h-4 rotate-180" />
+                  </button>
+                  <button onClick={pause}
+                    className="p-1.5 text-gray-400 hover:text-red-400 transition-colors"
+                    aria-label="Fechar player">
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ) : (
+            /* versão minimizada — só barra + botão play + expandir */
+            <div className="flex items-center gap-3 px-4 py-2.5">
+              <button onClick={() => playing ? pause() : play()}
+                className="w-8 h-8 rounded-full gradient-primary text-white flex items-center justify-center shadow flex-shrink-0">
+                {playing ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5 ml-0.5" />}
+              </button>
+              <span className="text-xs font-semibold text-text flex-1 truncate">
+                Ouvindo o artigo… <span className="text-gray-400 font-normal">{progress}%</span>
+              </span>
+              <button onClick={() => setMiniOpen(true)}
+                className="p-1.5 text-gray-400 hover:text-primary transition-colors" aria-label="Expandir">
+                <ChevronUp className="w-4 h-4" />
+              </button>
+              <button onClick={pause}
+                className="p-1.5 text-gray-400 hover:text-red-400 transition-colors" aria-label="Fechar">
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+    </>
+  )
+}
+
+// ── Corpo compartilhado do player ─────────────────────────────────────────
+function PlayerBody({
+  playing, rate, progress, idx,
+  onPlayPause, onReiniciar, onChangeRate,
+}: {
+  playing: boolean; rate: number; progress: number; idx: number
+  onPlayPause: () => void; onReiniciar: () => void; onChangeRate: (r: number) => void
+}) {
+  return (
+    <>
       <div className="flex items-center gap-4">
         <button
-          onClick={() => (playing ? pause() : play())}
+          onClick={onPlayPause}
           className="w-12 h-12 rounded-full gradient-primary text-white flex items-center justify-center shadow-lg hover:opacity-90 transition-opacity shrink-0"
           aria-label={playing ? 'Pausar áudio' : 'Ouvir o artigo'}
         >
@@ -125,7 +227,7 @@ export default function ArticleAudioPlayer({ text }: { text: string }) {
 
         {idx > 0 && (
           <button
-            onClick={reiniciar}
+            onClick={onReiniciar}
             className="w-9 h-9 rounded-lg bg-bg-alt text-gray-500 hover:text-primary flex items-center justify-center shrink-0"
             aria-label="Reiniciar"
           >
@@ -134,25 +236,21 @@ export default function ArticleAudioPlayer({ text }: { text: string }) {
         )}
       </div>
 
-      {/* Controle de velocidade */}
       <div className="flex items-center gap-2 mt-4 pt-3 border-t border-gray-100">
         <span className="flex items-center gap-1 text-xs font-medium text-gray-400">
           <Gauge className="w-3.5 h-3.5" /> Velocidade
         </span>
         <div className="flex gap-1.5">
-          {SPEEDS.map((s) => (
-            <button
-              key={s}
-              onClick={() => changeRate(s)}
+          {SPEEDS.map(s => (
+            <button key={s} onClick={() => onChangeRate(s)}
               className={`text-xs font-semibold px-2.5 py-1 rounded-lg transition-colors ${
                 rate === s ? 'bg-primary text-white' : 'bg-bg-alt text-gray-600 hover:bg-primary/10'
-              }`}
-            >
+              }`}>
               {s}×
             </button>
           ))}
         </div>
       </div>
-    </div>
+    </>
   )
 }
