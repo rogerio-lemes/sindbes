@@ -217,8 +217,13 @@ export default function ArticlePage({ article, image }: Props) {
             </div>
 
             <div className="bg-bg-alt rounded-2xl p-6 flex flex-col sm:flex-row gap-4 mb-12">
-              <div className="w-16 h-16 rounded-full overflow-hidden shrink-0 border-2 border-secondary/20">
-                <Image src={IMAGES.sobre} alt={`Equipe ${config.nome}`} width={64} height={64} className="object-cover w-full h-full" />
+              <div className="relative w-20 h-20 shrink-0">
+                {/* anel gradiente */}
+                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary to-secondary p-[3px]">
+                  <div className="w-full h-full rounded-full overflow-hidden bg-white">
+                    <Image src={IMAGES.sobre} alt={`Equipe ${config.nome}`} width={80} height={80} className="object-cover w-full h-full" />
+                  </div>
+                </div>
               </div>
               <div>
                 <p className="font-bold text-sm">Equipe {config.nome}</p>
