@@ -123,11 +123,11 @@ export default function ArticlePage({ article, image }: Props) {
               </button>
             </div>
 
-            <ArticleAudioPlayer text={audioText} />
-
             <div className="relative h-[300px] md:h-[450px] rounded-2xl overflow-hidden mb-8">
               <Image src={image} alt={article.titulo} fill className="object-cover" priority />
             </div>
+
+            <ArticleAudioPlayer text={audioText} />
 
             <div className="bg-bg-alt rounded-xl p-6 mb-8 flex flex-col sm:flex-row items-center gap-4">
               <div className="flex-1">
