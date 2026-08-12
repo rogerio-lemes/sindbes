@@ -16,7 +16,7 @@ export default function ExitPopup() {
 
   useEffect(() => {
     // Não mostrar se fechado nos últimos 7 dias
-    const COOLDOWN_DAYS = 7
+    const COOLDOWN_DAYS = 1
     const lastDismissed = localStorage.getItem('exit_popup_dismissed_at')
     if (lastDismissed) {
       const diff = Date.now() - Number(lastDismissed)
