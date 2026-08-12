@@ -9,6 +9,7 @@ import ScrollSpyNav from '@/components/ScrollSpyNav'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import ArticleAudioPlayer from '@/components/ArticleAudioPlayer'
 import { ArrowRight, Calendar, Clock, Share2, User } from 'lucide-react'
+import { PartnerBannerSidebar, PartnerBannerInline } from '@/components/blog/PartnerBanner'
 
 interface Props {
   article: { titulo: string; slug: string }
@@ -98,6 +99,9 @@ export default function ArticlePage({ article, image }: Props) {
                   Fale conosco →
                 </Link>
               </div>
+
+              {/* ── Banner parceiro sidebar ── */}
+              <PartnerBannerSidebar articleSlug={article.slug} />
             </div>
           </aside>
 
@@ -166,6 +170,9 @@ export default function ArticlePage({ article, image }: Props) {
                       Tire suas dúvidas pelo WhatsApp <ArrowRight className="w-4 h-4" />
                     </a>
                   )}
+
+                  {/* ── Banner parceiro inline após seção 2 ── */}
+                  {i === 2 && <PartnerBannerInline articleSlug={article.slug} />}
                 </div>
               ))
             ) : (
