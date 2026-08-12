@@ -6,6 +6,7 @@ import { PARCEIROS, getParceiro } from '@/lib/parceiros'
 import { getTenant } from '@/lib/tenant'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import { CheckCircle2, Globe, MessageCircle, BadgePercent, Sparkles, ArrowRight, Handshake } from 'lucide-react'
+import ImageCarousel from '@/components/parceiros/ImageCarousel'
 
 export function generateStaticParams() {
   return PARCEIROS.map((p) => ({ slug: p.slug }))
@@ -72,6 +73,11 @@ export default async function ParceiroPage({ params }: { params: Promise<{ slug:
                 </div>
               ))}
             </div>
+
+            {/* Carrossel de fotos adicionais */}
+            {p.fotos && p.fotos.length > 0 && (
+              <ImageCarousel fotos={p.fotos} nome={p.nome} />
+            )}
 
             {/* Faixa de desconto */}
             <div className="mt-8 bg-gradient-to-r from-secondary to-secondary-dark rounded-2xl p-6 text-white flex items-center gap-4">

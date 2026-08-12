@@ -5,7 +5,7 @@ import {
   CheckCircle2, Send, ChevronRight,
   User, Building2, Phone, Mail, Globe,
   Tag, AlignLeft, ListChecks, BadgePercent,
-  Plus, Trash2, ImageIcon, Upload, X,
+  Plus, Trash2, ImageIcon, Upload, X, MapPin, Share2,
 } from 'lucide-react'
 
 const CATEGORIAS = [
@@ -29,20 +29,46 @@ const BENEFICIOS = [
   'Acesso à base de profissionais da beleza de Uberlândia',
 ]
 
+const ESTADOS_BR = [
+  'AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS',
+  'MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC',
+  'SP','SE','TO',
+]
+
+const REDES_SOCIAIS = [
+  { id: 'instagram',  label: 'Instagram',   placeholder: 'https://instagram.com/suaempresa',  emoji: '📸' },
+  { id: 'facebook',   label: 'Facebook',    placeholder: 'https://facebook.com/suaempresa',   emoji: '👥' },
+  { id: 'tiktok',     label: 'TikTok',      placeholder: 'https://tiktok.com/@suaempresa',    emoji: '🎵' },
+  { id: 'youtube',    label: 'YouTube',     placeholder: 'https://youtube.com/@suaempresa',   emoji: '▶️' },
+  { id: 'twitter',    label: 'X / Twitter', placeholder: 'https://x.com/suaempresa',          emoji: '🐦' },
+  { id: 'linkedin',   label: 'LinkedIn',    placeholder: 'https://linkedin.com/company/…',    emoji: '💼' },
+  { id: 'pinterest',  label: 'Pinterest',   placeholder: 'https://pinterest.com/suaempresa',  emoji: '📌' },
+  { id: 'whatsapp',   label: 'WhatsApp',    placeholder: 'https://wa.me/5534900000000',       emoji: '💬' },
+]
+
 const MAX_MB = 1
 const fmtSize = (b: number) => b < 1024 * 1024 ? `${(b / 1024).toFixed(0)} KB` : `${(b / (1024 * 1024)).toFixed(1)} MB`
 
 interface CapaPreview { file: File; url: string; tamanho: string }
+interface RedeSocial   { rede: string; url: string }
 
 export default function FormParceiro() {
   // Contato responsável
   const [contato, setContato] = useState({ nome: '', cargo: '', telefone: '', email: '' })
   // Dados da empresa
-  const [empresa, setEmpresa] = useState({ nome: '', categoria: '', site: '', siteUrl: '', whatsapp: '', whatsappDisplay: '' })
+  const [empresa, setEmpresa] = useState({
+    nome: '', categoria: '', site: '', siteUrl: '', whatsapp: '', whatsappDisplay: '',
+  })
+  // Endereço
+  const [endereco, setEndereco] = useState({
+    rua: '', numero: '', complemento: '', bairro: '', cidade: '', uf: 'MG', cep: '',
+  })
+  // Redes sociais
+  const [redes, setRedes] = useState<RedeSocial[]>([{ rede: 'instagram', url: '' }])
   // Conteúdo da página
   const [resumo, setResumo] = useState('')
-  const [descricao, setDescricao] = useState(['', ''])       // parágrafos
-  const [servicos, setServicos] = useState(['', '', ''])     // itens de serviço
+  const [descricao, setDescricao] = useState(['', ''])
+  const [servicos, setServicos] = useState(['', '', ''])
   const [desconto, setDesconto] = useState('')
   // Foto de capa
   const [capa, setCapa] = useState<CapaPreview | null>(null)
@@ -54,20 +80,32 @@ export default function FormParceiro() {
   const [sucesso, setSucesso] = useState(false)
   const [erroEnvio, setErroEnvio] = useState<string | null>(null)
 
-  const setC = (e: React.ChangeEvent<HTMLInputElement>) =>
+  const setC  = (e: React.ChangeEvent<HTMLInputElement>) =>
     setContato(p => ({ ...p, [e.target.name]: e.target.value }))
-  const setE = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
+  const setEmp = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
     setEmpresa(p => ({ ...p, [e.target.name]: e.target.value }))
+  const setEnd = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
+    setEndereco(p => ({ ...p, [e.target.name]: e.target.value }))
 
   // Parágrafos de descrição
-  const setDesc = (i: number, v: string) => setDescricao(d => d.map((x, j) => j === i ? v : x))
-  const addDesc = () => setDescricao(d => [...d, ''])
+  const setDesc    = (i: number, v: string) => setDescricao(d => d.map((x, j) => j === i ? v : x))
+  const addDesc    = () => setDescricao(d => [...d, ''])
   const removeDesc = (i: number) => setDescricao(d => d.filter((_, j) => j !== i))
 
   // Serviços
-  const setServ = (i: number, v: string) => setServicos(s => s.map((x, j) => j === i ? v : x))
-  const addServ = () => setServicos(s => [...s, ''])
+  const setServ    = (i: number, v: string) => setServicos(s => s.map((x, j) => j === i ? v : x))
+  const addServ    = () => setServicos(s => [...s, ''])
   const removeServ = (i: number) => setServicos(s => s.filter((_, j) => j !== i))
+
+  // Redes sociais
+  const setRede    = (i: number, field: keyof RedeSocial, v: string) =>
+    setRedes(r => r.map((x, j) => j === i ? { ...x, [field]: v } : x))
+  const addRede    = () => {
+    const usadas = redes.map(r => r.rede)
+    const prox = REDES_SOCIAIS.find(r => !usadas.includes(r.id))
+    setRedes(r => [...r, { rede: prox?.id ?? REDES_SOCIAIS[0].id, url: '' }])
+  }
+  const removeRede = (i: number) => setRedes(r => r.filter((_, j) => j !== i))
 
   // Upload capa
   const handleCapa = (file: File | null) => {
@@ -81,21 +119,23 @@ export default function FormParceiro() {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!capa) { setErroEnvio('A foto de capa é obrigatória.'); return }
     setEnviando(true); setErroEnvio(null)
     try {
       const fd = new FormData()
       fd.append('tipo', 'parceiro')
-      // contato
       Object.entries(contato).forEach(([k, v]) => fd.append(`contato_${k}`, v))
-      // empresa
       Object.entries(empresa).forEach(([k, v]) => fd.append(k, v))
-      // conteúdo
+      Object.entries(endereco).forEach(([k, v]) => fd.append(`end_${k}`, v))
+      redes.filter(r => r.url).forEach((r, i) => {
+        fd.append(`rede_${i}_tipo`, r.rede)
+        fd.append(`rede_${i}_url`, r.url)
+      })
       fd.append('resumo', resumo)
       descricao.filter(Boolean).forEach((p, i) => fd.append(`descricao_${i}`, p))
       servicos.filter(Boolean).forEach((s, i) => fd.append(`servico_${i}`, s))
       fd.append('desconto', desconto)
-      // capa
-      if (capa) fd.append('capa', capa.file, capa.file.name)
+      fd.append('capa', capa.file, capa.file.name)
 
       const res = await fetch('/api/cadastro-parceiro', { method: 'POST', body: fd })
       if (!res.ok) throw new Error()
@@ -107,6 +147,8 @@ export default function FormParceiro() {
   const reset = () => {
     setContato({ nome: '', cargo: '', telefone: '', email: '' })
     setEmpresa({ nome: '', categoria: '', site: '', siteUrl: '', whatsapp: '', whatsappDisplay: '' })
+    setEndereco({ rua: '', numero: '', complemento: '', bairro: '', cidade: '', uf: 'MG', cep: '' })
+    setRedes([{ rede: 'instagram', url: '' }])
     setResumo(''); setDescricao(['', '']); setServicos(['', '', '']); setDesconto('')
     if (capa) URL.revokeObjectURL(capa.url); setCapa(null); setSucesso(false)
   }
@@ -130,7 +172,7 @@ export default function FormParceiro() {
   return (
     <form onSubmit={submit} className="space-y-8">
 
-      {/* Benefícios */}
+      {/* Benefícios resumidos */}
       <div className="bg-primary/5 border border-primary/15 rounded-2xl p-4">
         <p className="text-[11px] font-bold uppercase tracking-widest text-primary mb-2.5">Vantagens de ser parceiro</p>
         <ul className="space-y-1.5">
@@ -187,14 +229,14 @@ export default function FormParceiro() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="sm:col-span-2">
             <label className="block text-xs font-semibold text-gray-600 mb-1.5">Nome da empresa *</label>
-            <input name="nome" value={empresa.nome} onChange={setE} required placeholder="Nome completo da empresa"
+            <input name="nome" value={empresa.nome} onChange={setEmp} required placeholder="Nome completo da empresa"
               className="input-field" />
           </div>
           <div className="sm:col-span-2">
             <label className="block text-xs font-semibold text-gray-600 mb-1.5">Categoria *</label>
             <div className="relative">
               <Tag className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <select name="categoria" value={empresa.categoria} onChange={setE} required
+              <select name="categoria" value={empresa.categoria} onChange={setEmp} required
                 className="input-field pl-9 appearance-none">
                 <option value="">Selecione a categoria…</option>
                 {CATEGORIAS.map(c => <option key={c}>{c}</option>)}
@@ -202,47 +244,144 @@ export default function FormParceiro() {
             </div>
           </div>
           <div>
-            <label className="block text-xs font-semibold text-gray-600 mb-1.5">WhatsApp comercial</label>
+            <label className="block text-xs font-semibold text-gray-600 mb-1.5">WhatsApp (exibição)</label>
             <div className="relative">
               <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <input name="whatsappDisplay" value={empresa.whatsappDisplay} onChange={setE}
-                placeholder="(34) 9 0000-0000"
-                className="input-field pl-9" />
+              <input name="whatsappDisplay" value={empresa.whatsappDisplay} onChange={setEmp}
+                placeholder="(34) 9 0000-0000" className="input-field pl-9" />
             </div>
           </div>
           <div>
             <label className="block text-xs font-semibold text-gray-600 mb-1.5">WhatsApp (só números)</label>
-            <input name="whatsapp" value={empresa.whatsapp} onChange={setE}
-              placeholder="5534900000000"
-              className="input-field" />
+            <input name="whatsapp" value={empresa.whatsapp} onChange={setEmp}
+              placeholder="5534900000000" className="input-field" />
           </div>
           <div>
             <label className="block text-xs font-semibold text-gray-600 mb-1.5">Site (exibição)</label>
             <div className="relative">
               <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <input name="site" value={empresa.site} onChange={setE}
-                placeholder="www.suaempresa.com.br"
-                className="input-field pl-9" />
+              <input name="site" value={empresa.site} onChange={setEmp}
+                placeholder="www.suaempresa.com.br" className="input-field pl-9" />
             </div>
           </div>
           <div>
             <label className="block text-xs font-semibold text-gray-600 mb-1.5">URL completa do site</label>
-            <input name="siteUrl" value={empresa.siteUrl} onChange={setE}
-              placeholder="https://www.suaempresa.com.br"
-              className="input-field" />
+            <input name="siteUrl" value={empresa.siteUrl} onChange={setEmp}
+              placeholder="https://www.suaempresa.com.br" className="input-field" />
           </div>
         </div>
       </fieldset>
 
       <hr className="border-gray-100" />
 
-      {/* ── 3. Conteúdo da página ── */}
+      {/* ── 3. Endereço ── */}
+      <fieldset>
+        <legend className="flex items-center gap-2 text-sm font-bold text-text mb-4">
+          <MapPin className="w-4 h-4 text-primary" /> Endereço da empresa
+          <span className="font-normal text-gray-400 text-xs">(usado no mapa da página)</span>
+        </legend>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="sm:col-span-2">
+            <label className="block text-xs font-semibold text-gray-600 mb-1.5">Rua / Avenida *</label>
+            <input name="rua" value={endereco.rua} onChange={setEnd} required
+              placeholder="Ex: Av. Rondon Pacheco" className="input-field" />
+          </div>
+          <div>
+            <label className="block text-xs font-semibold text-gray-600 mb-1.5">Número *</label>
+            <input name="numero" value={endereco.numero} onChange={setEnd} required
+              placeholder="Ex: 1234" className="input-field" />
+          </div>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+          <div>
+            <label className="block text-xs font-semibold text-gray-600 mb-1.5">Complemento</label>
+            <input name="complemento" value={endereco.complemento} onChange={setEnd}
+              placeholder="Sala, andar, loja…" className="input-field" />
+          </div>
+          <div>
+            <label className="block text-xs font-semibold text-gray-600 mb-1.5">Bairro *</label>
+            <input name="bairro" value={endereco.bairro} onChange={setEnd} required
+              placeholder="Ex: Centro" className="input-field" />
+          </div>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-4">
+          <div className="col-span-2">
+            <label className="block text-xs font-semibold text-gray-600 mb-1.5">Cidade *</label>
+            <input name="cidade" value={endereco.cidade} onChange={setEnd} required
+              placeholder="Ex: Uberlândia" className="input-field" />
+          </div>
+          <div>
+            <label className="block text-xs font-semibold text-gray-600 mb-1.5">Estado *</label>
+            <select name="uf" value={endereco.uf} onChange={setEnd} required
+              className="input-field appearance-none">
+              {ESTADOS_BR.map(uf => <option key={uf}>{uf}</option>)}
+            </select>
+          </div>
+          <div>
+            <label className="block text-xs font-semibold text-gray-600 mb-1.5">CEP</label>
+            <input name="cep" value={endereco.cep} onChange={setEnd}
+              placeholder="38400-000" className="input-field" />
+          </div>
+        </div>
+      </fieldset>
+
+      <hr className="border-gray-100" />
+
+      {/* ── 4. Redes sociais ── */}
+      <fieldset>
+        <legend className="flex items-center gap-2 text-sm font-bold text-text mb-4">
+          <Share2 className="w-4 h-4 text-primary" /> Redes sociais
+          <span className="font-normal text-gray-400 text-xs">(links exibidos na página)</span>
+        </legend>
+        <div className="space-y-2.5">
+          {redes.map((r, i) => {
+            const info = REDES_SOCIAIS.find(rs => rs.id === r.rede)
+            return (
+              <div key={i} className="flex items-center gap-2">
+                {/* seletor de rede */}
+                <select
+                  value={r.rede}
+                  onChange={e => setRede(i, 'rede', e.target.value)}
+                  className="input-field w-44 flex-shrink-0 appearance-none text-sm"
+                >
+                  {REDES_SOCIAIS.map(rs => (
+                    <option key={rs.id} value={rs.id}>{rs.emoji} {rs.label}</option>
+                  ))}
+                </select>
+                {/* url */}
+                <input
+                  value={r.url}
+                  onChange={e => setRede(i, 'url', e.target.value)}
+                  placeholder={info?.placeholder ?? 'https://…'}
+                  className="input-field flex-1 min-w-0"
+                />
+                {/* remover */}
+                {redes.length > 1 && (
+                  <button type="button" onClick={() => removeRede(i)}
+                    className="flex-shrink-0 p-1.5 text-gray-400 hover:text-red-400 transition">
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
+            )
+          })}
+        </div>
+        {redes.length < REDES_SOCIAIS.length && (
+          <button type="button" onClick={addRede}
+            className="mt-2.5 inline-flex items-center gap-1.5 text-xs text-primary hover:text-primary/80 font-semibold transition">
+            <Plus className="w-3.5 h-3.5" /> Adicionar outra rede
+          </button>
+        )}
+      </fieldset>
+
+      <hr className="border-gray-100" />
+
+      {/* ── 5. Conteúdo da página ── */}
       <fieldset>
         <legend className="flex items-center gap-2 text-sm font-bold text-text mb-4">
           <AlignLeft className="w-4 h-4 text-primary" /> Conteúdo da página do parceiro
         </legend>
 
-        {/* Resumo */}
         <div className="mb-5">
           <label className="block text-xs font-semibold text-gray-600 mb-1">
             Resumo <span className="font-normal text-gray-400">(aparece nos cards — até 160 caracteres)</span>
@@ -253,7 +392,6 @@ export default function FormParceiro() {
           <p className="text-right text-[11px] text-gray-400 mt-1">{resumo.length}/160</p>
         </div>
 
-        {/* Descrição completa */}
         <div className="mb-5">
           <label className="block text-xs font-semibold text-gray-600 mb-1">
             Descrição completa <span className="font-normal text-gray-400">(parágrafos da página)</span>
@@ -282,7 +420,7 @@ export default function FormParceiro() {
 
       <hr className="border-gray-100" />
 
-      {/* ── 4. Serviços ── */}
+      {/* ── 6. Serviços ── */}
       <fieldset>
         <legend className="flex items-center gap-2 text-sm font-bold text-text mb-4">
           <ListChecks className="w-4 h-4 text-primary" /> O que a empresa oferece
@@ -312,7 +450,7 @@ export default function FormParceiro() {
 
       <hr className="border-gray-100" />
 
-      {/* ── 5. Desconto / Benefício ── */}
+      {/* ── 7. Desconto / Benefício ── */}
       <fieldset>
         <legend className="flex items-center gap-2 text-sm font-bold text-text mb-4">
           <BadgePercent className="w-4 h-4 text-primary" /> Benefício para associados
@@ -330,12 +468,13 @@ export default function FormParceiro() {
 
       <hr className="border-gray-100" />
 
-      {/* ── 6. Foto de capa ── */}
+      {/* ── 8. Foto de capa (obrigatória) ── */}
       <fieldset>
-        <legend className="flex items-center gap-2 text-sm font-bold text-text mb-4">
-          <ImageIcon className="w-4 h-4 text-primary" /> Foto de capa
-          <span className="font-normal text-gray-400 text-xs">(aparece no topo da página e nos cards — máx. 1 MB)</span>
+        <legend className="flex items-center gap-2 text-sm font-bold text-text mb-2">
+          <ImageIcon className="w-4 h-4 text-primary" /> Foto de capa *
+          <span className="font-normal text-gray-400 text-xs">(aparece no topo da página e nos cards)</span>
         </legend>
+        <p className="text-xs text-gray-400 mb-3">Proporção 16:9 recomendada · máx. 1 MB · JPG, PNG ou WEBP</p>
 
         {capa ? (
           <div className="relative rounded-2xl overflow-hidden border border-gray-200 bg-gray-50">
@@ -361,14 +500,15 @@ export default function FormParceiro() {
             onDragOver={e => { e.preventDefault(); setDrag(true) }}
             onDragLeave={() => setDrag(false)}
             onClick={() => inputRef.current?.click()}
-            className={`border-2 border-dashed rounded-2xl p-8 text-center cursor-pointer transition-all ${drag ? 'border-primary bg-primary/5 scale-[1.01]' : 'border-gray-200 bg-gray-50 hover:border-primary hover:bg-primary/5'}`}
+            className={`border-2 border-dashed rounded-2xl p-8 text-center cursor-pointer transition-all ${
+              drag ? 'border-primary bg-primary/5 scale-[1.01]' : 'border-gray-200 bg-gray-50 hover:border-primary hover:bg-primary/5'
+            }`}
           >
             <Upload className="w-8 h-8 text-gray-300 mx-auto mb-2" />
             <p className="text-sm text-gray-500">Arraste a foto ou clique para selecionar</p>
             <p className="text-xs text-gray-400 mt-1">JPG, PNG ou WEBP · máx. 1 MB · proporção 16:9 recomendada</p>
           </div>
         )}
-
         <input ref={inputRef} type="file" accept="image/*" className="hidden"
           onChange={e => handleCapa(e.target.files?.[0] ?? null)} />
         {erroCapa && (
@@ -385,7 +525,10 @@ export default function FormParceiro() {
       <button type="submit" disabled={enviando}
         className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-semibold text-white bg-primary hover:bg-primary/90 shadow-md shadow-primary/20 disabled:opacity-60 transition">
         {enviando
-          ? <><svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" /></svg>Enviando…</>
+          ? <><svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+            </svg>Enviando…</>
           : <><Send className="w-4 h-4" />Enviar proposta de parceria</>}
       </button>
       <p className="text-center text-xs text-gray-400">Suas informações são tratadas com sigilo.</p>

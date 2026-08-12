@@ -48,7 +48,7 @@ export default function ParceiroCadastroPage() {
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 items-start">
 
             {/* Diferenciais */}
-            <div className="lg:col-span-2 space-y-5">
+            <div className="lg:col-span-2 space-y-5 lg:sticky lg:top-24 lg:self-start">
               <h2 className="text-lg font-bold text-text">Por que ser parceiro?</h2>
               <div className="grid grid-cols-1 gap-4">
                 {DIFERENCIAIS.map(({ icon: Icon, titulo, texto }) => (

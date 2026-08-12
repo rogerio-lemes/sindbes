@@ -7,6 +7,12 @@ export interface Parceiro {
   servicos: string[]
   desconto: string
   capa: string
+  fotos?: string[]          // imagens adicionais do negócio (carrossel)
+  redes?: { tipo: string; url: string }[]  // redes sociais
+  endereco?: {
+    rua?: string; numero?: string; complemento?: string
+    bairro?: string; cidade?: string; uf?: string; cep?: string
+  }
   site?: string
   siteUrl?: string
   whatsapp?: string
