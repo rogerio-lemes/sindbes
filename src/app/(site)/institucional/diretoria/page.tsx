@@ -61,7 +61,7 @@ export default function DiretoriaPage() {
         <div className="text-center mb-14 max-w-2xl mx-auto">
           <span className="text-xs font-semibold uppercase tracking-widest text-secondary">Institucional</span>
           <h1 className="text-3xl md:text-4xl font-bold mt-2 bicolor-title">
-            Diretoria vigente <span>2026 – 2028</span>
+            Diretoria vigente <span>2023 – 2027</span>
           </h1>
           <p className="text-gray-500 mt-4">
             Conheça os profissionais eleitos para representar e conduzir o sindicato durante a gestão 2023–2027.
