@@ -12,7 +12,7 @@ export const SITE = {
   instagram: '@sindibes',
   cnpj: '[CNPJ será inserido]',
   googleMapsUrl: 'https://maps.google.com/?q=Sindibes+Uberlândia',
-  horario: 'Seg a Sex: 8h às 18h | Sáb: 8h às 12h',
+  horario: 'Seg a Sex: 8h30 às 16h',
 }
 
 export const COLORS = {

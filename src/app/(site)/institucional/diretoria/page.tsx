@@ -6,14 +6,14 @@ import { User, Crown } from 'lucide-react'
 export async function generateMetadata(): Promise<Metadata> {
   const { config } = await getTenant()
   return {
-    title: `Diretoria 2026–2028 | ${config.nome}`,
-    description: `Conheça a diretoria e o conselho fiscal do ${config.nome} para a gestão 2026–2028.`,
+    title: `Diretoria 2023–2027 | ${config.nome}`,
+    description: `Conheça a diretoria e o conselho fiscal do ${config.nome} para a gestão 2023–2027.`,
     alternates: { canonical: '/institucional/diretoria' },
   }
 }
 
 const diretoriaExecutiva = [
-  { cargo: 'Presidente', nome: '[Nome]' },
+  { cargo: 'Presidente', nome: 'Romer Sousa da Costa' },
   { cargo: 'Vice-Presidente', nome: '[Nome]' },
   { cargo: '1º Secretário(a)', nome: '[Nome]' },
   { cargo: '2º Secretário(a)', nome: '[Nome]' },
@@ -54,7 +54,7 @@ export default function DiretoriaPage() {
 
   return (
     <>
-      <Breadcrumbs items={[{ label: 'Institucional', href: '/institucional' }, { label: 'Diretoria 2026–2028' }]} />
+      <Breadcrumbs items={[{ label: 'Institucional', href: '/institucional' }, { label: 'Diretoria 2023–2027' }]} />
 
       <section className="max-w-[1200px] mx-auto px-4 py-16">
         <div className="text-center mb-14 max-w-2xl mx-auto">
@@ -63,7 +63,7 @@ export default function DiretoriaPage() {
             Diretoria vigente <span>2026 – 2028</span>
           </h1>
           <p className="text-gray-500 mt-4">
-            Conheça os profissionais eleitos para representar e conduzir o sindicato durante a gestão 2026–2028.
+            Conheça os profissionais eleitos para representar e conduzir o sindicato durante a gestão 2023–2027.
           </p>
         </div>
 
@@ -80,7 +80,7 @@ export default function DiretoriaPage() {
                 <Crown className="w-3.5 h-3.5" /> Presidente
               </span>
               <p className="font-bold text-xl text-text">{presidente.nome}</p>
-              <p className="text-sm text-gray-500 mt-1">Gestão 2026–2028</p>
+              <p className="text-sm text-gray-500 mt-1">Gestão 2023–2027</p>
             </div>
           </div>
         </div>
@@ -116,7 +116,7 @@ export default function DiretoriaPage() {
         </div>
 
         <p className="text-xs text-gray-400 mt-12 text-center">
-          Preencha os nomes e as fotos oficiais de cada membro da diretoria no painel administrativo.
+          Os demais membros da diretoria serão adicionados quando as fotos forem disponibilizadas.
         </p>
       </section>
     </>

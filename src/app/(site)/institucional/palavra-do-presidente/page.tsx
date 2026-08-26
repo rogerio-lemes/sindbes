@@ -34,8 +34,8 @@ export default function PalavraPresidentePage() {
               <User className="w-20 h-20 text-white/70" />
             </div>
             <div className="text-center md:text-left mt-4">
-              <p className="font-bold text-text">[Nome do Presidente]</p>
-              <p className="text-sm text-gray-500">Presidente · Gestão 2026–2028</p>
+              <p className="font-bold text-text">Romer Sousa da Costa</p>
+              <p className="text-sm text-gray-500">Presidente · Gestão 2023–2027</p>
             </div>
           </div>
 
@@ -58,7 +58,7 @@ export default function PalavraPresidentePage() {
             </div>
 
             <div className="mt-8 pt-6 border-t border-gray-100">
-              <p className="font-bold text-primary text-lg" style={{ fontFamily: 'cursive' }}>[Nome do Presidente]</p>
+              <p className="font-bold text-primary text-lg" style={{ fontFamily: 'cursive' }}>Romer Sousa da Costa</p>
               <p className="text-sm text-gray-500">Presidente do Sindicato da Beleza</p>
             </div>
 
@@ -72,7 +72,7 @@ export default function PalavraPresidentePage() {
         </div>
 
         <p className="text-xs text-gray-400 mt-12 text-center">
-          Substitua a foto e o nome do presidente pelos dados oficiais no painel administrativo.
+          Adicione a foto oficial do presidente no painel administrativo.
         </p>
       </section>
     </>
