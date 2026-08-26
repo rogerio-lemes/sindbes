@@ -130,7 +130,8 @@ export const INSTITUCIONAL = [
   { nome: 'História do Sindicato', slug: 'institucional/historia' },
   { nome: 'Palavra do Presidente', slug: 'institucional/palavra-do-presidente' },
   { nome: 'Galeria de Presidentes', slug: 'institucional/galeria-de-presidentes' },
-  { nome: 'Diretoria 2026–2028', slug: 'institucional/diretoria' },
+  { nome: 'Diretoria 2023–2027', slug: 'institucional/diretoria' },
+  { nome: 'Convenções Coletivas', slug: 'institucional/convencoes' },
 ]
 
 export const ASSOCIADOS_MENU = [

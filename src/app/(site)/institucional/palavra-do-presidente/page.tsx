@@ -1,8 +1,9 @@
 import { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import { getTenant } from '@/lib/tenant'
 import Breadcrumbs from '@/components/Breadcrumbs'
-import { Quote, User } from 'lucide-react'
+import { Quote } from 'lucide-react'
 
 export async function generateMetadata(): Promise<Metadata> {
   const { config } = await getTenant()
@@ -29,9 +30,13 @@ export default function PalavraPresidentePage() {
         <div className="grid grid-cols-1 md:grid-cols-[240px_1fr] gap-10 items-start">
           {/* Foto do presidente (placeholder) */}
           <div className="mx-auto md:mx-0">
-            <div className="w-48 h-48 rounded-2xl gradient-primary flex items-center justify-center shadow-lg overflow-hidden">
-              {/* Substituir por <Image> com a foto real do presidente */}
-              <User className="w-20 h-20 text-white/70" />
+            <div className="w-48 h-48 rounded-2xl shadow-lg overflow-hidden">
+              <Image
+                src="/images/presidente.jpg"
+                alt="Romer Sousa da Costa — Presidente do Sindibes"
+                width={192} height={192}
+                className="object-cover w-full h-full"
+              />
             </div>
             <div className="text-center md:text-left mt-4">
               <p className="font-bold text-text">Romer Sousa da Costa</p>

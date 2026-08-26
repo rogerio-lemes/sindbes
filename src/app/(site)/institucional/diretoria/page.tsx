@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import Image from 'next/image'
 import { getTenant } from '@/lib/tenant'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import { User, Crown } from 'lucide-react'
@@ -72,9 +73,13 @@ export default function DiretoriaPage() {
           <div className="max-w-md mx-auto bg-white rounded-3xl border-2 border-secondary shadow-xl overflow-hidden text-center relative">
             <div className="h-20 gradient-primary" />
             <div className="px-8 pb-8 -mt-14">
-              <div className="w-28 h-28 rounded-full gradient-primary ring-4 ring-white flex items-center justify-center mx-auto mb-4 overflow-hidden shadow-lg">
-                {/* Substituir por <Image> com a foto real do presidente */}
-                <User className="w-12 h-12 text-white/80" />
+              <div className="w-28 h-28 rounded-full ring-4 ring-white mx-auto mb-4 overflow-hidden shadow-lg">
+                <Image
+                  src="/images/presidente.jpg"
+                  alt="Romer Sousa da Costa"
+                  width={112} height={112}
+                  className="object-cover w-full h-full"
+                />
               </div>
               <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider bg-secondary text-white px-4 py-1.5 rounded-full mb-3">
                 <Crown className="w-3.5 h-3.5" /> Presidente

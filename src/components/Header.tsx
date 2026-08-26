@@ -5,7 +5,7 @@ import Link from 'next/link'
 import {
   Menu, X, ChevronDown,
   // Institucional
-  BookOpen, MessageSquare, GalleryHorizontal, Landmark,
+  BookOpen, MessageSquare, GalleryHorizontal, Landmark, ScrollText,
   // Associados
   Users, UserPlus, UserCheck,
   // Currículos
@@ -26,6 +26,7 @@ const INST_ICONS: Record<string, LucideIcon> = {
   'institucional/palavra-do-presidente':    MessageSquare,
   'institucional/galeria-de-presidentes':   GalleryHorizontal,
   'institucional/diretoria':                Landmark,
+  'institucional/convencoes':               ScrollText,
 }
 
 const ASSOC_ICONS: Record<string, LucideIcon> = {
