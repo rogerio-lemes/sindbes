@@ -128,6 +128,26 @@ textarea {
   .pin-pulse::before, .map-float, .live-dot { animation: none; }
 }
 
+/* ── Sombra global em botões ────────────────────────────────────────── */
+/* Gradiente primário (verde) */
+.gradient-primary {
+  box-shadow: 0 4px 14px 0 rgba(46, 158, 141, 0.40);
+}
+/* Gradiente CTA (roxo) */
+.gradient-cta {
+  box-shadow: 0 4px 14px 0 rgba(110, 90, 151, 0.40);
+}
+/* Todos os <button> e <a> que são botões visuais (têm rounded + padding) */
+button:not([aria-label]):not([class*="p-1"]):not([class*="p-2"]):not([class*="w-8"]):not([class*="w-9"]):not([class*="w-10"]) {
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.10);
+}
+/* Links estilizados como botão */
+a[class*="rounded-xl"],
+a[class*="rounded-2xl"],
+a[class*="rounded-full"] {
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.10);
+}
+
 /* Campo de formulário padrão */
 .input-field {
   width: 100%;
