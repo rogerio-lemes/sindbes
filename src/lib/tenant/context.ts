@@ -35,7 +35,7 @@ const SINDIBES_FALLBACK: TenantWithConfig = {
     cor_accent: COLORS.accent,
     cor_text: COLORS.text,
     cor_bg_alt: COLORS.bgAlt,
-    logo_url: null,
+    logo_url: '/images/logo.jpg',
     favicon_url: null,
     meta: {},
     atendente_nome: 'Wagner',
