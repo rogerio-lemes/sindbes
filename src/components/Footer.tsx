@@ -31,7 +31,7 @@ export default function Footer() {
               Representando e fortalecendo profissionais e empresas com treinamentos, assessoria e benefícios exclusivos.
             </p>
             <button
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-secondary text-white font-semibold rounded-lg text-sm hover:bg-secondary-dark transition-colors"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white font-semibold rounded-lg text-sm hover:bg-primary-dark transition-colors"
               id="pwa-footer-btn"
             >
               📲 Baixar nosso App
