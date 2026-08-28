@@ -23,7 +23,7 @@ const SINDIBES_FALLBACK: TenantWithConfig = {
     cidade: 'Uberlândia',
     uf: 'MG',
     instagram: SITE.instagram,
-    cnpj: null,
+    cnpj: SITE.cnpj,
     horario: SITE.horario,
     google_maps_url: SITE.googleMapsUrl,
     lat: null,
