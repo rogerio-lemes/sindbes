@@ -26,16 +26,16 @@ export const PARCEIROS: Parceiro[] = [
     slug: 'mercado-open',
     nome: 'Mercado Open',
     categoria: 'Agência de Marketing Digital',
-    resumo: 'Agência parceira do Sindibes especializada em tráfego, sites e Google Meu Negócio — com desconto exclusivo para associados.',
+    resumo: 'Agência parceira do Sindibes especializada em tráfego, sites e Google Meu Negócio, com desconto exclusivo para associados.',
     descricao: [
       'A Mercado Open é a agência de marketing digital parceira oficial do Sindibes, dedicada a fazer o seu negócio da beleza ser encontrado, escolhido e lembrado na internet.',
       'Com estratégias sob medida para salões, barbearias, esmalterias e clínicas de estética, a Mercado Open une tráfego, presença local e tecnologia para atrair mais clientes e aumentar o faturamento do seu negócio.',
-      'Especialistas em posicionamento orgânico local, a Mercado Open coloca o seu negócio na 1ª página do Google dentro da sua cidade — sem depender de anúncios pagos. Clientes que buscam "salão de beleza em Uberlândia" encontram você primeiro.',
+      'Especialistas em posicionamento orgânico local, a Mercado Open coloca o seu negócio na 1ª página do Google dentro da sua cidade, sem depender de anúncios pagos. Clientes que buscam "salão de beleza em Uberlândia" encontram você primeiro.',
       'Como parceira do Sindibes, a Mercado Open oferece condições e descontos exclusivos para todos os associados. Fale com a equipe e descubra como colocar o seu negócio na frente da concorrência.',
     ],
     servicos: [
       'Posicionamento orgânico na 1ª página do Google na sua cidade',
-      'SEO local — apareça quando o cliente busca pelo seu serviço perto de você',
+      'SEO local: apareça quando o cliente busca pelo seu serviço perto de você',
 
       'Desenvolvimento de sites profissionais e otimizados',
       'Gestão profissional do Google Meu Negócio',

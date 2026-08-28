@@ -130,7 +130,7 @@ export default function ExitPopup() {
           </span>
           <h3 className="text-2xl font-bold text-text leading-tight">Espere! Antes de ir embora…</h3>
           <p className="text-sm text-gray-500 mt-2 mb-5 leading-relaxed">
-            Garanta agora uma <strong className="text-primary">consultoria 100% gratuita</strong> sobre como fortalecer o seu negócio. São <strong>poucas vagas por semana</strong> — não deixe essa passar!
+            Garanta agora uma <strong className="text-primary">consultoria 100% gratuita</strong> sobre como fortalecer o seu negócio. São <strong>poucas vagas por semana</strong>. Não deixe essa passar!
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-3">

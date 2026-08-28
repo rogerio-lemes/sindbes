@@ -83,7 +83,7 @@ export default async function EventoDetailPage({ params }: { params: Promise<{ s
                 </div>
                 <ul className="space-y-3 text-sm">
                   <li className="flex items-start gap-3"><Clock className="w-5 h-5 text-secondary shrink-0" /><span className="text-gray-600">{e.horario}</span></li>
-                  <li className="flex items-start gap-3"><MapPin className="w-5 h-5 text-secondary shrink-0" /><span className="text-gray-600">{e.local} — {e.endereco}</span></li>
+                  <li className="flex items-start gap-3"><MapPin className="w-5 h-5 text-secondary shrink-0" /><span className="text-gray-600">{e.local}{e.endereco ? `, ${e.endereco}` : ''}</span></li>
                   <li className="flex items-start gap-3"><Tag className="w-5 h-5 text-secondary shrink-0" /><span className="text-gray-600">{e.categoria}</span></li>
                 </ul>
               </div>

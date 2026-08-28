@@ -15,7 +15,7 @@ export async function generateMetadata(): Promise<Metadata> {
 const convencoes = [
   {
     titulo: 'CCT Trabalhista 2025–2026',
-    subtitulo: 'SETH-TAP × Sindibes — Salões de Uberlândia',
+    subtitulo: 'SETH-TAP × Sindibes · Salões de Uberlândia',
     descricao: 'Convenção Coletiva de Trabalho entre o Sindicato dos Empregados em Turismo e Hospitalidade (SETH-TAP) e o Sindibes, vigência 2025–2026, aplicável a salões de beleza de Uberlândia e região.',
     vigencia: '2025 – 2026',
     tipo: 'Trabalhista',
@@ -33,7 +33,7 @@ const convencoes = [
   },
   {
     titulo: 'Guia de Benefícios PAF',
-    subtitulo: 'SETH × Sindibes — Salões',
+    subtitulo: 'SETH × Sindibes · Salões',
     descricao: 'Guia completo dos benefícios do Plano de Assistência ao Funcionário (PAF) negociados entre o SETH e o Sindibes para trabalhadores de salões de beleza associados.',
     vigencia: '2025 – 2026',
     tipo: 'Benefícios',

@@ -188,7 +188,7 @@ export default function ParceirosPage() {
         <div className="bg-gradient-to-br from-primary to-primary/80 rounded-3xl p-10 text-center text-white">
           <h2 className="text-2xl md:text-3xl font-bold mb-3">Pronto para fazer parte?</h2>
           <p className="text-white/80 max-w-xl mx-auto mb-8">
-            Cadastre-se como parceiro ou associado — é rápido e nossa equipe entrará em contato para dar continuidade.
+            Cadastre-se como parceiro ou associado. É rápido e nossa equipe entrará em contato para dar continuidade.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link

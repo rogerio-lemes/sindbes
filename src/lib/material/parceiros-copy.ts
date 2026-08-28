@@ -20,7 +20,7 @@ export const ANATOMIA = [
   },
   {
     titulo: 'Mapa e dados de contato',
-    texto: 'Mapa do Google com a localização, mais endereço, WhatsApp, e-mail e horário de atendimento — tudo clicável.',
+    texto: 'Mapa do Google com a localização, mais endereço, WhatsApp, e-mail e horário de atendimento, tudo clicável.',
   },
   {
     titulo: 'Vitrine de parceiros',
@@ -91,7 +91,7 @@ export const MSG_PARCEIRO_EMAIL = `Assunto: Convite para ser Parceiro do Sindibe
 
 Olá, tudo bem?
 
-Meu nome é [SEU NOME] e falo em nome do Sindibes — Sindicato da Beleza de Uberlândia. Estamos ampliando nossa rede de parceiros e gostaríamos de convidar a [NOME DA EMPRESA] para participar.
+Meu nome é [SEU NOME] e falo em nome do Sindibes, Sindicato da Beleza de Uberlândia. Estamos ampliando nossa rede de parceiros e gostaríamos de convidar a [NOME DA EMPRESA] para participar.
 
 Como funciona: sua empresa oferece uma condição especial para os associados do Sindibes (um desconto ou benefício) e, em contrapartida, passa a ser divulgada para toda a nossa base.
 
@@ -119,11 +119,11 @@ Fico à disposição para qualquer dúvida.
 
 Atenciosamente,
 [SEU NOME]
-Sindibes — Sindicato da Beleza de Uberlândia`
+Sindibes - Sindicato da Beleza de Uberlândia`
 
 export const MSG_ASSOCIADO_WHATSAPP = `Olá! Tudo bem?
 
-Somos o Sindibes, o Sindicato da Beleza de Uberlândia. Se você trabalha com beleza — salão, barbearia, esmalteria, estética ou como profissional autônomo — vale conhecer o que a filiação oferece:
+Somos o Sindibes, o Sindicato da Beleza de Uberlândia. Se você trabalha com beleza (salão, barbearia, esmalteria, estética ou como profissional autônomo), vale conhecer o que a filiação oferece:
 
 • Plano de saúde e odontológico com preços negociados em grupo
 • Assessoria jurídica e contábil com especialistas no setor da beleza
@@ -145,7 +145,7 @@ export const MSG_ASSOCIADO_EMAIL = `Assunto: Convite para se associar ao Sindibe
 
 Olá, tudo bem?
 
-Meu nome é [SEU NOME] e falo em nome do Sindibes — Sindicato da Beleza de Uberlândia. Estou entrando em contato para convidar você a se associar ao sindicato.
+Meu nome é [SEU NOME] e falo em nome do Sindibes, Sindicato da Beleza de Uberlândia. Estou entrando em contato para convidar você a se associar ao sindicato.
 
 Nosso trabalho é negociar coletivamente aquilo que sai caro quando cada profissional busca sozinho. Como associado, você tem acesso a:
 
@@ -174,4 +174,4 @@ Fico à disposição para esclarecer qualquer dúvida.
 
 Atenciosamente,
 [SEU NOME]
-Sindibes — Sindicato da Beleza de Uberlândia`
+Sindibes - Sindicato da Beleza de Uberlândia`

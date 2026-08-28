@@ -92,7 +92,7 @@ export default function FacaPartePage() {
             <p className="text-xs font-bold uppercase tracking-widest text-secondary mb-1">Para profissionais</p>
             <h2 className="text-xl md:text-2xl font-bold text-text mb-2">Quero ser Associado</h2>
             <p className="text-sm text-gray-500 leading-relaxed mb-5">
-              Acesse planos de saúde, assessoria jurídica, treinamentos e muito mais —
+              Acesse planos de saúde, assessoria jurídica, treinamentos e muito mais,
               tudo negociado coletivamente para o setor da beleza.
             </p>
             <div className="flex flex-wrap gap-2 mb-5">

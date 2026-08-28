@@ -37,7 +37,7 @@ export default function AssociadoCadastroPage() {
               Seja Associado do Sindibes
             </h1>
             <p className="text-white/85 max-w-lg mx-auto text-sm md:text-base leading-relaxed">
-              Acesse planos de saúde, assessoria jurídica, treinamentos e muito mais —
+              Acesse planos de saúde, assessoria jurídica, treinamentos e muito mais,
               tudo negociado coletivamente para o setor da beleza de Uberlândia.
             </p>
           </div>
