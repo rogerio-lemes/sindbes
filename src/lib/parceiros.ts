@@ -36,7 +36,7 @@ export const PARCEIROS: Parceiro[] = [
     servicos: [
       'Posicionamento orgânico na 1ª página do Google na sua cidade',
       'SEO local — apareça quando o cliente busca pelo seu serviço perto de você',
-      'Tráfego pago (Google Ads e Meta Ads) — clientes prontos para agendar',
+
       'Desenvolvimento de sites profissionais e otimizados',
       'Gestão profissional do Google Meu Negócio',
     ],
