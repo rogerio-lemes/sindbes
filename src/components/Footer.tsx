@@ -6,6 +6,9 @@ import { INSTITUCIONAL } from '@/lib/constants'
 import { MapPin, Phone, Clock, Mail, Shield } from 'lucide-react'
 import Logo from '@/components/Logo'
 
+// Classe padrão dos links de navegação do rodapé
+const navLink = 'inline-block text-sm text-gray-400 hover:text-primary hover:bg-white rounded-md px-1.5 py-0.5 -mx-1.5 transition-all duration-150'
+
 export default function Footer() {
   const { config, servicos } = useTenant()
 
@@ -37,31 +40,27 @@ export default function Footer() {
 
           <div>
             <h3 className="text-white font-semibold mb-4">Institucional</h3>
-            <ul className="space-y-2">
-              <li><Link href="/" className="text-sm text-gray-400 hover:text-primary transition-colors">Home</Link></li>
-              <li><Link href="/institucional" className="text-sm text-gray-400 hover:text-primary transition-colors">Institucional</Link></li>
+            <ul className="space-y-1.5">
+              <li><Link href="/" className={navLink}>Home</Link></li>
+              <li><Link href="/institucional" className={navLink}>Institucional</Link></li>
               {INSTITUCIONAL.map((s) => (
                 <li key={s.slug}>
-                  <Link href={`/${s.slug}`} className="text-sm text-gray-400 hover:text-primary transition-colors">
-                    {s.nome}
-                  </Link>
+                  <Link href={`/${s.slug}`} className={navLink}>{s.nome}</Link>
                 </li>
               ))}
-              <li><Link href="/eventos" className="text-sm text-gray-400 hover:text-primary transition-colors">Eventos</Link></li>
-              <li><Link href="/parceiros" className="text-sm text-gray-400 hover:text-primary transition-colors">Parceiros</Link></li>
-              <li><Link href="/blog" className="text-sm text-gray-400 hover:text-primary transition-colors">Blog</Link></li>
-              <li><Link href="/contato" className="text-sm text-gray-400 hover:text-primary transition-colors">Contato</Link></li>
+              <li><Link href="/eventos" className={navLink}>Eventos</Link></li>
+              <li><Link href="/parceiros" className={navLink}>Parceiros</Link></li>
+              <li><Link href="/blog" className={navLink}>Blog</Link></li>
+              <li><Link href="/contato" className={navLink}>Contato</Link></li>
             </ul>
           </div>
 
           <div>
             <h3 className="text-white font-semibold mb-4">Serviços</h3>
-            <ul className="space-y-2">
+            <ul className="space-y-1.5">
               {servicos.map((s) => (
                 <li key={s.slug}>
-                  <Link href={`/${s.slug}`} className="text-sm text-gray-400 hover:text-primary transition-colors">
-                    {s.nome}
-                  </Link>
+                  <Link href={`/${s.slug}`} className={navLink}>{s.nome}</Link>
                 </li>
               ))}
             </ul>
@@ -76,7 +75,7 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-2 text-sm">
                 <Phone className="w-4 h-4 text-secondary shrink-0" />
-                <a href={`tel:${config.phone || config.whatsapp}`} className="hover:text-primary transition-colors">
+                <a href={`tel:${config.phone || config.whatsapp}`} className={navLink}>
                   {config.whatsapp_display || config.phone || ''}
                 </a>
               </li>
@@ -102,9 +101,9 @@ export default function Footer() {
           <div className="flex flex-wrap items-center gap-2">
             <span>CNPJ: {config.cnpj || '[A definir]'}</span>
             <span className="hidden md:inline">|</span>
-            <Link href="/politica-de-privacidade" className="hover:text-primary transition-colors">Política de Privacidade</Link>
+            <Link href="/politica-de-privacidade" className="hover:text-primary hover:bg-white rounded px-1 -mx-1 transition-all duration-150">Política de Privacidade</Link>
             <span>·</span>
-            <Link href="/termos-de-uso" className="hover:text-primary transition-colors">Termos de Uso</Link>
+            <Link href="/termos-de-uso" className="hover:text-primary hover:bg-white rounded px-1 -mx-1 transition-all duration-150">Termos de Uso</Link>
           </div>
           <div>
             Desenvolvido por{' '}
@@ -112,7 +111,7 @@ export default function Footer() {
               href="https://www.mercadoopen.com.br"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-bold text-gray-400 hover:text-primary transition-colors"
+              className="font-bold text-gray-400 hover:text-primary hover:bg-white rounded px-1 -mx-1 transition-all duration-150"
             >
               Mercado Open
             </a>
