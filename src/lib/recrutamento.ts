@@ -1,43 +1,31 @@
 // Funções de todas as categorias representadas pelo sindicato.
 // Usadas tanto no cadastro de currículo quanto no cadastro de vagas.
 export const FUNCOES = [
-  '✂️ Cabeleireiro(a)',
-  '💈 Barbeiro(a)',
-  '🎨 Colorista',
-  '🌿 Terapeuta Capilar',
-  '💅 Manicure e Pedicure',
-  '💎 Nail Designer (alongamento)',
-  '✨ Esteticista Facial',
-  '🌸 Esteticista Corporal',
-  '💄 Maquiador(a)',
-  '🪮 Designer de Sobrancelhas',
-  '👁️ Lash Designer (extensão de cílios)',
-  '🖊️ Micropigmentador(a)',
-  '🌙 Depilador(a)',
-  '🙌 Massoterapeuta',
-  '🦶 Podólogo(a)',
-  '🧴 Cosmetólogo(a)',
-  '🪞 Visagista',
-  '📋 Recepcionista de Salão',
-  '🏢 Gerente de Salão',
-  '🤝 Auxiliar / Assistente de Beleza',
+  'Cabeleireiro(a)',
+  'Barbeiro(a)',
+  'Colorista',
+  'Terapeuta Capilar',
+  'Manicure e Pedicure',
+  'Nail Designer (alongamento)',
+  'Esteticista Facial',
+  'Esteticista Corporal',
+  'Maquiador(a)',
+  'Designer de Sobrancelhas',
+  'Lash Designer (extensão de cílios)',
+  'Micropigmentador(a)',
+  'Depilador(a)',
+  'Massoterapeuta',
+  'Podólogo(a)',
+  'Cosmetólogo(a)',
+  'Visagista',
+  'Recepcionista de Salão',
+  'Gerente de Salão',
+  'Auxiliar / Assistente de Beleza',
 ]
 
-export const TIPOS_CONTRATO = [
-  '📄 CLT',
-  '🧾 Autônomo(a)',
-  '🎯 Freelancer',
-  '📅 Diarista',
-  '💰 Comissionado(a)',
-  '🎓 Estágio',
-]
+export const TIPOS_CONTRATO = ['CLT', 'Autônomo(a)', 'Freelancer', 'Diarista', 'Comissionado(a)', 'Estágio']
 
-export const NIVEIS_EXPERIENCIA = [
-  '🌱 Iniciante',
-  '📈 De 1 a 3 anos',
-  '⭐ De 3 a 5 anos',
-  '🏆 Mais de 5 anos',
-]
+export const NIVEIS_EXPERIENCIA = ['Iniciante', 'De 1 a 3 anos', 'De 3 a 5 anos', 'Mais de 5 anos']
 
 // ⚠️ DADOS DEMONSTRATIVOS — currículos reais serão cadastrados pelos candidatos e aparecerão aqui.
 export interface Curriculo {
