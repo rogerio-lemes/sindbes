@@ -38,19 +38,19 @@ export default function Footer() {
           <div>
             <h3 className="text-white font-semibold mb-4">Institucional</h3>
             <ul className="space-y-2">
-              <li><Link href="/" className="text-sm text-gray-400 hover:text-white hover:underline transition-colors">Home</Link></li>
-              <li><Link href="/institucional" className="text-sm text-gray-400 hover:text-white hover:underline transition-colors">Institucional</Link></li>
+              <li><Link href="/" className="text-sm text-gray-400 hover:text-primary transition-colors">Home</Link></li>
+              <li><Link href="/institucional" className="text-sm text-gray-400 hover:text-primary transition-colors">Institucional</Link></li>
               {INSTITUCIONAL.map((s) => (
                 <li key={s.slug}>
-                  <Link href={`/${s.slug}`} className="text-sm text-gray-400 hover:text-white hover:underline transition-colors">
+                  <Link href={`/${s.slug}`} className="text-sm text-gray-400 hover:text-primary transition-colors">
                     {s.nome}
                   </Link>
                 </li>
               ))}
-              <li><Link href="/eventos" className="text-sm text-gray-400 hover:text-white hover:underline transition-colors">Eventos</Link></li>
-              <li><Link href="/parceiros" className="text-sm text-gray-400 hover:text-white hover:underline transition-colors">Parceiros</Link></li>
-              <li><Link href="/blog" className="text-sm text-gray-400 hover:text-white hover:underline transition-colors">Blog</Link></li>
-              <li><Link href="/contato" className="text-sm text-gray-400 hover:text-white hover:underline transition-colors">Contato</Link></li>
+              <li><Link href="/eventos" className="text-sm text-gray-400 hover:text-primary transition-colors">Eventos</Link></li>
+              <li><Link href="/parceiros" className="text-sm text-gray-400 hover:text-primary transition-colors">Parceiros</Link></li>
+              <li><Link href="/blog" className="text-sm text-gray-400 hover:text-primary transition-colors">Blog</Link></li>
+              <li><Link href="/contato" className="text-sm text-gray-400 hover:text-primary transition-colors">Contato</Link></li>
             </ul>
           </div>
 
@@ -59,7 +59,7 @@ export default function Footer() {
             <ul className="space-y-2">
               {servicos.map((s) => (
                 <li key={s.slug}>
-                  <Link href={`/${s.slug}`} className="text-sm text-gray-400 hover:text-white hover:underline transition-colors">
+                  <Link href={`/${s.slug}`} className="text-sm text-gray-400 hover:text-primary transition-colors">
                     {s.nome}
                   </Link>
                 </li>
@@ -76,7 +76,7 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-2 text-sm">
                 <Phone className="w-4 h-4 text-secondary shrink-0" />
-                <a href={`tel:${config.phone || config.whatsapp}`} className="hover:text-white transition-colors">
+                <a href={`tel:${config.phone || config.whatsapp}`} className="hover:text-primary transition-colors">
                   {config.whatsapp_display || config.phone || ''}
                 </a>
               </li>
@@ -102,9 +102,9 @@ export default function Footer() {
           <div className="flex flex-wrap items-center gap-2">
             <span>CNPJ: {config.cnpj || '[A definir]'}</span>
             <span className="hidden md:inline">|</span>
-            <Link href="/politica-de-privacidade" className="hover:text-white hover:underline transition-colors">Política de Privacidade</Link>
+            <Link href="/politica-de-privacidade" className="hover:text-primary transition-colors">Política de Privacidade</Link>
             <span>·</span>
-            <Link href="/termos-de-uso" className="hover:text-white hover:underline transition-colors">Termos de Uso</Link>
+            <Link href="/termos-de-uso" className="hover:text-primary transition-colors">Termos de Uso</Link>
           </div>
           <div>
             Desenvolvido por{' '}
@@ -112,7 +112,7 @@ export default function Footer() {
               href="https://www.mercadoopen.com.br"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-bold text-gray-400 hover:text-white transition-colors"
+              className="font-bold text-gray-400 hover:text-primary transition-colors"
             >
               Mercado Open
             </a>
