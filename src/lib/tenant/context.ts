@@ -39,7 +39,7 @@ const SINDIBES_FALLBACK: TenantWithConfig = {
     favicon_url: null,
     meta: {},
     atendente_nome: 'Wagner',
-    atendente_foto_url: null,
+    atendente_foto_url: '/images/atendente-wagner.jpg',
   },
 }
 
