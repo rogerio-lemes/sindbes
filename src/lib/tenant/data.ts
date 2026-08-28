@@ -1,5 +1,6 @@
 import { cache } from 'react'
-import { getPublicClient } from '@/lib/supabase/server'
+import { getPublicClient, isSupabaseConfigured } from '@/lib/supabase/server'
+import { SERVICES } from '@/lib/constants'
 import type {
   TenantConfig, Servico, Associado, Evento,
   Parceiro, MembroDiretoria, Curriculo, Vaga,
@@ -9,6 +10,26 @@ import type {
 // Funções de leitura por tenant (server-side)
 // Todas cacheadas com React.cache() por request
 // ========================================
+
+const TENANT_FALLBACK_ID = '00000000-0000-0000-0000-000000000001'
+
+/**
+ * Serviços do template, usados quando o Supabase não está acessível.
+ * Sem isto o site fica sem nenhuma página de serviço (todas dariam 404),
+ * mesmo com o conteúdo completo já existindo em service-content.ts.
+ */
+const SERVICOS_FALLBACK: Servico[] = SERVICES.map((s, i) => ({
+  id: `fallback-${s.slug}`,
+  tenant_id: TENANT_FALLBACK_ID,
+  nome: s.nome,
+  slug: s.slug,
+  seo_title: s.seoTitle,
+  seo_description: s.seoDescription,
+  descricao: null,
+  imagem_url: null,
+  ordem: i + 1,
+  ativo: true,
+}))
 
 // Config
 export const getConfig = cache(async (tenantId: string): Promise<TenantConfig | null> => {
@@ -22,22 +43,41 @@ export const getConfig = cache(async (tenantId: string): Promise<TenantConfig | 
 
 // Serviços
 export const getServicos = cache(async (tenantId: string): Promise<Servico[]> => {
-  const { data } = await getPublicClient()
+  if (!isSupabaseConfigured()) return SERVICOS_FALLBACK
+
+  const { data, error } = await getPublicClient()
     .from('servicos')
     .select('*')
     .eq('tenant_id', tenantId)
     .eq('ativo', true)
     .order('ordem', { ascending: true })
+
+  // Falha de conexão/credencial não pode derrubar as páginas de serviço
+  if (error) {
+    console.error('[servicos] falha ao consultar Supabase:', error.message)
+    return tenantId === TENANT_FALLBACK_ID ? SERVICOS_FALLBACK : []
+  }
   return (data || []) as Servico[]
 })
 
 export const getServicoPorSlug = cache(async (tenantId: string, slug: string): Promise<Servico | null> => {
-  const { data } = await getPublicClient()
+  if (!isSupabaseConfigured()) {
+    return SERVICOS_FALLBACK.find((s) => s.slug === slug) ?? null
+  }
+
+  const { data, error } = await getPublicClient()
     .from('servicos')
     .select('*')
     .eq('tenant_id', tenantId)
     .eq('slug', slug)
-    .single()
+    .maybeSingle()
+
+  if (error) {
+    console.error('[servicos] falha ao consultar Supabase:', error.message)
+    return tenantId === TENANT_FALLBACK_ID
+      ? SERVICOS_FALLBACK.find((s) => s.slug === slug) ?? null
+      : null
+  }
   return data as Servico | null
 })
 
