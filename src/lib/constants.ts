@@ -10,7 +10,7 @@ export const SITE = {
   email: 'adm.sindibes@gmail.com',
   address: 'Uberlândia, MG',
   instagram: '@sindibes',
-  cnpj: '[CNPJ será inserido]',
+  cnpj: '50.658.683/0001-47',
   googleMapsUrl: 'https://maps.google.com/?q=Sindibes+Uberlândia',
   horario: 'Seg a Sex: 8h30 às 16h',
 }
