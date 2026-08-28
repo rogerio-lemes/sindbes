@@ -1,8 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { FUNCOES, NIVEIS_EXPERIENCIA } from '@/lib/recrutamento'
 import ConfirmModal from '@/components/ConfirmModal'
+import CustomSelect from '@/components/ui/CustomSelect'
+import { FUNCOES_OPTIONS, EXPERIENCIA_OPTIONS } from '@/lib/select-options'
 import { User, Phone, Mail, MapPin, Briefcase, Award, CalendarClock, FileText, Send } from 'lucide-react'
 
 export default function CurriculoForm() {
@@ -54,18 +55,33 @@ export default function CurriculoForm() {
           <Field icon={MapPin} label="Cidade">
             <input value={form.cidade} onChange={(e) => set('cidade', e.target.value)} placeholder="Sua cidade" className={inputCls} />
           </Field>
-          <Field icon={Briefcase} label="Área de atuação *">
-            <select required value={form.funcao} onChange={(e) => set('funcao', e.target.value)} className={inputCls}>
-              <option value="">Selecione a função...</option>
-              {FUNCOES.map((f) => <option key={f} value={f}>{f}</option>)}
-            </select>
-          </Field>
-          <Field icon={Award} label="Experiência *">
-            <select required value={form.experiencia} onChange={(e) => set('experiencia', e.target.value)} className={inputCls}>
-              <option value="">Selecione...</option>
-              {NIVEIS_EXPERIENCIA.map((n) => <option key={n} value={n}>{n}</option>)}
-            </select>
-          </Field>
+
+          {/* ── Select de Função ── */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">Área de atuação *</label>
+            <CustomSelect
+              options={FUNCOES_OPTIONS}
+              value={form.funcao}
+              onChange={(v) => set('funcao', v)}
+              placeholder="Selecione a função..."
+              required
+              triggerIcon={Briefcase}
+            />
+          </div>
+
+          {/* ── Select de Experiência ── */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">Experiência *</label>
+            <CustomSelect
+              options={EXPERIENCIA_OPTIONS}
+              value={form.experiencia}
+              onChange={(v) => set('experiencia', v)}
+              placeholder="Selecione..."
+              required
+              triggerIcon={Award}
+            />
+          </div>
+
           <Field icon={CalendarClock} label="Disponibilidade">
             <input value={form.disponibilidade} onChange={(e) => set('disponibilidade', e.target.value)} placeholder="Imediata, meio período..." className={inputCls} />
           </Field>

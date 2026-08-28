@@ -118,7 +118,7 @@ export default function Header() {
   const closeMobile = () => setMobileOpen(false)
 
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-100">
+    <header className="sticky top-0 z-[70] bg-white shadow-sm border-b border-gray-100">
       <div className="max-w-[1200px] mx-auto px-4 flex items-center justify-between h-16 md:h-20">
         <Link href="/" className="flex items-center">
           <Logo

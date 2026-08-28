@@ -1,9 +1,11 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { VAGAS_EXEMPLO, FUNCOES, TIPOS_CONTRATO } from '@/lib/recrutamento'
+import { VAGAS_EXEMPLO } from '@/lib/recrutamento'
 import { useTenant } from '@/components/TenantProvider'
 import { Search, MapPin, DollarSign, Briefcase, Store, Clock, MessageCircle, Filter, X } from 'lucide-react'
+import CustomSelect from '@/components/ui/CustomSelect'
+import { FUNCOES_OPTIONS, CONTRATO_OPTIONS } from '@/lib/select-options'
 
 export default function VagasList() {
   const { config } = useTenant()
@@ -35,14 +37,22 @@ export default function VagasList() {
               className="w-full h-11 pl-11 pr-4 rounded-xl border border-gray-200 focus:border-primary focus:ring-1 focus:ring-primary outline-none text-sm"
             />
           </div>
-          <select value={funcao} onChange={(e) => setFuncao(e.target.value)} className="h-11 px-4 rounded-xl border border-gray-200 focus:border-primary outline-none text-sm text-gray-600">
-            <option value="">Todas as funções</option>
-            {FUNCOES.map((f) => <option key={f} value={f}>{f}</option>)}
-          </select>
-          <select value={tipo} onChange={(e) => setTipo(e.target.value)} className="h-11 px-4 rounded-xl border border-gray-200 focus:border-primary outline-none text-sm text-gray-600">
-            <option value="">Qualquer contrato</option>
-            {TIPOS_CONTRATO.map((t) => <option key={t} value={t}>{t}</option>)}
-          </select>
+          <CustomSelect
+            options={FUNCOES_OPTIONS}
+            value={funcao}
+            onChange={setFuncao}
+            clearLabel="Todas as funções"
+            triggerIcon={Briefcase}
+            className="w-56"
+          />
+          <CustomSelect
+            options={CONTRATO_OPTIONS}
+            value={tipo}
+            onChange={setTipo}
+            clearLabel="Qualquer contrato"
+            triggerIcon={Store}
+            className="w-52"
+          />
           {temFiltro && (
             <button onClick={() => { setBusca(''); setFuncao(''); setTipo('') }} className="h-11 px-4 rounded-xl bg-bg-alt text-gray-600 text-sm font-medium hover:bg-gray-100 flex items-center gap-1.5">
               <X className="w-4 h-4" /> Limpar

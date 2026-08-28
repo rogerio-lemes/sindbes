@@ -1,9 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import Image from 'next/image'
-import { X, MessageCircle, Phone, Clock } from 'lucide-react'
+import { X, MessageCircle, Phone, Clock, Sparkles } from 'lucide-react'
 import { useTenant, useWhatsappUrl } from '@/components/TenantProvider'
+import CustomSelect from '@/components/ui/CustomSelect'
+import type { SelectOption } from '@/components/ui/CustomSelect'
 
 export default function ExitPopup() {
   const { config, servicos } = useTenant()
@@ -11,6 +13,11 @@ export default function ExitPopup() {
   const [nome, setNome] = useState('')
   const [telefone, setTelefone] = useState('')
   const [servico, setServico] = useState('')
+
+  const servicoOptions: SelectOption[] = useMemo(
+    () => servicos.map(s => ({ value: s.nome, label: s.nome, icon: Sparkles })),
+    [servicos]
+  )
 
   const consultoriaUrl = useWhatsappUrl('Olá! Quero minha consultoria gratuita sobre meu negócio.')
 
@@ -135,15 +142,13 @@ export default function ExitPopup() {
               type="tel" placeholder="(00) 00000-0000" value={telefone} onChange={(e) => setTelefone(maskPhone(e.target.value))} required
               className="w-full h-12 px-4 rounded-xl border border-gray-200 text-base focus:border-primary focus:ring-1 focus:ring-primary outline-none"
             />
-            <select
-              value={servico} onChange={(e) => setServico(e.target.value)}
-              className="w-full h-12 px-4 rounded-xl border border-gray-200 text-base text-gray-600 focus:border-primary focus:ring-1 focus:ring-primary outline-none appearance-none bg-white"
-            >
-              <option value="">Tipo de serviço...</option>
-              {servicos.map((s) => (
-                <option key={s.slug} value={s.nome}>{s.nome}</option>
-              ))}
-            </select>
+            <CustomSelect
+              options={servicoOptions}
+              value={servico}
+              onChange={setServico}
+              placeholder="Tipo de serviço..."
+              triggerIcon={Sparkles}
+            />
             <button type="submit" className="w-full h-12 gradient-cta text-white font-bold rounded-xl hover:opacity-90 transition-opacity">
               Quero minha consultoria gratuita
             </button>

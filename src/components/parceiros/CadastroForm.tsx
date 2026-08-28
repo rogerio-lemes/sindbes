@@ -3,8 +3,10 @@
 import { useState, useRef, useCallback } from 'react'
 import {
   Handshake, UserCheck, CheckCircle2, Upload, X, ImageIcon,
-  Phone, Mail, User, Building2, FileText, Send, ChevronRight,
+  Phone, Mail, User, Building2, FileText, Send, ChevronRight, Tag,
 } from 'lucide-react'
+import CustomSelect from '@/components/ui/CustomSelect'
+import { CATEGORIA_OPTIONS } from '@/lib/select-options'
 
 type Aba = 'parceiro' | 'associado'
 
@@ -243,19 +245,13 @@ export default function CadastroForm() {
               {aba === 'parceiro' ? 'Segmento / Produto' : 'CNPJ / CPF'}
             </label>
             {aba === 'parceiro' ? (
-              <select name="segmento" value={form.segmento} onChange={handleField}
-                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition"
-              >
-                <option value="">Selecione…</option>
-                <option>Produtos de Beleza</option>
-                <option>Educação / Cursos</option>
-                <option>Saúde / Odontologia</option>
-                <option>Financeiro / Crédito</option>
-                <option>Tecnologia / Software</option>
-                <option>Equipamentos</option>
-                <option>Marketing / Comunicação</option>
-                <option>Outros</option>
-              </select>
+              <CustomSelect
+                options={CATEGORIA_OPTIONS}
+                value={form.segmento}
+                onChange={(v) => setForm(p => ({ ...p, segmento: v }))}
+                placeholder="Selecione…"
+                triggerIcon={Tag}
+              />
             ) : (
               <input name="cnpj" value={form.cnpj} onChange={handleField}
                 placeholder="00.000.000/0001-00 ou 000.000.000-00"

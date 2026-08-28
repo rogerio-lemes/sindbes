@@ -6,6 +6,8 @@ import {
   Phone, Mail, User, Building2, FileText, Send, ChevronRight,
   MapPin, Share2, Plus, Trash2,
 } from 'lucide-react'
+import CustomSelect from '@/components/ui/CustomSelect'
+import { UF_OPTIONS, REDES_OPTIONS } from '@/lib/select-options'
 
 const BENEFICIOS = [
   'Planos de saúde e odontológico com preços negociados',
@@ -17,22 +19,16 @@ const BENEFICIOS = [
   'Representação sindical e defesa dos seus direitos',
 ]
 
-const REDES_SOCIAIS = [
-  { id: 'instagram',  label: 'Instagram',   placeholder: 'https://instagram.com/seunegocio',  emoji: '📸' },
-  { id: 'facebook',   label: 'Facebook',    placeholder: 'https://facebook.com/seunegocio',   emoji: '👥' },
-  { id: 'tiktok',     label: 'TikTok',      placeholder: 'https://tiktok.com/@seunegocio',    emoji: '🎵' },
-  { id: 'youtube',    label: 'YouTube',     placeholder: 'https://youtube.com/@seunegocio',   emoji: '▶️' },
-  { id: 'twitter',    label: 'X / Twitter', placeholder: 'https://x.com/seunegocio',          emoji: '🐦' },
-  { id: 'linkedin',   label: 'LinkedIn',    placeholder: 'https://linkedin.com/in/…',         emoji: '💼' },
-  { id: 'pinterest',  label: 'Pinterest',   placeholder: 'https://pinterest.com/seunegocio',  emoji: '📌' },
-  { id: 'whatsapp',   label: 'WhatsApp',    placeholder: 'https://wa.me/5534900000000',       emoji: '💬' },
-]
-
-const ESTADOS_BR = [
-  'AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS',
-  'MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC',
-  'SP','SE','TO',
-]
+const REDES_PLACEHOLDERS: Record<string, string> = {
+  instagram: 'https://instagram.com/seunegocio',
+  facebook:  'https://facebook.com/seunegocio',
+  tiktok:    'https://tiktok.com/@seunegocio',
+  youtube:   'https://youtube.com/@seunegocio',
+  twitter:   'https://x.com/seunegocio',
+  linkedin:  'https://linkedin.com/in/…',
+  pinterest: 'https://pinterest.com/seunegocio',
+  whatsapp:  'https://wa.me/5534900000000',
+}
 
 const MAX_FOTOS = 10
 const MAX_MB = 1
@@ -76,8 +72,8 @@ export default function FormAssociado() {
     setRedes(r => r.map((x, j) => j === i ? { ...x, [field]: v } : x))
   const addRede    = () => {
     const usadas = redes.map(r => r.rede)
-    const prox = REDES_SOCIAIS.find(r => !usadas.includes(r.id))
-    setRedes(r => [...r, { rede: prox?.id ?? REDES_SOCIAIS[0].id, url: '' }])
+    const prox = REDES_OPTIONS.find(r => !usadas.includes(r.value))
+    setRedes(r => [...r, { rede: prox?.value ?? REDES_OPTIONS[0].value, url: '' }])
   }
   const removeRede = (i: number) => setRedes(r => r.filter((_, j) => j !== i))
 
@@ -246,9 +242,14 @@ export default function FormAssociado() {
           </div>
           <div>
             <label className="block text-xs font-semibold text-gray-600 mb-1.5">Estado *</label>
-            <select name="uf" value={endereco.uf} onChange={setEnd} required className={inputBase}>
-              {ESTADOS_BR.map(uf => <option key={uf}>{uf}</option>)}
-            </select>
+            <CustomSelect
+              options={UF_OPTIONS}
+              value={endereco.uf}
+              onChange={(v) => setEndereco(p => ({ ...p, uf: v }))}
+              placeholder="UF"
+              required
+              triggerIcon={MapPin}
+            />
           </div>
           <div>
             <label className="block text-xs font-semibold text-gray-600 mb-1.5">CEP</label>
@@ -266,30 +267,28 @@ export default function FormAssociado() {
           <span className="font-normal text-gray-400 text-xs">(exibidas no perfil)</span>
         </legend>
         <div className="space-y-2.5">
-          {redes.map((r, i) => {
-            const info = REDES_SOCIAIS.find(rs => rs.id === r.rede)
-            return (
-              <div key={i} className="flex items-center gap-2">
-                <select value={r.rede} onChange={e => setRede(i, 'rede', e.target.value)}
-                  className={`${inputBase} w-44 flex-shrink-0 appearance-none`}>
-                  {REDES_SOCIAIS.map(rs => (
-                    <option key={rs.id} value={rs.id}>{rs.emoji} {rs.label}</option>
-                  ))}
-                </select>
-                <input value={r.url} onChange={e => setRede(i, 'url', e.target.value)}
-                  placeholder={info?.placeholder ?? 'https://…'}
-                  className={`${inputBase} flex-1 min-w-0`} />
-                {redes.length > 1 && (
-                  <button type="button" onClick={() => removeRede(i)}
-                    className="flex-shrink-0 p-1.5 text-gray-400 hover:text-red-400 transition">
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                )}
-              </div>
-            )
-          })}
+          {redes.map((r, i) => (
+            <div key={i} className="flex items-center gap-2">
+              <CustomSelect
+                options={REDES_OPTIONS}
+                value={r.rede}
+                onChange={(v) => setRede(i, 'rede', v)}
+                size="sm"
+                className="w-44 flex-shrink-0"
+              />
+              <input value={r.url} onChange={e => setRede(i, 'url', e.target.value)}
+                placeholder={REDES_PLACEHOLDERS[r.rede] ?? 'https://…'}
+                className={`${inputBase} flex-1 min-w-0`} />
+              {redes.length > 1 && (
+                <button type="button" onClick={() => removeRede(i)}
+                  className="flex-shrink-0 p-1.5 text-gray-400 hover:text-red-400 transition">
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              )}
+            </div>
+          ))}
         </div>
-        {redes.length < REDES_SOCIAIS.length && (
+        {redes.length < REDES_OPTIONS.length && (
           <button type="button" onClick={addRede}
             className="mt-2.5 inline-flex items-center gap-1.5 text-xs text-secondary hover:text-secondary/80 font-semibold transition">
             <Plus className="w-3.5 h-3.5" /> Adicionar outra rede

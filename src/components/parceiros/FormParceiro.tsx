@@ -7,18 +7,8 @@ import {
   Tag, AlignLeft, ListChecks, BadgePercent,
   Plus, Trash2, ImageIcon, Upload, X, MapPin, Share2,
 } from 'lucide-react'
-
-const CATEGORIAS = [
-  'Agência de Marketing Digital',
-  'Cosméticos e Produtos Profissionais',
-  'Cursos e Formação Profissional',
-  'Saúde / Odontologia',
-  'Financeiro / Crédito',
-  'Equipamentos e Mobiliário',
-  'Tecnologia / Software',
-  'Contabilidade / Jurídico',
-  'Outros',
-]
+import CustomSelect from '@/components/ui/CustomSelect'
+import { CATEGORIA_OPTIONS, UF_OPTIONS, REDES_OPTIONS } from '@/lib/select-options'
 
 const BENEFICIOS = [
   'Visibilidade para centenas de associados ativos',
@@ -29,22 +19,16 @@ const BENEFICIOS = [
   'Acesso à base de profissionais da beleza de Uberlândia',
 ]
 
-const ESTADOS_BR = [
-  'AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS',
-  'MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC',
-  'SP','SE','TO',
-]
-
-const REDES_SOCIAIS = [
-  { id: 'instagram',  label: 'Instagram',   placeholder: 'https://instagram.com/suaempresa',  emoji: '📸' },
-  { id: 'facebook',   label: 'Facebook',    placeholder: 'https://facebook.com/suaempresa',   emoji: '👥' },
-  { id: 'tiktok',     label: 'TikTok',      placeholder: 'https://tiktok.com/@suaempresa',    emoji: '🎵' },
-  { id: 'youtube',    label: 'YouTube',     placeholder: 'https://youtube.com/@suaempresa',   emoji: '▶️' },
-  { id: 'twitter',    label: 'X / Twitter', placeholder: 'https://x.com/suaempresa',          emoji: '🐦' },
-  { id: 'linkedin',   label: 'LinkedIn',    placeholder: 'https://linkedin.com/company/…',    emoji: '💼' },
-  { id: 'pinterest',  label: 'Pinterest',   placeholder: 'https://pinterest.com/suaempresa',  emoji: '📌' },
-  { id: 'whatsapp',   label: 'WhatsApp',    placeholder: 'https://wa.me/5534900000000',       emoji: '💬' },
-]
+const REDES_PLACEHOLDERS: Record<string, string> = {
+  instagram: 'https://instagram.com/suaempresa',
+  facebook:  'https://facebook.com/suaempresa',
+  tiktok:    'https://tiktok.com/@suaempresa',
+  youtube:   'https://youtube.com/@suaempresa',
+  twitter:   'https://x.com/suaempresa',
+  linkedin:  'https://linkedin.com/company/…',
+  pinterest: 'https://pinterest.com/suaempresa',
+  whatsapp:  'https://wa.me/5534900000000',
+}
 
 const MAX_MB = 1
 const fmtSize = (b: number) => b < 1024 * 1024 ? `${(b / 1024).toFixed(0)} KB` : `${(b / (1024 * 1024)).toFixed(1)} MB`
@@ -102,8 +86,8 @@ export default function FormParceiro() {
     setRedes(r => r.map((x, j) => j === i ? { ...x, [field]: v } : x))
   const addRede    = () => {
     const usadas = redes.map(r => r.rede)
-    const prox = REDES_SOCIAIS.find(r => !usadas.includes(r.id))
-    setRedes(r => [...r, { rede: prox?.id ?? REDES_SOCIAIS[0].id, url: '' }])
+    const prox = REDES_OPTIONS.find(r => !usadas.includes(r.value))
+    setRedes(r => [...r, { rede: prox?.value ?? REDES_OPTIONS[0].value, url: '' }])
   }
   const removeRede = (i: number) => setRedes(r => r.filter((_, j) => j !== i))
 
@@ -234,14 +218,14 @@ export default function FormParceiro() {
           </div>
           <div className="sm:col-span-2">
             <label className="block text-xs font-semibold text-gray-600 mb-1.5">Categoria *</label>
-            <div className="relative">
-              <Tag className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <select name="categoria" value={empresa.categoria} onChange={setEmp} required
-                className="input-field pl-9 appearance-none">
-                <option value="">Selecione a categoria…</option>
-                {CATEGORIAS.map(c => <option key={c}>{c}</option>)}
-              </select>
-            </div>
+            <CustomSelect
+              options={CATEGORIA_OPTIONS}
+              value={empresa.categoria}
+              onChange={(v) => setEmpresa(p => ({ ...p, categoria: v }))}
+              placeholder="Selecione a categoria…"
+              required
+              triggerIcon={Tag}
+            />
           </div>
           <div>
             <label className="block text-xs font-semibold text-gray-600 mb-1.5">WhatsApp (exibição)</label>
@@ -312,10 +296,14 @@ export default function FormParceiro() {
           </div>
           <div>
             <label className="block text-xs font-semibold text-gray-600 mb-1.5">Estado *</label>
-            <select name="uf" value={endereco.uf} onChange={setEnd} required
-              className="input-field appearance-none">
-              {ESTADOS_BR.map(uf => <option key={uf}>{uf}</option>)}
-            </select>
+            <CustomSelect
+              options={UF_OPTIONS}
+              value={endereco.uf}
+              onChange={(v) => setEndereco(p => ({ ...p, uf: v }))}
+              placeholder="UF"
+              required
+              triggerIcon={MapPin}
+            />
           </div>
           <div>
             <label className="block text-xs font-semibold text-gray-600 mb-1.5">CEP</label>
@@ -334,39 +322,31 @@ export default function FormParceiro() {
           <span className="font-normal text-gray-400 text-xs">(links exibidos na página)</span>
         </legend>
         <div className="space-y-2.5">
-          {redes.map((r, i) => {
-            const info = REDES_SOCIAIS.find(rs => rs.id === r.rede)
-            return (
-              <div key={i} className="flex items-center gap-2">
-                {/* seletor de rede */}
-                <select
-                  value={r.rede}
-                  onChange={e => setRede(i, 'rede', e.target.value)}
-                  className="input-field w-44 flex-shrink-0 appearance-none text-sm"
-                >
-                  {REDES_SOCIAIS.map(rs => (
-                    <option key={rs.id} value={rs.id}>{rs.emoji} {rs.label}</option>
-                  ))}
-                </select>
-                {/* url */}
-                <input
-                  value={r.url}
-                  onChange={e => setRede(i, 'url', e.target.value)}
-                  placeholder={info?.placeholder ?? 'https://…'}
-                  className="input-field flex-1 min-w-0"
-                />
-                {/* remover */}
-                {redes.length > 1 && (
-                  <button type="button" onClick={() => removeRede(i)}
-                    className="flex-shrink-0 p-1.5 text-gray-400 hover:text-red-400 transition">
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                )}
-              </div>
-            )
-          })}
+          {redes.map((r, i) => (
+            <div key={i} className="flex items-center gap-2">
+              <CustomSelect
+                options={REDES_OPTIONS}
+                value={r.rede}
+                onChange={(v) => setRede(i, 'rede', v)}
+                size="sm"
+                className="w-44 flex-shrink-0"
+              />
+              <input
+                value={r.url}
+                onChange={e => setRede(i, 'url', e.target.value)}
+                placeholder={REDES_PLACEHOLDERS[r.rede] ?? 'https://…'}
+                className="input-field flex-1 min-w-0"
+              />
+              {redes.length > 1 && (
+                <button type="button" onClick={() => removeRede(i)}
+                  className="flex-shrink-0 p-1.5 text-gray-400 hover:text-red-400 transition">
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              )}
+            </div>
+          ))}
         </div>
-        {redes.length < REDES_SOCIAIS.length && (
+        {redes.length < REDES_OPTIONS.length && (
           <button type="button" onClick={addRede}
             className="mt-2.5 inline-flex items-center gap-1.5 text-xs text-primary hover:text-primary/80 font-semibold transition">
             <Plus className="w-3.5 h-3.5" /> Adicionar outra rede

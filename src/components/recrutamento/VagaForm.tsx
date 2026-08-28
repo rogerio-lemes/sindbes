@@ -1,8 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { FUNCOES, TIPOS_CONTRATO } from '@/lib/recrutamento'
 import ConfirmModal from '@/components/ConfirmModal'
+import CustomSelect from '@/components/ui/CustomSelect'
+import { FUNCOES_OPTIONS, CONTRATO_OPTIONS } from '@/lib/select-options'
 import { Store, Briefcase, FileType, MapPin, DollarSign, Phone, Send } from 'lucide-react'
 
 export default function VagaForm() {
@@ -39,21 +40,37 @@ export default function VagaForm() {
           <Field icon={FileType} label="Título da vaga *">
             <input required value={form.titulo} onChange={(e) => set('titulo', e.target.value)} placeholder="Ex: Cabeleireiro(a) com experiência" className={inputCls} />
           </Field>
-          <Field icon={Briefcase} label="Função *">
-            <select required value={form.funcao} onChange={(e) => set('funcao', e.target.value)} className={inputCls}>
-              <option value="">Selecione a função...</option>
-              {FUNCOES.map((f) => <option key={f} value={f}>{f}</option>)}
-            </select>
-          </Field>
+
+          {/* ── Select de Função ── */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">Função *</label>
+            <CustomSelect
+              options={FUNCOES_OPTIONS}
+              value={form.funcao}
+              onChange={(v) => set('funcao', v)}
+              placeholder="Selecione a função..."
+              required
+              triggerIcon={Briefcase}
+            />
+          </div>
+
           <Field icon={Store} label="Empresa / Estabelecimento *">
             <input required value={form.empresa} onChange={(e) => set('empresa', e.target.value)} placeholder="Nome do salão, barbearia..." className={inputCls} />
           </Field>
-          <Field icon={FileType} label="Tipo de contrato *">
-            <select required value={form.tipo} onChange={(e) => set('tipo', e.target.value)} className={inputCls}>
-              <option value="">Selecione...</option>
-              {TIPOS_CONTRATO.map((t) => <option key={t} value={t}>{t}</option>)}
-            </select>
-          </Field>
+
+          {/* ── Select de Tipo de Contrato ── */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">Tipo de contrato *</label>
+            <CustomSelect
+              options={CONTRATO_OPTIONS}
+              value={form.tipo}
+              onChange={(v) => set('tipo', v)}
+              placeholder="Selecione..."
+              required
+              triggerIcon={FileType}
+            />
+          </div>
+
           <Field icon={MapPin} label="Local">
             <input value={form.local} onChange={(e) => set('local', e.target.value)} placeholder="Bairro, cidade" className={inputCls} />
           </Field>

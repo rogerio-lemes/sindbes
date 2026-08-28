@@ -1,8 +1,10 @@
 'use client'
 
-import { useState } from 'react'
-import { User, Phone, Send } from 'lucide-react'
+import { useState, useMemo } from 'react'
+import { User, Phone, Send, Sparkles } from 'lucide-react'
 import { useTenant, useWhatsappUrl } from '@/components/TenantProvider'
+import CustomSelect from '@/components/ui/CustomSelect'
+import type { SelectOption } from '@/components/ui/CustomSelect'
 
 export default function MobileCaptureBar() {
   const { config, servicos } = useTenant()
@@ -10,6 +12,11 @@ export default function MobileCaptureBar() {
   const [nome, setNome] = useState('')
   const [telefone, setTelefone] = useState('')
   const [servico, setServico] = useState('')
+
+  const servicoOptions: SelectOption[] = useMemo(
+    () => servicos.map(s => ({ value: s.nome, label: s.nome, icon: Sparkles })),
+    [servicos]
+  )
 
   function maskPhone(value: string) {
     const digits = value.replace(/\D/g, '').slice(0, 11)
@@ -57,15 +64,13 @@ export default function MobileCaptureBar() {
               />
             </div>
 
-            <select
-              value={servico} onChange={(e) => setServico(e.target.value)}
-              className="w-full h-12 px-4 rounded-xl border border-gray-200 text-base text-gray-600 focus:border-primary focus:ring-1 focus:ring-primary outline-none appearance-none bg-white"
-            >
-              <option value="">Tipo de serviço...</option>
-              {servicos.map((s) => (
-                <option key={s.slug} value={s.nome}>{s.nome}</option>
-              ))}
-            </select>
+            <CustomSelect
+              options={servicoOptions}
+              value={servico}
+              onChange={setServico}
+              placeholder="Tipo de serviço..."
+              triggerIcon={Sparkles}
+            />
 
             <button
               type="submit"

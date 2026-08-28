@@ -1,8 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import Image from 'next/image'
 import { useTenant } from '@/components/TenantProvider'
+import CustomSelect from '@/components/ui/CustomSelect'
+import type { SelectOption } from '@/components/ui/CustomSelect'
+import { Sparkles } from 'lucide-react'
 
 export default function ContactSection() {
   const { config, servicos } = useTenant()
@@ -11,6 +14,11 @@ export default function ContactSection() {
   const [email, setEmail] = useState('')
   const [servico, setServico] = useState('')
   const [loading, setLoading] = useState(false)
+
+  const servicoOptions: SelectOption[] = useMemo(
+    () => servicos.map(s => ({ value: s.nome, label: s.nome, icon: Sparkles })),
+    [servicos]
+  )
 
   const nomeAtendente = config.atendente_nome || 'Atendente'
 
@@ -123,20 +131,17 @@ export default function ContactSection() {
                 </div>
 
                 <div>
-                  <label htmlFor="contact-servico" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
                     Serviço de interesse (opcional)
                   </label>
-                  <select
-                    id="contact-servico"
+                  <CustomSelect
+                    options={servicoOptions}
                     value={servico}
-                    onChange={(e) => setServico(e.target.value)}
-                    className="w-full h-12 px-4 rounded-xl border border-gray-200 focus:border-primary focus:ring-1 focus:ring-primary outline-none appearance-none bg-white"
-                  >
-                    <option value="">Selecione...</option>
-                    {servicos.map((s) => (
-                      <option key={s.slug} value={s.nome}>{s.nome}</option>
-                    ))}
-                  </select>
+                    onChange={setServico}
+                    placeholder="Selecione..."
+                    clearLabel="Selecione..."
+                    triggerIcon={Sparkles}
+                  />
                 </div>
 
                 <button

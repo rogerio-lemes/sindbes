@@ -1,9 +1,11 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { CURRICULOS_EXEMPLO, FUNCOES, NIVEIS_EXPERIENCIA } from '@/lib/recrutamento'
+import { CURRICULOS_EXEMPLO } from '@/lib/recrutamento'
 import { useTenant } from '@/components/TenantProvider'
-import { Search, MapPin, Award, CalendarClock, MessageCircle, Filter, X } from 'lucide-react'
+import { Search, MapPin, Award, CalendarClock, MessageCircle, Filter, X, Briefcase } from 'lucide-react'
+import CustomSelect from '@/components/ui/CustomSelect'
+import { FUNCOES_OPTIONS, EXPERIENCIA_OPTIONS } from '@/lib/select-options'
 
 function iniciais(nome: string) {
   return nome.split(' ').slice(0, 2).map((n) => n[0]).join('').toUpperCase()
@@ -40,14 +42,22 @@ export default function CurriculosList() {
               className="w-full h-11 pl-11 pr-4 rounded-xl border border-gray-200 focus:border-primary focus:ring-1 focus:ring-primary outline-none text-sm"
             />
           </div>
-          <select value={funcao} onChange={(e) => setFuncao(e.target.value)} className="h-11 px-4 rounded-xl border border-gray-200 focus:border-primary outline-none text-sm text-gray-600">
-            <option value="">Todas as funções</option>
-            {FUNCOES.map((f) => <option key={f} value={f}>{f}</option>)}
-          </select>
-          <select value={exp} onChange={(e) => setExp(e.target.value)} className="h-11 px-4 rounded-xl border border-gray-200 focus:border-primary outline-none text-sm text-gray-600">
-            <option value="">Qualquer experiência</option>
-            {NIVEIS_EXPERIENCIA.map((n) => <option key={n} value={n}>{n}</option>)}
-          </select>
+          <CustomSelect
+            options={FUNCOES_OPTIONS}
+            value={funcao}
+            onChange={setFuncao}
+            clearLabel="Todas as funções"
+            triggerIcon={Briefcase}
+            className="w-56"
+          />
+          <CustomSelect
+            options={EXPERIENCIA_OPTIONS}
+            value={exp}
+            onChange={setExp}
+            clearLabel="Qualquer experiência"
+            triggerIcon={Award}
+            className="w-52"
+          />
           {temFiltro && (
             <button onClick={() => { setBusca(''); setFuncao(''); setExp('') }} className="h-11 px-4 rounded-xl bg-bg-alt text-gray-600 text-sm font-medium hover:bg-gray-100 flex items-center gap-1.5">
               <X className="w-4 h-4" /> Limpar
