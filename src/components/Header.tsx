@@ -122,7 +122,7 @@ export default function Header() {
       <div className="max-w-[1200px] mx-auto px-4 flex items-center justify-between h-16 md:h-20">
         <Link href="/" className="flex items-center">
           <Logo
-            className="h-11 md:h-12 w-auto"
+            className="h-14 md:h-16 w-auto"
             logoUrl={config.logo_url}
             nome={config.nome}
             tagline={config.tagline}
