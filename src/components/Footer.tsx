@@ -16,7 +16,7 @@ export default function Footer() {
           <div>
             <Logo
               variant="light"
-              className="h-14 w-auto mb-4"
+              className="h-14 w-auto mb-4 rounded-xl"
               logoUrl={config.logo_url}
               nome={config.nome}
               tagline={config.tagline}
