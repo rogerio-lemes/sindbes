@@ -14,13 +14,22 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const convencoes = [
   {
-    titulo: 'CCT Trabalhista 2025–2026',
+    titulo: 'CCT Trabalhista 2026/2027',
     subtitulo: 'SETH-TAP × Sindibes · Salões de Uberlândia',
-    descricao: 'Convenção Coletiva de Trabalho entre o Sindicato dos Empregados em Turismo e Hospitalidade (SETH-TAP) e o Sindibes, vigência 2025–2026, aplicável a salões de beleza de Uberlândia e região.',
+    descricao: 'Convenção Coletiva de Trabalho entre o Sindicato dos Empregados em Turismo e Hospitalidade (SETH-TAP) e o Sindibes, com vigência de 1º de julho de 2026 a 30 de junho de 2027. Reajuste salarial de 6,50% sobre o piso vigente; piso mínimo em Uberlândia a partir de R$ 2.066,10.',
+    vigencia: '01/07/2026 – 30/06/2027',
+    tipo: 'Trabalhista',
+    arquivo: '/docs/cct-trabalhista-2026-2027.pdf',
+    destaque: true,
+  },
+  {
+    titulo: 'CCT Trabalhista 2025/2026',
+    subtitulo: 'SETH-TAP × Sindibes · Salões de Uberlândia',
+    descricao: 'Convenção Coletiva de Trabalho entre o Sindicato dos Empregados em Turismo e Hospitalidade (SETH-TAP) e o Sindibes, vigência 2025/2026, aplicável a salões de beleza de Uberlândia e região.',
     vigencia: '2025 – 2026',
     tipo: 'Trabalhista',
     arquivo: '/docs/cct-trabalhista-2025-2026.pdf',
-    destaque: true,
+    destaque: false,
   },
   {
     titulo: 'CCT Patrocínio 2026',
@@ -128,7 +137,7 @@ export default function ConvencoesPage() {
         </div>
 
         <p className="text-xs text-gray-400 mt-12 text-center">
-          Documentos atualizados em agosto de 2026. Para versões anteriores, entre em contato com a secretaria do Sindibes.
+          Documentos atualizados em setembro de 2026. Para versões anteriores, entre em contato com a secretaria do Sindibes.
         </p>
       </section>
     </>
