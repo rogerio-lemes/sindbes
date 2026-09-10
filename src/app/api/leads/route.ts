@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { headers } from 'next/headers'
-import { getServiceClient, isSupabaseConfigured } from '@/lib/supabase/server'
+import { getPublicClient, isSupabaseConfigured } from '@/lib/supabase/server'
 import { Resend } from 'resend'
 import { SITE } from '@/lib/constants'
 
@@ -16,7 +16,7 @@ async function resolveTenant() {
   if (!host) return { tenant_id: FALLBACK_TENANT_ID, config: { nome: SITE.name, email: SITE.email } }
 
   try {
-    const supabase = getServiceClient()
+    const supabase = getPublicClient()
 
     const { data: dominio } = await supabase
       .from('dominios')
@@ -50,7 +50,7 @@ export async function POST(request: Request) {
 
     if (isSupabaseConfigured()) {
       try {
-        const supabase = getServiceClient()
+        const supabase = getPublicClient()
         const { error } = await supabase
           .from('leads')
           .insert({

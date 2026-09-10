@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { getServiceClient, isSupabaseConfigured } from '@/lib/supabase/server'
+import { getPublicClient, isSupabaseConfigured } from '@/lib/supabase/server'
 import { Resend } from 'resend'
 import { SITE } from '@/lib/constants'
 
@@ -40,7 +40,7 @@ export async function POST(request: Request) {
     // Salvar no Supabase como lead
     if (isSupabaseConfigured()) {
       try {
-        const supabase = getServiceClient()
+        const supabase = getPublicClient()
         await supabase.from('leads').insert({
           tenant_id: FALLBACK_TENANT_ID,
           nome,

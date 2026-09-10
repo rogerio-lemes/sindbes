@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { headers } from 'next/headers'
-import { getServiceClient, isSupabaseConfigured } from '@/lib/supabase/server'
+import { getPublicClient, isSupabaseConfigured } from '@/lib/supabase/server'
 
 const FALLBACK_TENANT_ID = '00000000-0000-0000-0000-000000000001'
 
@@ -12,7 +12,7 @@ async function resolveTenantId() {
   if (!host) return FALLBACK_TENANT_ID
 
   try {
-    const supabase = getServiceClient()
+    const supabase = getPublicClient()
 
     const { data: dominio } = await supabase
       .from('dominios')
@@ -39,7 +39,7 @@ export async function POST(request: Request) {
     const tabela = tipoRegistro === 'vaga' ? 'vagas' : 'curriculos'
 
     try {
-      const supabase = getServiceClient()
+      const supabase = getPublicClient()
       const { error } = await supabase.from(tabela).insert({ ...dados, tenant_id: tenantId })
       if (error) console.error('Recrutamento insert error:', error)
     } catch (err) {
