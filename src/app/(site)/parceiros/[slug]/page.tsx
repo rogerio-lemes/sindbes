@@ -5,7 +5,13 @@ import { notFound } from 'next/navigation'
 import { PARCEIROS, getParceiro } from '@/lib/parceiros'
 import { getTenant } from '@/lib/tenant'
 import Breadcrumbs from '@/components/Breadcrumbs'
-import { CheckCircle2, Globe, MessageCircle, BadgePercent, Sparkles, ArrowRight, Handshake } from 'lucide-react'
+import {
+  CheckCircle2, Globe, MessageCircle, BadgePercent, Sparkles, ArrowRight, Handshake,
+  Trophy, Search, FileSearch, Clock, MapPin,
+} from 'lucide-react'
+
+// Ícones aplicados na ordem dos destaques cadastrados no parceiro
+const ICONES_DESTAQUE = [Trophy, Search, FileSearch, Clock, MapPin]
 import ImageCarousel from '@/components/parceiros/ImageCarousel'
 
 export function generateStaticParams() {
@@ -56,6 +62,41 @@ export default async function ParceiroPage({ params }: { params: Promise<{ slug:
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-10">
           {/* Conteúdo */}
           <div>
+            {/* Diferenciais em destaque, antes do texto institucional */}
+            {p.destaques && p.destaques.length > 0 && (
+              <div className="mb-10">
+                <div className="flex items-center gap-2 mb-4">
+                  <Sparkles className="w-5 h-5 text-secondary" />
+                  <h2 className="text-xl font-bold bicolor-title">
+                    O que você <span>ganha na prática</span>
+                  </h2>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {p.destaques.map((d, i) => {
+                    const Icone = ICONES_DESTAQUE[i % ICONES_DESTAQUE.length]
+                    return (
+                      <div
+                        key={d.titulo}
+                        className="relative bg-white rounded-2xl border border-gray-100 shadow-sm p-5 overflow-hidden
+                                   first:sm:col-span-2 hover:shadow-md transition-shadow"
+                      >
+                        <span className="absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-primary to-secondary" />
+                        <div className="flex items-start gap-3 pl-2">
+                          <span className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                            <Icone className="w-5 h-5 text-primary" />
+                          </span>
+                          <div>
+                            <p className="font-bold text-text leading-snug">{d.titulo}</p>
+                            <p className="text-sm text-gray-500 leading-relaxed mt-1">{d.texto}</p>
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
+
             <div className="flex items-center gap-2 mb-4">
               <Handshake className="w-5 h-5 text-primary" />
               <h2 className="text-xl font-bold bicolor-title">Sobre o <span>parceiro</span></h2>

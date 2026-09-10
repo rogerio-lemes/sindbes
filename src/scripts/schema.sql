@@ -171,6 +171,20 @@ CREATE TABLE IF NOT EXISTS banner_eventos (
 CREATE INDEX IF NOT EXISTS idx_banner_eventos ON banner_eventos(banner_id, tipo, created_at DESC);
 
 -- =========================
+-- 4.3 ATENDIMENTO POR IA (controlado no painel)
+-- A chave da IA NÃO fica aqui: vive só nas variáveis de ambiente do servidor.
+-- =========================
+CREATE TABLE IF NOT EXISTS atendimento_config (
+  tenant_id UUID PRIMARY KEY REFERENCES tenants(id) ON DELETE CASCADE,
+  ativo BOOLEAN DEFAULT TRUE,
+  saudacao TEXT,                      -- vazio = saudação automática com o nome do atendente
+  segundos_para_abrir INT DEFAULT 3,
+  texto_convite TEXT,
+  texto_minimizado TEXT,
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- =========================
 -- 5. SERVIÇOS
 -- =========================
 CREATE TABLE IF NOT EXISTS servicos (
@@ -467,6 +481,13 @@ CREATE POLICY "Admin le todos banners" ON banners
 CREATE POLICY "Admin gerencia banners" ON banners
   FOR ALL USING (has_permission_in_tenant('banners.editar', tenant_id))
   WITH CHECK (has_permission_in_tenant('banners.editar', tenant_id));
+
+ALTER TABLE atendimento_config ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Leitura publica atendimento" ON atendimento_config
+  FOR SELECT USING (true);
+CREATE POLICY "Admin gerencia atendimento" ON atendimento_config
+  FOR ALL USING (has_permission_in_tenant('marca.editar', tenant_id))
+  WITH CHECK (has_permission_in_tenant('marca.editar', tenant_id));
 
 CREATE POLICY "Insert publico banner_eventos" ON banner_eventos
   FOR INSERT WITH CHECK (tipo IN ('impressao', 'clique'));

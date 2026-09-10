@@ -92,7 +92,7 @@ export default function ServicesGrid() {
                   <Link
                     key={`${s.slug}-${i}`}
                     href={`/${s.slug}`}
-                    className="group shrink-0 w-[260px] mx-3 bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow"
+                    className="group shrink-0 w-[260px] mx-3 bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
                     aria-hidden={i >= otherServices.length}
                     tabIndex={i >= otherServices.length ? -1 : undefined}
                   >

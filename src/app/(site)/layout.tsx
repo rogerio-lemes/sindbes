@@ -2,10 +2,12 @@ import type { Metadata } from 'next'
 import { getTenant, getServicos } from '@/lib/tenant'
 import TenantTheme from '@/components/TenantTheme'
 import { TenantProvider } from '@/components/TenantProvider'
+import { OverlayProvider } from '@/components/OverlayProvider'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import FloatingButtons from '@/components/FloatingButtons'
-import WhatsAppChat from '@/components/WhatsAppChat'
+import AtendimentoChat from '@/components/AtendimentoChat'
+import { getAtendimentoConfig } from '@/lib/atendimento/config'
 import MobileCaptureBar from '@/components/MobileCaptureBar'
 import PwaInstallCard from '@/components/PwaInstallCard'
 import ExitPopup from '@/components/ExitPopup'
@@ -43,6 +45,7 @@ export default async function SiteLayout({
   // Resolver tenant (pode ser notFound se host inválido)
   const tenant = await getTenant()
   const servicos = await getServicos(tenant.id)
+  const atendimento = await getAtendimentoConfig(tenant.id)
 
   const tenantData = {
     tenantId: tenant.id,
@@ -61,11 +64,14 @@ export default async function SiteLayout({
         <Header />
         <main>{children}</main>
         <Footer />
-        <FloatingButtons />
-        <WhatsAppChat />
-        <MobileCaptureBar />
-        <PwaInstallCard />
-        <ExitPopup />
+        {/* Um só controle decide quem aparece flutuando (ver OverlayProvider) */}
+        <OverlayProvider>
+          <FloatingButtons />
+          <AtendimentoChat config={atendimento} />
+          <MobileCaptureBar />
+          <PwaInstallCard />
+          <ExitPopup />
+        </OverlayProvider>
         <ScrollRevealProvider />
         <ServiceWorkerRegister />
       </TenantProvider>

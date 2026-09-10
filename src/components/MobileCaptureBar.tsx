@@ -3,11 +3,13 @@
 import { useState, useMemo } from 'react'
 import { User, Phone, Send, Sparkles } from 'lucide-react'
 import { useTenant, useWhatsappUrl } from '@/components/TenantProvider'
+import { useDeveSumir } from '@/components/OverlayProvider'
 import CustomSelect from '@/components/ui/CustomSelect'
 import type { SelectOption } from '@/components/ui/CustomSelect'
 
 export default function MobileCaptureBar() {
   const { config, servicos } = useTenant()
+  const sumir = useDeveSumir({ modal: true, chat: true })
   const [collapsed, setCollapsed] = useState(true)
   const [nome, setNome] = useState('')
   const [telefone, setTelefone] = useState('')
@@ -33,8 +35,11 @@ export default function MobileCaptureBar() {
     window.open(url, '_blank')
   }
 
+  // Sai da frente do modal e do chat de atendimento
+  if (sumir) return null
+
   return (
-    <div className={`fixed bottom-0 left-0 right-0 z-50 md:hidden transition-transform duration-300 ${collapsed ? 'translate-y-[calc(100%-40px)]' : ''}`}>
+    <div className={`fixed bottom-0 left-0 right-0 z-30 md:hidden transition-transform duration-300 ${collapsed ? 'translate-y-[calc(100%-40px)]' : ''}`}>
       <div className="bg-white border-t-4 border-primary rounded-t-2xl shadow-2xl px-6 pt-2 pb-6">
         <div
           className="flex justify-center py-2 cursor-grab"

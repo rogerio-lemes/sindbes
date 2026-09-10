@@ -5,6 +5,8 @@ export interface Parceiro {
   resumo: string
   descricao: string[]
   servicos: string[]
+  /** Diferenciais exibidos em bloco de destaque no topo da página do parceiro */
+  destaques?: { titulo: string; texto: string }[]
   desconto: string
   capa: string
   fotos?: string[]          // imagens adicionais do negócio (carrossel)
@@ -33,10 +35,31 @@ export const PARCEIROS: Parceiro[] = [
       'Especialistas em posicionamento orgânico local, a Mercado Open coloca o seu negócio na 1ª página do Google dentro da sua cidade, sem depender de anúncios pagos. Clientes que buscam "salão de beleza em Uberlândia" encontram você primeiro.',
       'Como parceira do Sindibes, a Mercado Open oferece condições e descontos exclusivos para todos os associados. Fale com a equipe e descubra como colocar o seu negócio na frente da concorrência.',
     ],
+    destaques: [
+      {
+        titulo: '1ª página do Google em Uberlândia',
+        texto: 'Seu salão posicionado no topo das buscas de quem procura pelo seu serviço aqui na cidade.',
+      },
+      {
+        titulo: 'SEO em várias palavras-chave',
+        texto: 'Não é uma busca só: seu negócio aparece em dezenas de termos que o cliente realmente digita.',
+      },
+      {
+        titulo: 'SEO em todas as páginas do site',
+        texto: 'Cada página otimizada, não apenas a inicial. Mais portas de entrada para o cliente chegar até você.',
+      },
+      {
+        titulo: 'Clientes 24 horas por dia, sem tráfego pago',
+        texto: 'Resultado orgânico: você não paga por clique e continua sendo encontrado mesmo sem anúncio no ar.',
+      },
+      {
+        titulo: 'Google Meu Negócio 100% otimizado',
+        texto: 'Perfil completo, gerenciado e sempre atualizado, para aparecer no mapa e nas buscas locais.',
+      },
+    ],
     servicos: [
       'Posicionamento orgânico na 1ª página do Google na sua cidade',
       'SEO local: apareça quando o cliente busca pelo seu serviço perto de você',
-
       'Desenvolvimento de sites profissionais e otimizados',
       'Gestão profissional do Google Meu Negócio',
     ],

@@ -3,9 +3,13 @@
 import { useState, useEffect, useMemo } from 'react'
 import Image from 'next/image'
 import { X, MessageCircle, Phone, Clock, Sparkles } from 'lucide-react'
+import { useDeclararOverlay } from '@/components/OverlayProvider'
 import { useTenant, useWhatsappUrl } from '@/components/TenantProvider'
 import CustomSelect from '@/components/ui/CustomSelect'
 import type { SelectOption } from '@/components/ui/CustomSelect'
+
+// Registro da última exibição, para respeitar o limite de 1x por dia
+const POPUP_STORAGE_KEY = 'exit_popup_last_shown'
 
 export default function ExitPopup() {
   const { config, servicos } = useTenant()
@@ -22,20 +26,25 @@ export default function ExitPopup() {
   const consultoriaUrl = useWhatsappUrl('Olá! Quero minha consultoria gratuita sobre meu negócio.')
 
   useEffect(() => {
-    // Não mostrar se fechado nos últimos 7 dias
+    // Aparece no máximo uma vez por dia
     const COOLDOWN_DAYS = 1
-    const lastDismissed = localStorage.getItem('exit_popup_dismissed_at')
-    if (lastDismissed) {
-      const diff = Date.now() - Number(lastDismissed)
+    const ultimaExibicao = localStorage.getItem(POPUP_STORAGE_KEY)
+    if (ultimaExibicao) {
+      const diff = Date.now() - Number(ultimaExibicao)
       if (diff < COOLDOWN_DAYS * 24 * 60 * 60 * 1000) return
     }
 
     // Aguarda 10s na página antes de ativar o exit intent
     let ready = false
+    let jaExibiu = false
     const timer = setTimeout(() => { ready = true }, 10_000)
 
     function handleMouseLeave(e: MouseEvent) {
-      if (e.clientY <= 0 && ready && !show) {
+      if (e.clientY <= 0 && ready && !jaExibiu) {
+        jaExibiu = true
+        // Marca no momento em que aparece, não ao fechar: se o visitante
+        // ignorar o modal e trocar de página, ele não volta no mesmo dia.
+        localStorage.setItem(POPUP_STORAGE_KEY, String(Date.now()))
         setShow(true)
       }
     }
@@ -45,11 +54,14 @@ export default function ExitPopup() {
       clearTimeout(timer)
       document.removeEventListener('mouseleave', handleMouseLeave)
     }
-  }, [show])
+  }, [])
+
+  // Enquanto o modal está na tela, nenhum flutuante aparece sobre ele
+  useDeclararOverlay('modal', show)
 
   function dismiss() {
     setShow(false)
-    localStorage.setItem('exit_popup_dismissed_at', String(Date.now()))
+    localStorage.setItem(POPUP_STORAGE_KEY, String(Date.now()))
   }
 
   function maskPhone(value: string) {

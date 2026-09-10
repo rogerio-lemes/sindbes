@@ -3,11 +3,13 @@
 import { useState, useEffect, useRef } from 'react'
 import { X } from 'lucide-react'
 import { useTenant } from '@/components/TenantProvider'
+import { useDeveSumir } from '@/components/OverlayProvider'
 
 export default function PwaInstallCard() {
   const { config } = useTenant()
   const [show, setShow] = useState(false)
   const deferredPrompt = useRef<any>(null)
+  const sumir = useDeveSumir({ modal: true, chat: true })
 
   useEffect(() => {
     const handler = (e: Event) => {
@@ -43,12 +45,13 @@ export default function PwaInstallCard() {
     dismiss()
   }
 
-  if (!show) return null
+  // Sai da frente do modal e do chat de atendimento
+  if (!show || sumir) return null
 
   const isIOS = typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent)
 
   return (
-    <div className="fixed bottom-24 left-5 z-[45] w-[300px] max-w-[calc(100vw-2.5rem)] animate-fade-up">
+    <div className="fixed bottom-44 md:bottom-24 left-5 z-[45] w-[300px] max-w-[calc(100vw-2.5rem)] animate-fade-up">
       <div className="bg-white rounded-2xl shadow-2xl p-5 border-l-4 border-primary relative">
         <button
           onClick={dismiss}

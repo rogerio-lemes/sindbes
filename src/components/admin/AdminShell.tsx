@@ -31,13 +31,18 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
                   <Link
                     href={item.href}
                     onClick={() => setMobileOpen(false)}
-                    className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
+                    className={`group flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
                       ativo
                         ? 'bg-primary text-white font-medium'
-                        : 'text-gray-600 hover:bg-gray-100'
+                        : 'text-gray-600 hover:bg-primary hover:text-white'
                     }`}
                   >
-                    <item.icon className="w-4 h-4 shrink-0" />
+                    {/* Ícone com cor própria; fica branco no item selecionado e ao passar o mouse */}
+                    <item.icon
+                      className={`w-4 h-4 shrink-0 transition-colors ${
+                        ativo ? 'text-white' : `${item.cor} group-hover:text-white`
+                      }`}
+                    />
                     <span className="truncate">{item.label}</span>
                   </Link>
                 </li>
@@ -67,7 +72,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
         {nav}
         <div className="px-3 py-3 border-t border-gray-100 space-y-0.5">
           <p className="px-3 pb-1 text-xs text-gray-400 truncate">{perfil.nome || perfil.email}</p>
-          <Link href="/" target="_blank" className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-600 hover:bg-gray-100">
+          <Link href="/" target="_blank" className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-600 hover:bg-primary hover:text-white">
             <Eye className="w-4 h-4" /> Ver site
           </Link>
           <button onClick={signOut} className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-600 hover:bg-red-50 hover:text-red-600">

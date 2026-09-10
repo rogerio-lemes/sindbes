@@ -99,6 +99,8 @@ select option {
 .marquee {
   overflow: hidden;
   width: 100%;
+  /* Respiro em cima e embaixo: sem isso o recorte da faixa corta a sombra dos cards */
+  padding: 0.5rem 0 2rem;
   -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
   mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
 }
@@ -117,6 +119,18 @@ select option {
   .marquee-track {
     animation: none;
   }
+}
+
+/* Balão de chamada do atendente flutuante */
+@keyframes balao-in {
+  from { opacity: 0; transform: translateX(12px) scale(0.92); }
+  to   { opacity: 1; transform: translateX(0) scale(1); }
+}
+.animate-balao-in {
+  animation: balao-in 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-balao-in { animation: none; }
 }
 
 /* Mockup do mapa: pino pulsante + flutuação */
