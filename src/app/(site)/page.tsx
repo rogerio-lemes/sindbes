@@ -10,6 +10,7 @@ import BlogPreview from '@/components/sections/BlogPreview'
 import Faq from '@/components/sections/Faq'
 import CtaBanner from '@/components/sections/CtaBanner'
 import ParceirosSlider from '@/components/sections/ParceirosSlider'
+import DicaApp from '@/components/sections/DicaApp'
 import ContactSection from '@/components/sections/ContactSection'
 import MapLocation from '@/components/sections/MapLocation'
 import EeatBio from '@/components/sections/EeatBio'
@@ -37,6 +38,7 @@ export default async function HomePage() {
       <Testimonials />
       <CtaBanner />
       <ParceirosSlider />
+      <DicaApp />
       <BlogPreview />
       <Faq />
       <EeatBio />

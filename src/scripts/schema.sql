@@ -185,6 +185,20 @@ CREATE TABLE IF NOT EXISTS atendimento_config (
 );
 
 -- =========================
+-- 4.4 CLIQUES EM APPS INDICADOS (seção de dica na home)
+-- Tabela de eventos, e não contador na linha: sem disputa de escrita
+-- e com histórico por data preservado.
+-- =========================
+CREATE TABLE IF NOT EXISTS app_cliques (
+  id BIGSERIAL PRIMARY KEY,
+  tenant_id UUID NOT NULL REFERENCES tenants(id) ON DELETE CASCADE,
+  app TEXT NOT NULL,        -- identificador do app indicado, ex: 'mei'
+  loja TEXT NOT NULL,       -- android | ios
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_app_cliques ON app_cliques(tenant_id, app, loja, created_at DESC);
+
+-- =========================
 -- 5. SERVIÇOS
 -- =========================
 CREATE TABLE IF NOT EXISTS servicos (
@@ -488,6 +502,12 @@ CREATE POLICY "Leitura publica atendimento" ON atendimento_config
 CREATE POLICY "Admin gerencia atendimento" ON atendimento_config
   FOR ALL USING (has_permission_in_tenant('marca.editar', tenant_id))
   WITH CHECK (has_permission_in_tenant('marca.editar', tenant_id));
+
+ALTER TABLE app_cliques ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Insert publico app_cliques" ON app_cliques
+  FOR INSERT WITH CHECK (loja IN ('android', 'ios'));
+CREATE POLICY "Admin le app_cliques" ON app_cliques
+  FOR SELECT USING (has_permission_in_tenant('leads.ver', tenant_id));
 
 CREATE POLICY "Insert publico banner_eventos" ON banner_eventos
   FOR INSERT WITH CHECK (tipo IN ('impressao', 'clique'));
