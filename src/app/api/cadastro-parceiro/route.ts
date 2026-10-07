@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { createHash } from 'crypto'
 import { getPublicClient, isSupabaseConfigured } from '@/lib/supabase/server'
 import { Resend } from 'resend'
 import { SITE } from '@/lib/constants'
@@ -22,6 +23,23 @@ const MAX_ARQUIVOS = 11
  * soma endereços a esta lista, mas nunca remove os dois daqui.
  */
 const DESTINOS_FIXOS = ['comercial@mercadoopen.com.br', 'adm.sindibes@gmail.com']
+
+/** Menos que isso no formulário não é gente preenchendo. */
+const TEMPO_MINIMO_MS = 4000
+
+/** Robô: preencheu o campo armadilha ou enviou rápido demais. */
+function pareceRobo(fd: FormData) {
+  const armadilha = fd.get('_hp')
+  const tempo = Number(fd.get('_t'))
+  return (typeof armadilha === 'string' && armadilha.trim() !== '') || !Number.isFinite(tempo) || tempo < TEMPO_MINIMO_MS
+}
+
+/** IP de quem envia, guardado só como hash (não dá para voltar ao IP). */
+function hashDoIp(request: Request, tenantId: string) {
+  const h = request.headers
+  const ip = (h.get('x-forwarded-for')?.split(',')[0] || h.get('x-real-ip') || 'desconhecido').trim()
+  return createHash('sha256').update(`${tenantId}:${ip}:sindibes-cadastro`).digest('hex')
+}
 
 function destinatarios() {
   const extras = (process.env.RESEND_TO_EMAIL || '')
@@ -287,6 +305,13 @@ function montarDados(fd: FormData, tipo: Tipo, imagens: { capa: string; fotos: s
 export async function POST(request: Request) {
   try {
     const fd = await request.formData()
+
+    // Robô recebe "sucesso" para não insistir, mas nada é gravado nem enviado
+    if (pareceRobo(fd)) {
+      console.warn('[cadastro] envio descartado pela proteção contra robôs')
+      return NextResponse.json({ success: true })
+    }
+
     const c = lerCadastro(fd)
 
     if (!c.nome || !c.telefone) {
@@ -301,6 +326,21 @@ export async function POST(request: Request) {
       tenantId = (await getTenant()).id || FALLBACK_TENANT_ID
     } catch (err) {
       console.error('[cadastro] falha ao resolver o tenant, usando o padrão:', err)
+    }
+
+    // Limite de envios: 3 por hora e 10 por dia por pessoa, 30 por hora no site
+    if (isSupabaseConfigured()) {
+      const { data: liberado, error } = await getPublicClient().rpc('sindibes_pode_enviar_cadastro', {
+        p_tenant_id: tenantId,
+        p_ip_hash: hashDoIp(request, tenantId),
+      })
+      if (error) console.error('[cadastro] falha ao checar o limite de envios:', error.message)
+      else if (liberado === false) {
+        return NextResponse.json(
+          { error: 'Muitos envios em pouco tempo. Tente de novo mais tarde ou fale com a gente pelo WhatsApp.' },
+          { status: 429 },
+        )
+      }
     }
 
     const origem = origemDaRequisicao(request)

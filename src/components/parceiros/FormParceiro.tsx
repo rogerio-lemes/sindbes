@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef } from 'react'
+import { useAntiRobo } from './antiRobo'
 import {
   CheckCircle2, Send, ChevronRight,
   User, Building2, Phone, Mail, Globe,
@@ -67,6 +68,7 @@ export default function FormParceiro() {
   const [preparando, setPreparando] = useState(false)
   // Envio
   const [enviando, setEnviando] = useState(false)
+  const antiRobo = useAntiRobo()
   const [sucesso, setSucesso] = useState(false)
   const [erroEnvio, setErroEnvio] = useState<string | null>(null)
 
@@ -123,6 +125,7 @@ export default function FormParceiro() {
     try {
       const fd = new FormData()
       fd.append('tipo', 'parceiro')
+      antiRobo.anexar(fd)
       Object.entries(contato).forEach(([k, v]) => fd.append(`contato_${k}`, v))
       Object.entries(empresa).forEach(([k, v]) => fd.append(k, v))
       Object.entries(endereco).forEach(([k, v]) => fd.append(`end_${k}`, v))
@@ -170,6 +173,7 @@ export default function FormParceiro() {
 
   return (
     <form onSubmit={submit} className="space-y-8">
+      {antiRobo.campo}
 
       {/* Benefícios resumidos */}
       <div className="bg-primary/5 border border-primary/15 rounded-2xl p-4">

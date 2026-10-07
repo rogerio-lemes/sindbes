@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef, useCallback } from 'react'
+import { useAntiRobo } from './antiRobo'
 import {
   CheckCircle2, Upload, X, ImageIcon,
   Phone, Mail, User, Building2, FileText, Send, ChevronRight,
@@ -71,6 +72,7 @@ export default function FormAssociado() {
   const preparando = preparandoN > 0
 
   const [enviando, setEnviando] = useState(false)
+  const antiRobo = useAntiRobo()
   const [sucesso, setSucesso] = useState(false)
   const [erroEnvio, setErroEnvio] = useState<string | null>(null)
 
@@ -157,6 +159,7 @@ export default function FormAssociado() {
     try {
       const fd = new FormData()
       fd.append('tipo', 'associado')
+      antiRobo.anexar(fd)
       Object.entries(form).forEach(([k, v]) => fd.append(k, v))
       Object.entries(endereco).forEach(([k, v]) => fd.append(`end_${k}`, v))
       redes.filter(r => r.url).forEach((r, i) => {
@@ -200,6 +203,7 @@ export default function FormAssociado() {
 
   return (
     <form onSubmit={submit} className="space-y-6">
+      {antiRobo.campo}
 
       {/* Benefícios */}
       <div className="bg-secondary/5 border border-secondary/15 rounded-2xl p-4">
