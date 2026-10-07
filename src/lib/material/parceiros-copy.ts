@@ -2,9 +2,9 @@
  * Textos de apoio para captação de parceiros e associados.
  * Material interno — a página que consome isto é noindex.
  *
- * Se o site passar a usar domínio próprio, basta trocar SITE_URL.
+ * Domínio oficial do site; os links das mensagens partem daqui.
  */
-export const SITE_URL = 'https://sindbes2.vercel.app'
+export const SITE_URL = 'https://sindibes.com.br'
 
 export const LINKS = {
   parceiros: `${SITE_URL}/parceiros`,

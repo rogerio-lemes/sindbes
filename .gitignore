@@ -35,3 +35,7 @@ next-env.d.ts
 
 .vercel
 .env*
+
+# Material de apoio: arquivos intermediários da geração dos PDFs
+material/.*
+material/*.html
