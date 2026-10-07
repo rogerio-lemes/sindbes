@@ -9,6 +9,7 @@ import {
 } from 'lucide-react'
 import CustomSelect from '@/components/ui/CustomSelect'
 import { CATEGORIA_OPTIONS, UF_OPTIONS, REDES_OPTIONS } from '@/lib/select-options'
+import { comprimirImagem, MAX_ORIGINAL_MB } from '@/lib/comprimir-imagem'
 
 const BENEFICIOS = [
   'Visibilidade para centenas de associados ativos',
@@ -30,7 +31,10 @@ const REDES_PLACEHOLDERS: Record<string, string> = {
   whatsapp:  'https://wa.me/5534900000000',
 }
 
-const MAX_MB = 1
+// Original aceito até 15 MB; antes do envio a foto é reduzida no navegador
+const MAX_MB = MAX_ORIGINAL_MB
+// Teto da foto já reduzida (o servidor recusa acima de 2 MB)
+const MAX_ENVIO_BYTES = 2 * 1024 * 1024
 const fmtSize = (b: number) => b < 1024 * 1024 ? `${(b / 1024).toFixed(0)} KB` : `${(b / (1024 * 1024)).toFixed(1)} MB`
 
 interface CapaPreview { file: File; url: string; tamanho: string }
@@ -59,6 +63,8 @@ export default function FormParceiro() {
   const [erroCapa, setErroCapa] = useState<string | null>(null)
   const [drag, setDrag] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
+  // Compressão da foto em andamento
+  const [preparando, setPreparando] = useState(false)
   // Envio
   const [enviando, setEnviando] = useState(false)
   const [sucesso, setSucesso] = useState(false)
@@ -92,17 +98,26 @@ export default function FormParceiro() {
   const removeRede = (i: number) => setRedes(r => r.filter((_, j) => j !== i))
 
   // Upload capa
-  const handleCapa = (file: File | null) => {
+  const handleCapa = async (file: File | null) => {
     setErroCapa(null)
     if (!file) return
     if (!file.type.startsWith('image/')) { setErroCapa('Selecione uma imagem (JPG, PNG, WEBP).'); return }
-    if (file.size > MAX_MB * 1024 * 1024) { setErroCapa('A imagem deve ter no máximo 1 MB.'); return }
-    if (capa) URL.revokeObjectURL(capa.url)
-    setCapa({ file, url: URL.createObjectURL(file), tamanho: fmtSize(file.size) })
+    if (file.size > MAX_MB * 1024 * 1024) { setErroCapa(`A imagem deve ter no máximo ${MAX_MB} MB.`); return }
+    // Reduz a foto no navegador antes de guardar para envio
+    setPreparando(true)
+    try {
+      const reduzida = await comprimirImagem(file)
+      if (reduzida.size > MAX_ENVIO_BYTES) {
+        setErroCapa('Não foi possível reduzir esta imagem. Tente outra foto em JPG.'); return
+      }
+      if (capa) URL.revokeObjectURL(capa.url)
+      setCapa({ file: reduzida, url: URL.createObjectURL(reduzida), tamanho: fmtSize(reduzida.size) })
+    } finally { setPreparando(false) }
   }
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (preparando) return
     if (!capa) { setErroEnvio('A foto de capa é obrigatória.'); return }
     setEnviando(true); setErroEnvio(null)
     try {
@@ -454,7 +469,7 @@ export default function FormParceiro() {
           <ImageIcon className="w-4 h-4 text-primary" /> Foto de capa *
           <span className="font-normal text-gray-400 text-xs">(aparece no topo da página e nos cards)</span>
         </legend>
-        <p className="text-xs text-gray-400 mb-3">Proporção 16:9 recomendada · máx. 1 MB · JPG, PNG ou WEBP</p>
+        <p className="text-xs text-gray-400 mb-3">Proporção 16:9 recomendada · até 15 MB, reduzimos automaticamente · JPG, PNG ou WEBP</p>
 
         {capa ? (
           <div className="relative rounded-2xl overflow-hidden border border-gray-200 bg-gray-50">
@@ -486,7 +501,7 @@ export default function FormParceiro() {
           >
             <Upload className="w-8 h-8 text-gray-300 mx-auto mb-2" />
             <p className="text-sm text-gray-500">Arraste a foto ou clique para selecionar</p>
-            <p className="text-xs text-gray-400 mt-1">JPG, PNG ou WEBP · máx. 1 MB · proporção 16:9 recomendada</p>
+            <p className="text-xs text-gray-400 mt-1">JPG, PNG ou WEBP · até 15 MB, reduzimos automaticamente · proporção 16:9 recomendada</p>
           </div>
         )}
         <input ref={inputRef} type="file" accept="image/*" className="hidden"
@@ -502,13 +517,13 @@ export default function FormParceiro() {
         <p className="text-sm text-red-500 bg-red-50 border border-red-200 rounded-xl px-4 py-3">{erroEnvio}</p>
       )}
 
-      <button type="submit" disabled={enviando}
+      <button type="submit" disabled={enviando || preparando}
         className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-semibold text-white bg-primary hover:bg-primary/90 shadow-md shadow-primary/20 disabled:opacity-60 transition">
-        {enviando
+        {enviando || preparando
           ? <><svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
-            </svg>Enviando…</>
+            </svg>{preparando ? 'Preparando fotos…' : 'Enviando…'}</>
           : <><Send className="w-4 h-4" />Enviar proposta de parceria</>}
       </button>
       <p className="text-center text-xs text-gray-400">Suas informações são tratadas com sigilo.</p>

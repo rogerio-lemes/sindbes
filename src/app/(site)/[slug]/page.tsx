@@ -4,6 +4,7 @@ import { BLOG_ARTICLES, IMAGES } from '@/lib/constants'
 import { getTenant, getServicos, getServicoPorSlug } from '@/lib/tenant'
 import ServicePage from '@/components/pages/ServicePage'
 import ArticlePage from '@/components/pages/ArticlePage'
+import { listarParceiros } from '@/lib/cadastros-publicos'
 
 const fallbackServiceImages: Record<string, string> = {
   'treinamentos-e-qualificacoes-profissionais': IMAGES.servTreinamentos,
@@ -68,7 +69,9 @@ export default async function SlugPage({ params }: PageProps) {
 
   const article = BLOG_ARTICLES.find((a) => a.slug === slug)
   if (article) {
-    return <ArticlePage article={article} image={blogImages[slug] || IMAGES.blog1} />
+    // Banners de parceiro do artigo: fixos + aprovados no painel
+    const parceiros = await listarParceiros()
+    return <ArticlePage article={article} image={blogImages[slug] || IMAGES.blog1} parceiros={parceiros} />
   }
 
   notFound()

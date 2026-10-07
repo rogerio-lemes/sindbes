@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
-import { PARCEIROS } from '@/lib/parceiros'
+import { listarParceiros } from '@/lib/cadastros-publicos'
 import { SITE } from '@/lib/constants'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import {
@@ -9,13 +9,18 @@ import {
   MapPin, Phone, Mail, Clock, UserCheck,
 } from 'lucide-react'
 
+// Parceiros aprovados no painel aparecem aqui em até 1 minuto
+export const revalidate = 60
+
 export const metadata: Metadata = {
   title: 'Parceiros | Sindibes - Sindicato da Beleza',
   description: 'Conheça os parceiros do Sindibes, veja nossa localização e cadastre-se como parceiro ou associado.',
   alternates: { canonical: '/parceiros' },
 }
 
-export default function ParceirosPage() {
+export default async function ParceirosPage() {
+  const parceiros = await listarParceiros()
+
   return (
     <>
       <Breadcrumbs items={[{ label: 'Parceiros' }]} />
@@ -138,7 +143,7 @@ export default function ParceirosPage() {
       </section>
 
       {/* ── Parceiros cadastrados ── */}
-      {PARCEIROS.length > 0 && (
+      {parceiros.length > 0 && (
         <section className="max-w-[1200px] mx-auto px-4 pb-16">
           <div className="text-center mb-10">
             <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-secondary">
@@ -147,7 +152,7 @@ export default function ParceirosPage() {
             <h2 className="text-2xl md:text-3xl font-bold mt-2 text-text">Quem já faz parte da rede</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {PARCEIROS.map((p) => (
+            {parceiros.map((p) => (
               <Link
                 key={p.slug}
                 href={`/parceiros/${p.slug}`}

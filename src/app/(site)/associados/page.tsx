@@ -2,9 +2,13 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
 import { getTenant } from '@/lib/tenant'
-import { ASSOCIADOS } from '@/lib/associados'
+import type { Associado } from '@/lib/associados'
+import { listarAssociados } from '@/lib/cadastros-publicos'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import { Sparkles, MapPin, ArrowRight, Store, BadgeCheck } from 'lucide-react'
+
+// Filiados aprovados no painel aparecem aqui em até 1 minuto
+export const revalidate = 60
 
 export async function generateMetadata(): Promise<Metadata> {
   const { config } = await getTenant()
@@ -15,7 +19,7 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-function AssociadoCard({ a, i = 0 }: { a: (typeof ASSOCIADOS)[number]; i?: number }) {
+function AssociadoCard({ a, i = 0 }: { a: Associado; i?: number }) {
   return (
     <Link
       href={`/associados/${a.slug}`}
@@ -50,8 +54,9 @@ function AssociadoCard({ a, i = 0 }: { a: (typeof ASSOCIADOS)[number]; i?: numbe
   )
 }
 
-export default function FiliadosPage() {
-  const novos = ASSOCIADOS.filter((a) => a.novo)
+export default async function FiliadosPage() {
+  const associados = await listarAssociados()
+  const novos = associados.filter((a) => a.novo)
 
   return (
     <>
@@ -70,7 +75,7 @@ export default function FiliadosPage() {
         </p>
         <div className="flex flex-wrap items-center justify-center gap-6 mt-8">
           <div className="text-center">
-            <span className="block text-3xl font-bold text-primary">{ASSOCIADOS.length}+</span>
+            <span className="block text-3xl font-bold text-primary">{associados.length}+</span>
             <span className="text-xs text-gray-400 uppercase tracking-wider">Filiados na vitrine</span>
           </div>
           <div className="w-px h-10 bg-gray-200" />
@@ -105,7 +110,7 @@ export default function FiliadosPage() {
           <h2 className="text-2xl md:text-3xl font-bold bicolor-title">Vitrine de <span>Filiados</span></h2>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {ASSOCIADOS.map((a, i) => (
+          {associados.map((a, i) => (
             <AssociadoCard key={a.slug} a={a} i={i} />
           ))}
         </div>

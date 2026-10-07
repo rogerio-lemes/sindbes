@@ -6,11 +6,18 @@ import { usePathname } from 'next/navigation'
 import { LogOut, Eye, Menu, X } from 'lucide-react'
 import { useAdminAuth } from './AdminAuthProvider'
 import { MENU } from './menu'
+import { usePendentes } from './cadastros/comum'
 
 export default function AdminShell({ children }: { children: React.ReactNode }) {
   const { tenantNome, perfil, canAccess, signOut } = useAdminAuth()
   const pathname = usePathname()
   const [mobileOpen, setMobileOpen] = useState(false)
+  // Cadastros aguardando análise: selo ao lado de Associados e Parceiros
+  const pendentes = usePendentes()
+  const selo: Record<string, number> = {
+    '/admin/associados': pendentes?.associados ?? 0,
+    '/admin/parceiros': pendentes?.parceiros ?? 0,
+  }
 
   const grupos = MENU
     .map((g) => ({ ...g, itens: g.itens.filter((i) => !i.permissao || canAccess(i.permissao)) }))
@@ -44,6 +51,16 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
                       }`}
                     />
                     <span className="truncate">{item.label}</span>
+                    {selo[item.href] > 0 && (
+                      <span
+                        title={`${selo[item.href]} aguardando análise`}
+                        className={`ml-auto min-w-[20px] h-5 px-1.5 rounded-full text-[11px] font-bold flex items-center justify-center shrink-0 ${
+                          ativo ? 'bg-white text-primary' : 'bg-amber-500 text-white'
+                        }`}
+                      >
+                        {selo[item.href]}
+                      </span>
+                    )}
                   </Link>
                 </li>
               )

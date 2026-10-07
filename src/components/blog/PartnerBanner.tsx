@@ -7,9 +7,10 @@ import { BadgePercent, ExternalLink, MessageCircle, Sparkles } from 'lucide-reac
 import { PARCEIROS, type Parceiro } from '@/lib/parceiros'
 
 // Pool de parceiros reais (não exemplo) com capa cadastrada.
+// A lista vem do servidor (fixos + aprovados no painel); sem ela, usa só os fixos.
 // Qualquer novo parceiro adicionado ao array entra automaticamente na rotação.
-function useRandomParceiro(): Parceiro | null {
-  const pool = PARCEIROS.filter(p => !p.exemplo && p.capa)
+function useRandomParceiro(lista: Parceiro[] = PARCEIROS): Parceiro | null {
+  const pool = lista.filter(p => !p.exemplo && p.capa)
   // Inicializa com índice aleatório — muda a cada montagem do componente
   const [parceiro] = useState<Parceiro | null>(() => {
     if (!pool.length) return null
@@ -19,8 +20,8 @@ function useRandomParceiro(): Parceiro | null {
 }
 
 // ── Banner sidebar (coluna estreita ~260 px) ─────────────────────────────
-export function PartnerBannerSidebar() {
-  const p = useRandomParceiro()
+export function PartnerBannerSidebar({ parceiros }: { parceiros?: Parceiro[] } = {}) {
+  const p = useRandomParceiro(parceiros)
   if (!p) return null
 
   const waMsg = encodeURIComponent(`Olá! Vi o anúncio da ${p.nome} no site do Sindibes e quero saber mais sobre as condições para associados.`)
@@ -70,8 +71,8 @@ export function PartnerBannerSidebar() {
 }
 
 // ── Banner inline (largura total do artigo) ───────────────────────────────
-export function PartnerBannerInline() {
-  const p = useRandomParceiro()
+export function PartnerBannerInline({ parceiros }: { parceiros?: Parceiro[] } = {}) {
+  const p = useRandomParceiro(parceiros)
   if (!p) return null
 
   const waMsg = encodeURIComponent(`Olá! Vi o anúncio da ${p.nome} no site do Sindibes e quero saber mais sobre as condições para associados.`)

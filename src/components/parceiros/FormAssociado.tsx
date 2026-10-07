@@ -8,6 +8,7 @@ import {
 } from 'lucide-react'
 import CustomSelect from '@/components/ui/CustomSelect'
 import { UF_OPTIONS, REDES_OPTIONS } from '@/lib/select-options'
+import { comprimirImagem, MAX_ORIGINAL_MB } from '@/lib/comprimir-imagem'
 
 const BENEFICIOS = [
   'Planos de saúde e odontológico com preços negociados',
@@ -31,7 +32,14 @@ const REDES_PLACEHOLDERS: Record<string, string> = {
 }
 
 const MAX_FOTOS = 10
-const MAX_MB = 1
+// Original aceito até 15 MB; antes do envio cada foto é reduzida no navegador
+const MAX_MB = MAX_ORIGINAL_MB
+// Teto de cada foto já reduzida (o servidor recusa acima de 2 MB)
+const MAX_ENVIO_BYTES = 2 * 1024 * 1024
+// Alvo menor para as fotos: capa + 10 fotos ficam perto de 3,3 MB no pior caso
+const ALVO_FOTO_BYTES = 300 * 1024
+// Teto do envio inteiro (a Vercel recusa corpo acima de ~4,5 MB)
+const MAX_TOTAL_BYTES = 3.8 * 1024 * 1024
 
 interface Foto { file: File; url: string; tamanho: string }
 interface CapaPreview { file: File; url: string; tamanho: string }
@@ -58,6 +66,10 @@ export default function FormAssociado() {
   const [drag, setDrag] = useState(false)
   const fotosRef = useRef<HTMLInputElement>(null)
 
+  // Quantas compressões estão em andamento (capa e fotos podem rodar juntas)
+  const [preparandoN, setPreparandoN] = useState(0)
+  const preparando = preparandoN > 0
+
   const [enviando, setEnviando] = useState(false)
   const [sucesso, setSucesso] = useState(false)
   const [erroEnvio, setErroEnvio] = useState<string | null>(null)
@@ -78,29 +90,55 @@ export default function FormAssociado() {
   const removeRede = (i: number) => setRedes(r => r.filter((_, j) => j !== i))
 
   // Capa
-  const handleCapa = (file: File | null) => {
+  const handleCapa = async (file: File | null) => {
     setErroCapa(null)
     if (!file) return
     if (!file.type.startsWith('image/')) { setErroCapa('Selecione uma imagem (JPG, PNG, WEBP).'); return }
-    if (file.size > MAX_MB * 1024 * 1024) { setErroCapa('A imagem deve ter no máximo 1 MB.'); return }
-    if (capa) URL.revokeObjectURL(capa.url)
-    setCapa({ file, url: URL.createObjectURL(file), tamanho: fmtSize(file.size) })
+    if (file.size > MAX_MB * 1024 * 1024) { setErroCapa(`A imagem deve ter no máximo ${MAX_MB} MB.`); return }
+    // Reduz a foto no navegador antes de guardar para envio
+    setPreparandoN(n => n + 1)
+    try {
+      const reduzida = await comprimirImagem(file)
+      if (reduzida.size > MAX_ENVIO_BYTES) {
+        setErroCapa('Não foi possível reduzir esta imagem. Tente outra foto em JPG.'); return
+      }
+      if (capa) URL.revokeObjectURL(capa.url)
+      setCapa({ file: reduzida, url: URL.createObjectURL(reduzida), tamanho: fmtSize(reduzida.size) })
+    } finally { setPreparandoN(n => n - 1) }
   }
 
   // Fotos adicionais
-  const addFotos = useCallback((files: FileList | null) => {
+  const addFotos = useCallback(async (files: FileList | null) => {
     if (!files) return
     setErroFoto(null)
-    const add: Foto[] = []
+    const aceitas: File[] = []
     const errs: string[] = []
     Array.from(files).forEach(file => {
       if (!file.type.startsWith('image/')) { errs.push(`"${file.name}" não é imagem.`); return }
-      if (file.size > MAX_MB * 1024 * 1024) { errs.push(`"${file.name}" excede 1 MB.`); return }
-      if (fotos.length + add.length >= MAX_FOTOS) { errs.push('Limite de 10 imagens atingido.'); return }
-      add.push({ file, url: URL.createObjectURL(file), tamanho: fmtSize(file.size) })
+      if (file.size > MAX_MB * 1024 * 1024) { errs.push(`"${file.name}" excede ${MAX_MB} MB.`); return }
+      if (fotos.length + aceitas.length >= MAX_FOTOS) { errs.push('Limite de 10 imagens atingido.'); return }
+      aceitas.push(file)
     })
     if (errs.length) setErroFoto(errs[0])
-    setFotos(prev => [...prev, ...add].slice(0, MAX_FOTOS))
+    if (!aceitas.length) return
+
+    // Reduz uma por vez para não pesar no celular
+    setPreparandoN(n => n + 1)
+    try {
+      const add: Foto[] = []
+      for (const file of aceitas) {
+        const reduzida = await comprimirImagem(file, ALVO_FOTO_BYTES)
+        if (reduzida.size > MAX_ENVIO_BYTES) {
+          setErroFoto(`Não foi possível reduzir "${file.name}". Tente outra foto em JPG.`); continue
+        }
+        add.push({ file: reduzida, url: URL.createObjectURL(reduzida), tamanho: fmtSize(reduzida.size) })
+      }
+      setFotos(prev => {
+        const todas = [...prev, ...add]
+        todas.slice(MAX_FOTOS).forEach(f => URL.revokeObjectURL(f.url))
+        return todas.slice(0, MAX_FOTOS)
+      })
+    } finally { setPreparandoN(n => n - 1) }
   }, [fotos.length])
 
   const removeFoto = (i: number) => setFotos(prev => {
@@ -109,7 +147,12 @@ export default function FormAssociado() {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (preparando) return
     if (!capa) { setErroEnvio('A foto de capa do negócio é obrigatória.'); return }
+    const total = capa.file.size + fotos.reduce((t, f) => t + f.file.size, 0)
+    if (total > MAX_TOTAL_BYTES) {
+      setErroEnvio('As fotos somam mais do que conseguimos enviar. Remova uma ou duas e tente de novo.'); return
+    }
     setEnviando(true); setErroEnvio(null)
     try {
       const fd = new FormData()
@@ -315,7 +358,7 @@ export default function FormAssociado() {
         <legend className="flex items-center gap-2 text-sm font-bold text-text mb-2">
           <ImageIcon className="w-4 h-4 text-secondary" />
           Foto de capa do negócio *
-          <span className="font-normal text-gray-400 text-xs">(fachada ou ambiente — máx. 1 MB)</span>
+          <span className="font-normal text-gray-400 text-xs">(fachada ou ambiente · até 15 MB, reduzimos automaticamente)</span>
         </legend>
         <p className="text-xs text-gray-400 mb-3">Aparecerá no topo da sua página. Proporção 16:9 recomendada.</p>
 
@@ -345,7 +388,7 @@ export default function FormAssociado() {
           >
             <Upload className="w-7 h-7 text-gray-300 mx-auto mb-2" />
             <p className="text-sm text-gray-500">Arraste a foto ou clique para selecionar</p>
-            <p className="text-xs text-gray-400 mt-1">JPG, PNG ou WEBP · máx. 1 MB</p>
+            <p className="text-xs text-gray-400 mt-1">JPG, PNG ou WEBP · até 15 MB, reduzimos automaticamente</p>
           </div>
         )}
         <input ref={capaRef} type="file" accept="image/*" className="hidden"
@@ -358,7 +401,7 @@ export default function FormAssociado() {
         <legend className="flex items-center gap-2 text-sm font-bold text-text mb-2">
           <ImageIcon className="w-4 h-4 text-secondary" />
           Fotos do local / negócio
-          <span className="font-normal text-gray-400 text-xs">(máx. 10 · 1 MB cada)</span>
+          <span className="font-normal text-gray-400 text-xs">(máx. 10 · até 15 MB cada, reduzimos automaticamente)</span>
         </legend>
         <p className="text-xs text-gray-400 mb-3">Ambiente interno, equipe, produtos — aparecerão num carrossel na sua página.</p>
 
@@ -404,10 +447,10 @@ export default function FormAssociado() {
         <p className="text-sm text-red-500 bg-red-50 border border-red-200 rounded-xl px-4 py-3">{erroEnvio}</p>
       )}
 
-      <button type="submit" disabled={enviando}
+      <button type="submit" disabled={enviando || preparando}
         className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-semibold text-white bg-secondary hover:bg-secondary/90 shadow-md shadow-secondary/20 disabled:opacity-60 transition">
-        {enviando
-          ? <><svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" /></svg>Enviando…</>
+        {enviando || preparando
+          ? <><svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" /></svg>{preparando ? 'Preparando fotos…' : 'Enviando…'}</>
           : <><Send className="w-4 h-4" />Solicitar associação</>}
       </button>
       <p className="text-center text-xs text-gray-400">Suas informações são tratadas com sigilo.</p>

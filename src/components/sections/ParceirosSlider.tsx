@@ -3,12 +3,16 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { PARCEIROS } from '@/lib/parceiros'
+import { PARCEIROS, type Parceiro } from '@/lib/parceiros'
 import { Handshake, BadgePercent, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react'
 
-export default function ParceirosSlider() {
+/**
+ * Recebe a lista já pronta do servidor (fixos + aprovados no painel).
+ * Sem a prop, mostra só os fixos do código.
+ */
+export default function ParceirosSlider({ parceiros = PARCEIROS }: { parceiros?: Parceiro[] }) {
   const [current, setCurrent] = useState(0)
-  const total = PARCEIROS.length
+  const total = parceiros.length
 
   useEffect(() => {
     if (total <= 1) return
@@ -16,7 +20,8 @@ export default function ParceirosSlider() {
     return () => clearInterval(interval)
   }, [total])
 
-  const p = PARCEIROS[current]
+  const p = parceiros[current]
+  if (!p) return null
 
   return (
     <section className="py-20">
@@ -80,7 +85,7 @@ export default function ParceirosSlider() {
 
         {total > 1 && (
           <div className="flex justify-center gap-2 mt-6">
-            {PARCEIROS.map((_, i) => (
+            {parceiros.map((_, i) => (
               <button
                 key={i}
                 onClick={() => setCurrent(i)}

@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import { getTenant } from '@/lib/tenant'
 import { getVitrineSlides } from '@/lib/tenant/vitrine'
+import { listarParceiros } from '@/lib/cadastros-publicos'
 import HeroCarousel from '@/components/sections/HeroCarousel'
 import ServicesGrid from '@/components/sections/ServicesGrid'
 import Diferenciais from '@/components/sections/Diferenciais'
@@ -27,7 +28,10 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function HomePage() {
   const tenant = await getTenant()
-  const slides = await getVitrineSlides(tenant.id)
+  const [slides, parceiros] = await Promise.all([
+    getVitrineSlides(tenant.id),
+    listarParceiros(),
+  ])
 
   return (
     <>
@@ -37,7 +41,7 @@ export default async function HomePage() {
       <About />
       <Testimonials />
       <CtaBanner />
-      <ParceirosSlider />
+      <ParceirosSlider parceiros={parceiros} />
       <DicaApp />
       <BlogPreview />
       <Faq />

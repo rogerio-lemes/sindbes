@@ -10,10 +10,13 @@ import Breadcrumbs from '@/components/Breadcrumbs'
 import ArticleAudioPlayer from '@/components/ArticleAudioPlayer'
 import { ArrowRight, Calendar, Clock, Share2, User } from 'lucide-react'
 import { PartnerBannerSidebar, PartnerBannerInline } from '@/components/blog/PartnerBanner'
+import type { Parceiro } from '@/lib/parceiros'
 
 interface Props {
   article: { titulo: string; slug: string }
   image: string
+  /** Parceiros para os banners (fixos + aprovados no painel) */
+  parceiros?: Parceiro[]
 }
 
 const blogImages: Record<string, string> = {
@@ -25,7 +28,7 @@ const blogImages: Record<string, string> = {
   'beneficios-para-associados-sindibes-passo-a-passo-': IMAGES.blog6,
 }
 
-export default function ArticlePage({ article, image }: Props) {
+export default function ArticlePage({ article, image, parceiros }: Props) {
   const { config, servicos } = useTenant()
   const content = ARTICLE_CONTENT[article.slug]
   const otherArticles = BLOG_ARTICLES.filter((a) => a.slug !== article.slug).slice(0, 3)
@@ -101,7 +104,7 @@ export default function ArticlePage({ article, image }: Props) {
               </div>
 
               {/* ── Banner parceiro sidebar ── */}
-              <PartnerBannerSidebar />
+              <PartnerBannerSidebar parceiros={parceiros} />
             </div>
           </aside>
 
@@ -172,7 +175,7 @@ export default function ArticlePage({ article, image }: Props) {
                   )}
 
                   {/* ── Banner parceiro inline após seção 2 ── */}
-                  {i === 2 && <PartnerBannerInline />}
+                  {i === 2 && <PartnerBannerInline parceiros={parceiros} />}
                 </div>
               ))
             ) : (
