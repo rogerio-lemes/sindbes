@@ -1,7 +1,7 @@
 /**
  * Gera os dois folders de captação (Associado e Parceiro) em PDF.
  * Cada um: logo, benefícios, ferramentas, passo a passo e CTA para falar
- * com o Wagner no WhatsApp publicado no site.
+ * com o Wagner no WhatsApp dele.
  *
  * Uso: node material/gerar-folders.js
  */
@@ -16,9 +16,9 @@ const b64 = (arq, tipo) => `data:${tipo};base64,${fs.readFileSync(arq).toString(
 const LOGO = b64(path.join(RAIZ, 'public/images/logo.jpg'), 'image/jpeg')
 const WAGNER = b64(path.join(RAIZ, 'public/images/atendente-wagner.jpg'), 'image/jpeg')
 
-// Dados publicados no site (src/lib/constants.ts)
-const WHATS = '5534984468553'
-const WHATS_DISPLAY = '(34) 98446-8553'
+// WhatsApp do Wagner usado nos folders (pedido do Rogério em 08/10/2026)
+const WHATS = '5534984430840'
+const WHATS_DISPLAY = '(34) 98443-0840'
 const HORARIO = 'Segunda a sexta, das 8h30 às 16h'
 const SITE = 'https://sindibes.com.br'
 
