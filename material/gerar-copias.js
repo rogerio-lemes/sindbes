@@ -1,13 +1,12 @@
 /**
- * Mensagens de WhatsApp do Wagner para enviar os folders, com os links
- * que abrem o WhatsApp com o texto pronto. Gera material/Copias-WhatsApp-Wagner.txt.
+ * Mensagens de WhatsApp do Wagner para enviar os folders, prontas para
+ * copiar e colar (sem links de envio). Gera material/Copias-WhatsApp-Wagner.txt.
  *
  * Uso: node material/gerar-copias.js
  */
 const fs = require('fs')
 const path = require('path')
 
-const WHATS = '5534984274161'
 const WHATS_DISPLAY = '(34) 98427-4161'
 
 const ASSOCIADO = `Olá, tudo bem? Aqui é o Wagner, do *Sindibes, o Sindicato da Beleza de Uberlândia*. 😊
@@ -66,33 +65,19 @@ Ficou com alguma dúvida ou prefere fazer o cadastro comigo? É só me chamar aq
 Wagner
 Atendimento Sindibes`
 
-const links = (msg) => ({
-  wagner: `https://wa.me/${WHATS}?text=${encodeURIComponent(msg)}`,
-  escolher: `https://wa.me/?text=${encodeURIComponent(msg)}`,
-})
-
 const blocos = [
   ['ASSOCIADO', ASSOCIADO, 'Sindibes-Seja-Associado.pdf'],
   ['PARCEIRO', PARCEIRO, 'Sindibes-Seja-Parceiro.pdf'],
 ]
 
-const saida = blocos.map(([titulo, msg, pdf]) => {
-  const l = links(msg)
-  return [
-    `==================== MENSAGEM PARA ${titulo} ====================`,
-    `Enviar junto com o PDF: ${pdf}`,
-    '',
-    msg,
-    '',
-    `Link para mandar ao Wagner (${WHATS_DISPLAY}):`,
-    l.wagner,
-    '',
-    'Link para abrir o WhatsApp e escolher o contato:',
-    l.escolher,
-    '',
-  ].join('\n')
-}).join('\n')
+const saida = blocos.map(([titulo, msg, pdf]) => [
+  `==================== MENSAGEM PARA ${titulo} ====================`,
+  `Enviar junto com o PDF: ${pdf}`,
+  '',
+  msg,
+  '',
+].join('\n')).join('\n')
 
 fs.writeFileSync(path.join(__dirname, 'Copias-WhatsApp-Wagner.txt'), saida, 'utf8')
-module.exports = { ASSOCIADO, PARCEIRO, links }
+module.exports = { ASSOCIADO, PARCEIRO }
 console.log('Copias-WhatsApp-Wagner.txt gerado')
