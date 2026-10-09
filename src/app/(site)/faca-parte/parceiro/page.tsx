@@ -6,9 +6,20 @@ import { SITE } from '@/lib/constants'
 import { Handshake, BadgePercent, Globe, Users, Megaphone, Star } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Seja Parceiro | Sindibes - Sindicato da Beleza',
+  title: 'Seja Parceiro',
   description: 'Cadastre sua empresa como parceira do Sindibes e ofereça vantagens exclusivas para centenas de profissionais e empresas da beleza de Uberlândia.',
   alternates: { canonical: '/faca-parte/parceiro' },
+  // Prévia do link no WhatsApp e redes sociais
+  openGraph: {
+    type: 'website',
+    locale: 'pt_BR',
+    siteName: 'Sindibes - Sindicato da Beleza',
+    url: '/faca-parte/parceiro',
+    title: 'Seja Parceiro Sindibes: sua empresa em destaque para o setor da beleza',
+    description: 'Cadastre-se em 5 minutos e ganhe página no site do sindicato, selo de parceiro e divulgação para profissionais da beleza de Uberlândia.',
+    images: [{ url: '/images/og/parceiro.jpg', width: 1200, height: 630, alt: 'Seja Parceiro Sindibes' }],
+  },
+  twitter: { card: 'summary_large_image', images: ['/images/og/parceiro.jpg'] },
 }
 
 const DIFERENCIAIS = [

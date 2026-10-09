@@ -6,9 +6,20 @@ import { SITE } from '@/lib/constants'
 import { UserCheck, HeartPulse, Scale, GraduationCap, CreditCard, ShieldCheck, BadgeCheck } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Seja Associado | Sindibes - Sindicato da Beleza',
+  title: 'Seja Associado',
   description: 'Associe-se ao Sindibes e tenha acesso a planos de saúde, assessoria jurídica, treinamentos e benefícios exclusivos para o setor da beleza de Uberlândia.',
   alternates: { canonical: '/faca-parte/associado' },
+  // Prévia do link no WhatsApp e redes sociais
+  openGraph: {
+    type: 'website',
+    locale: 'pt_BR',
+    siteName: 'Sindibes - Sindicato da Beleza',
+    url: '/faca-parte/associado',
+    title: 'Seja Associado Sindibes: seu negócio com página no site do sindicato',
+    description: 'Cadastre-se em 5 minutos e tenha plano de saúde e odontológico, assessoria jurídica e contábil, cursos e descontos exclusivos.',
+    images: [{ url: '/images/og/associado.jpg', width: 1200, height: 630, alt: 'Seja Associado Sindibes' }],
+  },
+  twitter: { card: 'summary_large_image', images: ['/images/og/associado.jpg'] },
 }
 
 const DIFERENCIAIS = [

@@ -30,9 +30,17 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 
   return {
+    // Base dos endereços absolutos: o WhatsApp só mostra a prévia com URL completa
+    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://sindibes.com.br'),
     title: { default: title, template: `%s | ${title.split('|')[0].trim()}` },
     description,
-    openGraph: { type: 'website', locale: 'pt_BR', siteName: title },
+    openGraph: {
+      type: 'website',
+      locale: 'pt_BR',
+      siteName: title,
+      images: [{ url: '/images/og/site.jpg', width: 1200, height: 630, alt: 'Sindibes, Sindicato da Beleza de Uberlândia' }],
+    },
+    twitter: { card: 'summary_large_image', images: ['/images/og/site.jpg'] },
     other: { 'geo.region': 'BR-MG' },
   }
 }
