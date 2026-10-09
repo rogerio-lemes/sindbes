@@ -10,7 +10,7 @@ const LOGO = fs.readFileSync(path.join(__dirname, '.logo.b64'), 'utf8')
 
 const SITE = 'https://sindibes.com.br'
 const CONTATO = {
-  whats: '(34) 98446-8553',
+  whats: '(34) 98427-4161',
   horario: 'Segunda a sexta, das 8h30 às 16h',
   email: 'adm.sindibes@gmail.com',
 }

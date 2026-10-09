@@ -16,9 +16,9 @@ const b64 = (arq, tipo) => `data:${tipo};base64,${fs.readFileSync(arq).toString(
 const LOGO = b64(path.join(RAIZ, 'public/images/logo.jpg'), 'image/jpeg')
 const WAGNER = b64(path.join(RAIZ, 'public/images/atendente-wagner.jpg'), 'image/jpeg')
 
-// WhatsApp do Wagner usado nos folders (pedido do Rogério em 08/10/2026)
-const WHATS = '5534984430840'
-const WHATS_DISPLAY = '(34) 98443-0840'
+// WhatsApp do Wagner usado nos folders (pedido do Rogério em 09/10/2026)
+const WHATS = '5534984274161'
+const WHATS_DISPLAY = '(34) 98427-4161'
 const HORARIO = 'Segunda a sexta, das 8h30 às 16h'
 const SITE = 'https://sindibes.com.br'
 
