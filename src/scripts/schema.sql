@@ -138,6 +138,8 @@ CREATE TABLE IF NOT EXISTS vitrine_slides (
   data_fim DATE,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
+-- Garante a coluna caso a tabela já existisse sem ela (migrations parciais)
+ALTER TABLE vitrine_slides ADD COLUMN IF NOT EXISTS slider_key TEXT NOT NULL DEFAULT 'home_hero';
 CREATE INDEX IF NOT EXISTS idx_vitrine_tenant_slider ON vitrine_slides(tenant_id, slider_key, ordem);
 
 CREATE TABLE IF NOT EXISTS banners (
