@@ -391,11 +391,19 @@ ALTER TABLE vagas ENABLE ROW LEVEL SECURITY;
 -- -------------------------------------------------------
 -- Função helper: retorna o perfil do usuário autenticado
 -- -------------------------------------------------------
+-- Garante colunas caso a tabela perfis já existisse de versão anterior
+ALTER TABLE perfis ADD COLUMN IF NOT EXISTS user_id UUID;
+ALTER TABLE perfis ADD COLUMN IF NOT EXISTS tenant_id UUID REFERENCES tenants(id) ON DELETE SET NULL;
+ALTER TABLE perfis ADD COLUMN IF NOT EXISTS papel TEXT NOT NULL DEFAULT 'admin_tenant';
+ALTER TABLE perfis ADD COLUMN IF NOT EXISTS nome TEXT;
+ALTER TABLE perfis ADD COLUMN IF NOT EXISTS email TEXT;
+ALTER TABLE perfis ADD COLUMN IF NOT EXISTS created_at TIMESTAMPTZ DEFAULT NOW();
+
 CREATE OR REPLACE FUNCTION current_perfil()
 RETURNS TABLE(user_id UUID, tenant_id UUID, papel TEXT) AS $$
-  SELECT p.user_id, p.tenant_id, p.papel
-  FROM perfis p
-  WHERE p.user_id = auth.uid()
+  SELECT perfis.user_id, perfis.tenant_id, perfis.papel
+  FROM perfis
+  WHERE perfis.user_id = auth.uid()
   LIMIT 1;
 $$ LANGUAGE sql SECURITY DEFINER STABLE;
 
