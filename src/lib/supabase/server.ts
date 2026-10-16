@@ -1,4 +1,5 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js'
+import { DB_OPTIONS, SUPABASE_ANON_KEY } from './options'
 
 const DUMMY_URL = 'https://placeholder.supabase.co'
 const DUMMY_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsYWNlaG9sZGVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE2MDAwMDAwMDAsImV4cCI6MTkwMDAwMDAwMH0.placeholder'
@@ -14,20 +15,20 @@ function safeServiceKey(): string {
 }
 
 function safeAnonKey(): string {
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  const key = SUPABASE_ANON_KEY
   return (key && !key.includes('<')) ? key : DUMMY_KEY
 }
 
 export function getServiceClient(): SupabaseClient {
-  return createClient(safeUrl(), safeServiceKey())
+  return createClient(safeUrl(), safeServiceKey(), DB_OPTIONS) as unknown as SupabaseClient
 }
 
 export function getPublicClient(): SupabaseClient {
-  return createClient(safeUrl(), safeAnonKey())
+  return createClient(safeUrl(), safeAnonKey(), DB_OPTIONS) as unknown as SupabaseClient
 }
 
 export function isSupabaseConfigured(): boolean {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  const key = SUPABASE_ANON_KEY
   return !!(url && key && !url.includes('<') && !key.includes('<'))
 }

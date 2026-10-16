@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { getServiceClient, isSupabaseConfigured } from '@/lib/supabase/server'
+import { DB_OPTIONS, SUPABASE_ANON_KEY } from '@/lib/supabase/options'
 
 /**
  * Cadastro da chave da IA pelo painel.
@@ -13,8 +14,8 @@ import { getServiceClient, isSupabaseConfigured } from '@/lib/supabase/server'
 function clienteComToken(token: string) {
   return createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    { global: { headers: { Authorization: `Bearer ${token}` } } },
+    SUPABASE_ANON_KEY,
+    { ...DB_OPTIONS, global: { headers: { Authorization: `Bearer ${token}` } } },
   )
 }
 

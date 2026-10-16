@@ -3,11 +3,12 @@
 import { useState, useEffect } from 'react'
 import { createClient, SupabaseClient } from '@supabase/supabase-js'
 import { Eye, EyeOff, Shield, CheckCircle2 } from 'lucide-react'
+import { SUPABASE_ANON_KEY } from '@/lib/supabase/options'
 
 function getSupabase(): SupabaseClient {
   return createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co',
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder'
+    SUPABASE_ANON_KEY || 'placeholder'
   )
 }
 
