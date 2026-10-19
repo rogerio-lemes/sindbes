@@ -13,20 +13,25 @@ export default function VagaForm() {
   })
   const [enviando, setEnviando] = useState(false)
   const [modal, setModal] = useState(false)
+  const [erro, setErro] = useState(false)
 
   function set(k: string, v: string) { setForm((f) => ({ ...f, [k]: v })) }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setEnviando(true)
+    setErro(false)
+    let ok = false
     try {
-      await fetch('/api/recrutamento', {
+      const res = await fetch('/api/recrutamento', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...form, tipoRegistro: 'vaga' }),
       })
-    } catch { /* mostra confirmação mesmo se a API falhar */ }
+      ok = res.ok
+    } catch { /* tratado abaixo */ }
     setEnviando(false)
+    if (!ok) { setErro(true); return }
     setModal(true)
     setForm({ titulo: '', funcao: '', empresa: '', tipo: '', local: 'Uberlândia - MG', salario: '', contato: '', descricao: '' })
   }
@@ -86,6 +91,12 @@ export default function VagaForm() {
           <label className="block text-sm font-medium text-gray-700 mb-1.5">Descrição da vaga</label>
           <textarea value={form.descricao} onChange={(e) => set('descricao', e.target.value)} rows={4} placeholder="Requisitos, atividades, diferenciais e benefícios." className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-1 focus:ring-primary outline-none text-sm resize-none" />
         </div>
+
+        {erro && (
+          <p className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl px-4 py-3">
+            Não conseguimos publicar sua vaga agora. Tente de novo em instantes ou fale com a gente pelo WhatsApp.
+          </p>
+        )}
 
         <button type="submit" disabled={enviando} className="w-full py-4 gradient-primary text-white font-semibold rounded-xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-60">
           <Send className="w-4 h-4" /> {enviando ? 'Publicando...' : 'Publicar vaga'}
