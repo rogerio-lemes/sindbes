@@ -26,6 +26,9 @@ const CIDADES = [
   'Monte Alegre de Minas', 'Monte Carmelo', 'Prata', 'Tupaciguara',
 ]
 
+// Fotos de fundo como CSS: extensões e scripts que mexem em <img> não conseguem cobri-las sobre o texto
+const fundo = (src: string) => `url(${src})`
+
 const ancora = (s: string) =>
   s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-')
 
@@ -149,13 +152,13 @@ export default async function AbrangenciaPage() {
       <Breadcrumbs items={[{ label: 'Institucional', href: '/institucional' }, { label: 'Cidades e Categorias' }]} />
 
       {/* Abertura com foto de fundo */}
-      <section className="relative overflow-hidden text-white">
-        <Image src="/images/sobre.jpg" alt="Salão de beleza em Uberlândia" fill priority className="object-cover" sizes="100vw" />
-        <div className="absolute inset-0 bg-gradient-to-br from-primary-dark/95 via-primary/85 to-secondary/90" />
-        <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-white/10 blur-3xl" />
-        <div className="absolute -bottom-32 -left-20 w-96 h-96 rounded-full bg-secondary/40 blur-3xl" />
+      <section className="relative isolate overflow-hidden text-white">
+        <div role="img" aria-label="Salão de beleza em Uberlândia" className="absolute inset-0 -z-20 bg-cover bg-center" style={{ backgroundImage: fundo('/images/sobre.jpg') }} />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-br from-primary-dark/95 via-primary/85 to-secondary/90" />
+        <div className="absolute -z-10 -top-24 -right-24 w-96 h-96 rounded-full bg-white/10 blur-3xl" />
+        <div className="absolute -z-10 -bottom-32 -left-20 w-96 h-96 rounded-full bg-secondary/40 blur-3xl" />
 
-        <div className="relative max-w-[1100px] mx-auto px-4 pt-16 pb-24 md:pt-20 md:pb-28 text-center">
+        <div className="relative z-10 max-w-[1100px] mx-auto px-4 pt-16 pb-24 md:pt-20 md:pb-28 text-center">
           <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest bg-white/15 backdrop-blur-sm border border-white/20 px-4 py-1.5 rounded-full">
             <MapPinned className="w-4 h-4" /> Base territorial
           </span>
@@ -241,7 +244,7 @@ export default async function AbrangenciaPage() {
           <article id={ancora(CIDADES[0])} className="scroll-mt-28 grid md:grid-cols-2 bg-white rounded-3xl shadow-lg overflow-hidden mb-6">
             <div className="relative h-56 md:h-auto min-h-[240px]">
               <Image src="/images/ambiente-cabeleireiro.jpg" alt="Salão de cabeleireiro em Uberlândia" fill className="object-cover" sizes="(min-width: 768px) 550px, 100vw" />
-              <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 bg-white/95 text-primary text-xs font-bold px-3 py-1.5 rounded-full shadow">
+              <span className="absolute z-10 top-4 left-4 inline-flex items-center gap-1.5 bg-white/95 text-primary text-xs font-bold px-3 py-1.5 rounded-full shadow">
                 <BadgeCheck className="w-3.5 h-3.5" /> Sede do Sindibes
               </span>
             </div>
@@ -383,10 +386,10 @@ export default async function AbrangenciaPage() {
 
       {/* Chamada final com foto */}
       <section className="px-4 py-16">
-        <div className="relative max-w-[1100px] mx-auto rounded-3xl overflow-hidden text-white text-center">
-          <Image src="/images/ambiente-spa.jpg" alt="Espaço de estética e bem-estar" fill className="object-cover" sizes="1100px" />
-          <div className="absolute inset-0 bg-gradient-to-r from-secondary/95 to-primary/90" />
-          <div className="relative px-6 py-14 md:py-16">
+        <div className="relative isolate max-w-[1100px] mx-auto rounded-3xl overflow-hidden text-white text-center">
+          <div role="img" aria-label="Espaço de estética e bem-estar" className="absolute inset-0 -z-20 bg-cover bg-center" style={{ backgroundImage: fundo('/images/ambiente-spa.jpg') }} />
+          <div className="absolute inset-0 -z-10 bg-gradient-to-r from-secondary/95 to-primary/90" />
+          <div className="relative z-10 px-6 py-14 md:py-16">
             <h2 className="text-2xl md:text-4xl font-bold max-w-2xl mx-auto">Seu negócio da beleza merece estar bem representado</h2>
             <p className="text-white/85 mt-3 max-w-xl mx-auto">
               Associe-se ao Sindibes e tenha plano de saúde, assessoria, treinamentos e divulgação, onde quer que você esteja na nossa região.
