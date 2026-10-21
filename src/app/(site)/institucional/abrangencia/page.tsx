@@ -1,13 +1,21 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
+import Image from 'next/image'
 import { getTenant } from '@/lib/tenant'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import {
   MapPinned, MapPin, Scissors, Sparkles, Hand, Footprints, Eye, Brush, Waves, HeartHandshake,
   Flower2, PenTool, Droplets, Gem, Store, Building2, User, Briefcase, HeartPulse, Scale,
   GraduationCap, CreditCard, ShieldCheck, ScrollText, Megaphone, ArrowRight, MessageCircle,
-  ChevronDown, BadgeCheck, type LucideIcon,
+  ChevronDown, BadgeCheck, Check, type LucideIcon,
 } from 'lucide-react'
+
+const AMBIENTES = [
+  { src: '/images/ambiente-barbearia.jpg', alt: 'Barbearia associada ao sindicato da beleza' },
+  { src: '/images/ambiente-esmalteria.jpg', alt: 'Esmalteria e salão de manicure' },
+  { src: '/images/ambiente-estetica.jpg', alt: 'Clínica de estética' },
+  { src: '/images/ambiente-maquiagem.jpg', alt: 'Estúdio de maquiagem' },
+]
 
 const CAMINHO = '/institucional/abrangencia'
 const BASE = 'https://sindibes.com.br'
@@ -140,190 +148,257 @@ export default async function AbrangenciaPage() {
     <>
       <Breadcrumbs items={[{ label: 'Institucional', href: '/institucional' }, { label: 'Cidades e Categorias' }]} />
 
-      {/* Abertura */}
-      <section className="max-w-[1100px] mx-auto px-4 pt-14 pb-10 text-center">
-        <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-secondary">
-          <MapPinned className="w-4 h-4" /> Base territorial
-        </span>
-        <h1 className="text-3xl md:text-5xl font-bold mt-3 leading-tight bicolor-title">
-          Sindicato da Beleza em Uberlândia <span>e mais 15 cidades</span> de Minas Gerais
-        </h1>
-        <p className="text-gray-500 mt-5 max-w-2xl mx-auto md:text-lg leading-relaxed">
-          O Sindibes representa salões, barbearias, clínicas de estética, estúdios e profissionais autônomos da beleza
-          em 16 municípios do Triângulo Mineiro e Alto Paranaíba. Veja se a sua cidade e o seu negócio fazem parte
-          e conheça os benefícios de ser associado.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-3 justify-center mt-8">
-          <Link href="/faca-parte/associado" className="inline-flex items-center justify-center gap-2 gradient-primary text-white font-semibold px-7 py-3.5 rounded-xl hover:opacity-90 transition">
-            Quero me associar <ArrowRight className="w-4 h-4" />
-          </Link>
-          <a href={whatsapp()} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 bg-white border border-gray-200 text-text font-semibold px-7 py-3.5 rounded-xl hover:border-primary hover:text-primary transition">
-            <MessageCircle className="w-4 h-4" /> Tirar dúvidas no WhatsApp
-          </a>
+      {/* Abertura com foto de fundo */}
+      <section className="relative overflow-hidden text-white">
+        <Image src="/images/sobre.jpg" alt="Salão de beleza em Uberlândia" fill priority className="object-cover" sizes="100vw" />
+        <div className="absolute inset-0 bg-gradient-to-br from-primary-dark/95 via-primary/85 to-secondary/90" />
+        <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-white/10 blur-3xl" />
+        <div className="absolute -bottom-32 -left-20 w-96 h-96 rounded-full bg-secondary/40 blur-3xl" />
+
+        <div className="relative max-w-[1100px] mx-auto px-4 pt-16 pb-24 md:pt-20 md:pb-28 text-center">
+          <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest bg-white/15 backdrop-blur-sm border border-white/20 px-4 py-1.5 rounded-full">
+            <MapPinned className="w-4 h-4" /> Base territorial
+          </span>
+          <h1 className="text-3xl md:text-5xl font-bold mt-5 leading-tight max-w-4xl mx-auto">
+            Sindicato da Beleza em Uberlândia <span className="text-accent">e mais 15 cidades</span> de Minas Gerais
+          </h1>
+          <p className="text-white/85 mt-5 max-w-2xl mx-auto md:text-lg leading-relaxed">
+            O Sindibes representa salões, barbearias, clínicas de estética, estúdios e profissionais autônomos da beleza
+            em 16 municípios do Triângulo Mineiro e Alto Paranaíba. Veja se a sua cidade e o seu negócio fazem parte
+            e conheça os benefícios de ser associado.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center mt-8">
+            <Link href="/faca-parte/associado" className="inline-flex items-center justify-center gap-2 bg-white text-primary font-semibold px-7 py-3.5 rounded-xl shadow-lg hover:bg-accent transition">
+              Quero me associar <ArrowRight className="w-4 h-4" />
+            </Link>
+            <a href={whatsapp()} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 bg-white/10 backdrop-blur-sm border border-white/40 text-white font-semibold px-7 py-3.5 rounded-xl hover:bg-white/20 transition">
+              <MessageCircle className="w-4 h-4" /> Tirar dúvidas no WhatsApp
+            </a>
+          </div>
         </div>
-        <div className="grid grid-cols-3 gap-3 max-w-xl mx-auto mt-10">
+      </section>
+
+      {/* Números sobrepostos à abertura */}
+      <div className="relative z-10 max-w-[900px] mx-auto px-4 -mt-14">
+        <div className="grid grid-cols-3 bg-white rounded-2xl shadow-xl border border-gray-100 divide-x divide-gray-100">
           {[
-            { n: '16', t: 'cidades atendidas' },
-            { n: '13', t: 'segmentos da beleza' },
-            { n: '8', t: 'benefícios para associados' },
-          ].map(x => (
-            <div key={x.t} className="bg-bg-alt rounded-2xl py-4 px-2">
-              <p className="text-2xl md:text-3xl font-bold text-primary">{x.n}</p>
-              <p className="text-[11px] md:text-xs text-gray-500 mt-1 leading-tight">{x.t}</p>
+            { n: '16', t: 'cidades atendidas', icon: MapPin },
+            { n: '13', t: 'segmentos da beleza', icon: Sparkles },
+            { n: '8', t: 'benefícios para associados', icon: BadgeCheck },
+          ].map(({ n, t, icon: Icon }) => (
+            <div key={t} className="py-5 md:py-6 px-2 text-center">
+              <Icon className="w-5 h-5 text-secondary mx-auto mb-1.5" />
+              <p className="text-2xl md:text-4xl font-bold text-primary leading-none">{n}</p>
+              <p className="text-[11px] md:text-sm text-gray-500 mt-1.5 leading-tight">{t}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Benefícios */}
+      <section className="max-w-[1100px] mx-auto px-4 pt-20 pb-16">
+        <div className="text-center mb-12">
+          <span className="text-xs font-semibold uppercase tracking-widest text-secondary">Por que se associar</span>
+          <h2 className="text-2xl md:text-4xl font-bold mt-2 bicolor-title">
+            Benefícios para quem trabalha <span>com beleza</span>
+          </h2>
+          <p className="text-gray-500 mt-3 max-w-xl mx-auto">
+            Valem para associados de todas as cidades da nossa base. Negociados em grupo, saem mais baratos do que contratar sozinho.
+          </p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {BENEFICIOS.map(({ titulo, texto, icon: Icon }, i) => (
+            <div
+              key={titulo}
+              className="group relative bg-white rounded-2xl border border-gray-100 shadow-sm p-6 overflow-hidden hover:-translate-y-1 hover:shadow-xl hover:border-primary/30 transition-all duration-300"
+            >
+              <div className={`absolute top-0 left-0 right-0 h-1 ${i % 2 ? 'bg-secondary' : 'bg-primary'} scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300`} />
+              <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-4 transition-colors ${i % 2 ? 'bg-secondary/10 group-hover:bg-secondary' : 'bg-primary/10 group-hover:bg-primary'}`}>
+                <Icon className={`w-6 h-6 transition-colors group-hover:text-white ${i % 2 ? 'text-secondary' : 'text-primary'}`} />
+              </div>
+              <h3 className="font-bold text-text leading-snug">{titulo}</h3>
+              <p className="text-sm text-gray-500 mt-2 leading-relaxed">{texto}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Benefícios */}
-      <section className="bg-bg-alt py-16 px-4">
+      {/* Cidades */}
+      <section id="cidades" className="relative bg-gradient-to-b from-accent/60 to-bg-alt py-16 px-4 scroll-mt-20">
         <div className="max-w-[1100px] mx-auto">
           <div className="text-center mb-10">
-            <span className="text-xs font-semibold uppercase tracking-widest text-secondary">Por que se associar</span>
-            <h2 className="text-2xl md:text-3xl font-bold mt-2 bicolor-title">
-              Benefícios para quem trabalha <span>com beleza</span>
+            <span className="text-xs font-semibold uppercase tracking-widest text-secondary">Abrangência</span>
+            <h2 className="text-2xl md:text-4xl font-bold mt-2 bicolor-title">
+              Cidades atendidas pelo <span>Sindibes</span>
             </h2>
-            <p className="text-gray-500 mt-3 max-w-xl mx-auto">
-              Valem para associados de todas as cidades da nossa base. Negociados em grupo, saem mais baratos do que contratar sozinho.
+            <p className="text-gray-600 mt-3 max-w-2xl mx-auto">
+              Tem um salão, barbearia, clínica ou estúdio em uma destas cidades? Você faz parte da categoria representada
+              pelo Sindibes e pode aproveitar todos os benefícios de associado.
             </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {BENEFICIOS.map(({ titulo, texto, icon: Icon }, i) => (
-              <div key={titulo} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-                <div className={`w-11 h-11 rounded-xl flex items-center justify-center mb-4 ${i % 2 ? 'bg-secondary/10' : 'bg-primary/10'}`}>
-                  <Icon className={`w-5 h-5 ${i % 2 ? 'text-secondary' : 'text-primary'}`} />
-                </div>
-                <h3 className="font-bold text-text leading-snug">{titulo}</h3>
-                <p className="text-sm text-gray-500 mt-2 leading-relaxed">{texto}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* Cidades */}
-      <section className="max-w-[1100px] mx-auto px-4 py-16" id="cidades">
-        <div className="text-center mb-10">
-          <span className="text-xs font-semibold uppercase tracking-widest text-secondary">Abrangência</span>
-          <h2 className="text-2xl md:text-3xl font-bold mt-2 bicolor-title">
-            Cidades atendidas pelo <span>Sindibes</span>
-          </h2>
-          <p className="text-gray-500 mt-3 max-w-2xl mx-auto">
-            Tem um salão, barbearia, clínica ou estúdio em uma destas cidades? Você faz parte da categoria representada
-            pelo Sindibes e pode aproveitar todos os benefícios de associado.
-          </p>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {CIDADES.map((cidade, i) => (
-            <article
-              key={cidade}
-              id={ancora(cidade)}
-              className={`scroll-mt-28 rounded-2xl border p-5 flex flex-col ${i === 0 ? 'border-secondary ring-2 ring-secondary/15 bg-white sm:col-span-2 lg:col-span-2' : 'border-gray-100 bg-white shadow-sm'}`}
-            >
-              <div className="flex items-center gap-2.5">
-                <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${i === 0 ? 'gradient-primary' : 'bg-primary/10'}`}>
-                  <MapPin className={`w-4 h-4 ${i === 0 ? 'text-white' : 'text-primary'}`} />
+          {/* Sede em destaque */}
+          <article id={ancora(CIDADES[0])} className="scroll-mt-28 grid md:grid-cols-2 bg-white rounded-3xl shadow-lg overflow-hidden mb-6">
+            <div className="relative h-56 md:h-auto min-h-[240px]">
+              <Image src="/images/ambiente-cabeleireiro.jpg" alt="Salão de cabeleireiro em Uberlândia" fill className="object-cover" sizes="(min-width: 768px) 550px, 100vw" />
+              <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 bg-white/95 text-primary text-xs font-bold px-3 py-1.5 rounded-full shadow">
+                <BadgeCheck className="w-3.5 h-3.5" /> Sede do Sindibes
+              </span>
+            </div>
+            <div className="p-7 md:p-9 flex flex-col justify-center">
+              <div className="flex items-center gap-3">
+                <div className="w-11 h-11 rounded-xl gradient-primary flex items-center justify-center shrink-0">
+                  <MapPin className="w-5 h-5 text-white" />
                 </div>
-                <h3 className="font-bold text-text leading-tight">
-                  {cidade}<span className="text-gray-400 font-medium">/MG</span>
+                <h3 className="text-2xl font-bold text-text">
+                  {CIDADES[0]}<span className="text-gray-400 font-medium">/MG</span>
                 </h3>
               </div>
-              <p className="text-xs text-gray-500 mt-3 leading-relaxed flex-1">
-                {i === 0
-                  ? 'Sede do Sindibes. Salões, barbearias, clínicas de estética e profissionais autônomos de Uberlândia contam com atendimento presencial, assessoria e todos os benefícios de associado.'
-                  : `Sindicato da beleza em ${cidade}: salões, barbearias, estética e autônomos da cidade têm acesso aos mesmos benefícios e à convenção coletiva da categoria.`}
+              <p className="text-gray-600 mt-4 leading-relaxed">
+                Salões, barbearias, clínicas de estética e profissionais autônomos de Uberlândia contam com atendimento
+                presencial na sede, assessoria e todos os benefícios de associado.
               </p>
-              <a
-                href={whatsapp(cidade)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-xs font-semibold text-primary mt-4 hover:gap-2 transition-all"
-              >
-                Falar sobre {cidade} <ArrowRight className="w-3.5 h-3.5" />
+              <ul className="mt-4 space-y-2 text-sm text-gray-600">
+                {['Atendimento presencial na sede', 'Piso salarial próprio na convenção coletiva', 'Eventos e treinamentos na cidade'].map(t => (
+                  <li key={t} className="flex items-center gap-2"><Check className="w-4 h-4 text-primary shrink-0" /> {t}</li>
+                ))}
+              </ul>
+              <a href={whatsapp(CIDADES[0])} target="_blank" rel="noopener noreferrer" className="self-start inline-flex items-center gap-2 gradient-primary text-white text-sm font-semibold px-5 py-3 rounded-xl mt-6 hover:opacity-90 transition">
+                <MessageCircle className="w-4 h-4" /> Falar sobre {CIDADES[0]}
               </a>
-            </article>
-          ))}
+            </div>
+          </article>
+
+          {/* Demais cidades */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {CIDADES.slice(1).map(cidade => (
+              <article
+                key={cidade}
+                id={ancora(cidade)}
+                className="group scroll-mt-28 bg-white rounded-2xl border border-white shadow-sm hover:shadow-lg hover:border-primary/30 transition-all p-5"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 group-hover:bg-primary flex items-center justify-center shrink-0 transition-colors">
+                    <MapPin className="w-5 h-5 text-primary group-hover:text-white transition-colors" />
+                  </div>
+                  <h3 className="font-bold text-text leading-tight">
+                    {cidade}<span className="text-gray-400 font-medium">/MG</span>
+                  </h3>
+                </div>
+                <p className="text-xs text-gray-500 mt-3 leading-relaxed">
+                  Sindicato da beleza em {cidade}: salões, barbearias, estética e autônomos da cidade têm os mesmos
+                  benefícios e a convenção coletiva da categoria.
+                </p>
+                <a
+                  href={whatsapp(cidade)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-xs font-semibold text-primary mt-3 hover:gap-2 transition-all"
+                >
+                  Falar sobre {cidade} <ArrowRight className="w-3.5 h-3.5" />
+                </a>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* Categoria econômica */}
-      <section className="bg-bg-alt py-16 px-4">
-        <div className="max-w-[1100px] mx-auto">
-          <div className="text-center mb-10">
-            <span className="text-xs font-semibold uppercase tracking-widest text-secondary">Categoria econômica</span>
-            <h2 className="text-2xl md:text-3xl font-bold mt-2 bicolor-title">
-              Quem o Sindibes <span>representa</span>
-            </h2>
-            <p className="text-gray-500 mt-3 max-w-2xl mx-auto">
-              Do salão com equipe ao profissional que atende sozinho: todos fazem parte da categoria econômica da beleza.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
-            {PERFIS.map(({ nome, texto, icon: Icon }) => (
-              <div key={nome} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 text-center">
-                <div className="w-12 h-12 rounded-2xl gradient-primary flex items-center justify-center mx-auto mb-3">
-                  <Icon className="w-6 h-6 text-white" />
-                </div>
-                <h3 className="font-bold text-text text-sm md:text-base leading-snug">{nome}</h3>
-                <p className="text-xs text-gray-500 mt-1.5 leading-relaxed">{texto}</p>
-              </div>
-            ))}
-          </div>
-
-          <h3 className="text-center font-bold text-text text-lg mb-5">Segmentos da beleza e estética</h3>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {CATEGORIAS.map(({ nome, icon: Icon }, i) => (
-              <li key={nome} className="flex items-center gap-3 bg-white rounded-xl border border-gray-100 px-4 py-3">
-                <span className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${i % 2 ? 'bg-secondary/10' : 'bg-primary/10'}`}>
-                  <Icon className={`w-4 h-4 ${i % 2 ? 'text-secondary' : 'text-primary'}`} />
-                </span>
-                <span className="text-sm font-medium text-text leading-snug">{nome}</span>
-              </li>
-            ))}
-          </ul>
+      <section className="max-w-[1100px] mx-auto px-4 py-16">
+        <div className="text-center mb-10">
+          <span className="text-xs font-semibold uppercase tracking-widest text-secondary">Categoria econômica</span>
+          <h2 className="text-2xl md:text-4xl font-bold mt-2 bicolor-title">
+            Quem o Sindibes <span>representa</span>
+          </h2>
+          <p className="text-gray-500 mt-3 max-w-2xl mx-auto">
+            Do salão com equipe ao profissional que atende sozinho: todos fazem parte da categoria econômica da beleza.
+          </p>
         </div>
+
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
+          {PERFIS.map(({ nome, texto, icon: Icon }, i) => (
+            <div key={nome} className={`rounded-2xl p-6 text-center text-white shadow-md ${i % 2 ? 'bg-gradient-to-br from-secondary to-secondary-dark' : 'bg-gradient-to-br from-primary to-primary-dark'}`}>
+              <div className="w-12 h-12 rounded-2xl bg-white/15 flex items-center justify-center mx-auto mb-3">
+                <Icon className="w-6 h-6" />
+              </div>
+              <h3 className="font-bold text-sm md:text-base leading-snug">{nome}</h3>
+              <p className="text-xs text-white/80 mt-1.5 leading-relaxed">{texto}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Faixa de fotos dos ambientes */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
+          {AMBIENTES.map(a => (
+            <div key={a.src} className="relative h-32 md:h-40 rounded-2xl overflow-hidden">
+              <Image src={a.src} alt={a.alt} fill className="object-cover hover:scale-105 transition-transform duration-500" sizes="(min-width: 768px) 270px, 50vw" />
+            </div>
+          ))}
+        </div>
+
+        <h3 className="text-center font-bold text-text text-xl mb-6">Segmentos da beleza e estética</h3>
+        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {CATEGORIAS.map(({ nome, icon: Icon }, i) => (
+            <li key={nome} className="group flex items-center gap-3 bg-bg-alt hover:bg-white rounded-xl border border-gray-100 hover:border-primary/30 hover:shadow-md px-4 py-3.5 transition-all">
+              <span className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 bg-white group-hover:shadow-sm ${i % 2 ? 'text-secondary' : 'text-primary'}`}>
+                <Icon className="w-5 h-5" />
+              </span>
+              <span className="text-sm font-medium text-text leading-snug">{nome}</span>
+            </li>
+          ))}
+        </ul>
       </section>
 
       {/* Perguntas frequentes */}
-      <section className="max-w-[820px] mx-auto px-4 py-16">
-        <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 bicolor-title">
-          Perguntas <span>frequentes</span>
-        </h2>
-        <div className="space-y-3">
-          {FAQ.map(f => (
-            <details key={f.p} className="group bg-white rounded-2xl border border-gray-100 shadow-sm">
-              <summary className="flex items-center justify-between gap-4 cursor-pointer list-none px-5 py-4 font-semibold text-text">
-                {f.p}
-                <ChevronDown className="w-5 h-5 text-primary shrink-0 transition-transform group-open:rotate-180" />
-              </summary>
-              <p className="px-5 pb-5 text-sm text-gray-600 leading-relaxed">{f.r}</p>
-            </details>
-          ))}
+      <section className="bg-bg-alt py-16 px-4">
+        <div className="max-w-[820px] mx-auto">
+          <div className="text-center mb-8">
+            <span className="text-xs font-semibold uppercase tracking-widest text-secondary">Tire suas dúvidas</span>
+            <h2 className="text-2xl md:text-4xl font-bold mt-2 bicolor-title">
+              Perguntas <span>frequentes</span>
+            </h2>
+          </div>
+          <div className="space-y-3">
+            {FAQ.map(f => (
+              <details key={f.p} className="group bg-white rounded-2xl border border-gray-100 shadow-sm open:shadow-md open:border-primary/30 transition">
+                <summary className="flex items-center justify-between gap-4 cursor-pointer list-none px-6 py-5 font-semibold text-text">
+                  {f.p}
+                  <span className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                    <ChevronDown className="w-4 h-4 text-primary transition-transform group-open:rotate-180" />
+                  </span>
+                </summary>
+                <p className="px-6 pb-5 text-sm text-gray-600 leading-relaxed">{f.r}</p>
+              </details>
+            ))}
+          </div>
+          <p className="text-center text-sm text-gray-500 mt-6">
+            Veja também a{' '}
+            <Link href="/institucional/convencoes" className="text-primary font-semibold hover:underline">
+              Convenção Coletiva de Trabalho 2026/2027
+            </Link>
+            .
+          </p>
         </div>
-        <p className="text-center text-sm text-gray-500 mt-6">
-          Veja também a{' '}
-          <Link href="/institucional/convencoes" className="text-primary font-semibold hover:underline">
-            Convenção Coletiva de Trabalho 2026/2027
-          </Link>
-          .
-        </p>
       </section>
 
-      {/* Chamada final */}
-      <section className="px-4 pb-20">
-        <div className="max-w-[1100px] mx-auto gradient-primary rounded-3xl text-white text-center px-6 py-12">
-          <h2 className="text-2xl md:text-3xl font-bold">Seu negócio da beleza merece estar bem representado</h2>
-          <p className="text-white/85 mt-3 max-w-xl mx-auto">
-            Associe-se ao Sindibes e tenha plano de saúde, assessoria, treinamentos e divulgação, onde quer que você esteja na nossa região.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center mt-7">
-            <Link href="/faca-parte/associado" className="inline-flex items-center justify-center gap-2 bg-white text-primary font-semibold px-7 py-3.5 rounded-xl hover:bg-white/90 transition">
-              Fazer meu cadastro <ArrowRight className="w-4 h-4" />
-            </Link>
-            <a href={whatsapp()} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 border border-white/40 text-white font-semibold px-7 py-3.5 rounded-xl hover:bg-white/10 transition">
-              <MessageCircle className="w-4 h-4" /> Falar no WhatsApp
-            </a>
+      {/* Chamada final com foto */}
+      <section className="px-4 py-16">
+        <div className="relative max-w-[1100px] mx-auto rounded-3xl overflow-hidden text-white text-center">
+          <Image src="/images/ambiente-spa.jpg" alt="Espaço de estética e bem-estar" fill className="object-cover" sizes="1100px" />
+          <div className="absolute inset-0 bg-gradient-to-r from-secondary/95 to-primary/90" />
+          <div className="relative px-6 py-14 md:py-16">
+            <h2 className="text-2xl md:text-4xl font-bold max-w-2xl mx-auto">Seu negócio da beleza merece estar bem representado</h2>
+            <p className="text-white/85 mt-3 max-w-xl mx-auto">
+              Associe-se ao Sindibes e tenha plano de saúde, assessoria, treinamentos e divulgação, onde quer que você esteja na nossa região.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center mt-7">
+              <Link href="/faca-parte/associado" className="inline-flex items-center justify-center gap-2 bg-white text-primary font-semibold px-7 py-3.5 rounded-xl shadow-lg hover:bg-accent transition">
+                Fazer meu cadastro <ArrowRight className="w-4 h-4" />
+              </Link>
+              <a href={whatsapp()} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 bg-white/10 backdrop-blur-sm border border-white/40 text-white font-semibold px-7 py-3.5 rounded-xl hover:bg-white/20 transition">
+                <MessageCircle className="w-4 h-4" /> Falar no WhatsApp
+              </a>
+            </div>
           </div>
         </div>
       </section>
