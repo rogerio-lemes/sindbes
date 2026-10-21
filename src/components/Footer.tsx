@@ -7,7 +7,7 @@ import { MapPin, Phone, Clock, Mail, Shield } from 'lucide-react'
 import Logo from '@/components/Logo'
 
 // Classe padrão dos links de navegação do rodapé
-const navLink = 'inline-block text-sm text-gray-400 hover:text-primary hover:bg-white rounded-md px-1.5 py-0.5 -mx-1.5 transition-all duration-150'
+const navLink = 'inline-block text-sm text-gray-400 hover:text-white hover:bg-primary rounded-md px-1.5 py-0.5 -mx-1.5 transition-all duration-150'
 
 export default function Footer() {
   const { config, servicos } = useTenant()
@@ -101,9 +101,9 @@ export default function Footer() {
           <div className="flex flex-wrap items-center gap-2">
             <span>CNPJ: {config.cnpj || '[A definir]'}</span>
             <span className="hidden md:inline">|</span>
-            <Link href="/politica-de-privacidade" className="hover:text-primary hover:bg-white rounded px-1 -mx-1 transition-all duration-150">Política de Privacidade</Link>
+            <Link href="/politica-de-privacidade" className="hover:text-white hover:bg-primary rounded px-1 -mx-1 transition-all duration-150">Política de Privacidade</Link>
             <span>·</span>
-            <Link href="/termos-de-uso" className="hover:text-primary hover:bg-white rounded px-1 -mx-1 transition-all duration-150">Termos de Uso</Link>
+            <Link href="/termos-de-uso" className="hover:text-white hover:bg-primary rounded px-1 -mx-1 transition-all duration-150">Termos de Uso</Link>
           </div>
           <div>
             Desenvolvido por{' '}
@@ -111,7 +111,7 @@ export default function Footer() {
               href="https://www.mercadoopen.com.br"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-bold text-gray-400 hover:text-primary hover:bg-white rounded px-1 -mx-1 transition-all duration-150"
+              className="font-bold text-gray-400 hover:text-white hover:bg-primary rounded px-1 -mx-1 transition-all duration-150"
             >
               Mercado Open
             </a>
