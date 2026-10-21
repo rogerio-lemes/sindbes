@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { INSTITUCIONAL } from '@/lib/constants'
 import { getTenant } from '@/lib/tenant'
 import Breadcrumbs from '@/components/Breadcrumbs'
-import { BookOpen, MessageSquareQuote, Users, LandmarkIcon, ScrollText, ArrowRight } from 'lucide-react'
+import { BookOpen, MessageSquareQuote, Users, LandmarkIcon, ScrollText, MapPinned, ArrowRight } from 'lucide-react'
 
 export async function generateMetadata(): Promise<Metadata> {
   const { config } = await getTenant()
@@ -14,13 +14,14 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-const icons = [BookOpen, MessageSquareQuote, Users, LandmarkIcon, ScrollText]
+const icons = [BookOpen, MessageSquareQuote, Users, LandmarkIcon, ScrollText, MapPinned]
 const descriptions = [
   'A trajetória do Sindicato da Beleza de Uberlândia, desde a fundação até os dias de hoje.',
   'Uma mensagem da presidência sobre o compromisso do Sindibes com a categoria.',
   'Conheça os presidentes que construíram a história da nossa entidade.',
   'A diretoria e o conselho fiscal que representam a categoria na gestão 2023–2027.',
   'Acesse as convenções coletivas de trabalho e patrocínio vigentes para download.',
+  'As 16 cidades de Minas Gerais e os segmentos da beleza representados pelo Sindibes.',
 ]
 
 export default function InstitucionalPage() {

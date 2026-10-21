@@ -132,6 +132,7 @@ export const INSTITUCIONAL = [
   { nome: 'Galeria de Presidentes', slug: 'institucional/galeria-de-presidentes' },
   { nome: 'Diretoria 2023–2027', slug: 'institucional/diretoria' },
   { nome: 'Convenções Coletivas', slug: 'institucional/convencoes' },
+  { nome: 'Cidades e Categorias', slug: 'institucional/abrangencia' },
 ]
 
 export const ASSOCIADOS_MENU = [

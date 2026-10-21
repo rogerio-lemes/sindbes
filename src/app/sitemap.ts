@@ -32,6 +32,7 @@ const PAGINAS_FIXAS: { caminho: string; prioridade: number; frequencia: Metadata
   { caminho: '/institucional/historia', prioridade: 0.5, frequencia: 'yearly' },
   { caminho: '/institucional/diretoria', prioridade: 0.5, frequencia: 'yearly' },
   { caminho: '/institucional/convencoes', prioridade: 0.7, frequencia: 'monthly' },
+  { caminho: '/institucional/abrangencia', prioridade: 0.8, frequencia: 'monthly' },
   { caminho: '/institucional/palavra-do-presidente', prioridade: 0.4, frequencia: 'yearly' },
   { caminho: '/institucional/galeria-de-presidentes', prioridade: 0.4, frequencia: 'yearly' },
 ]
