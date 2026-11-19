@@ -1,0 +1,68 @@
+PÁGINA LEI SALÃO-PARCEIRO — 6 IMAGENS PARA GERAR NO CHATGPT
+==========================================================
+
+Como usar:
+1. Abra o ChatGPT e cole UM comando por vez.
+2. Baixe a imagem e salve com o NOME DO ARQUIVO indicado.
+3. Coloque os 6 arquivos na pasta:
+   public/images/lei-salao-parceiro/
+   (substituindo os que já estão lá; são provisórios)
+
+Regra para todas: formato horizontal (paisagem), sem texto escrito na imagem,
+sem logotipos, pessoas brasileiras com aparência natural, estilo foto real.
+
+
+1) NOME DO ARQUIVO: hero.jpg   (topo da página, fica escurecida atrás do título)
+---------------------------------------------------------------------------------
+Foto realista em formato paisagem 3:2 de um dono de salão de beleza brasileiro,
+cerca de 45 anos, sentado no balcão da recepção do próprio salão moderno à noite,
+depois do expediente, olhando preocupado para papéis e uma notificação em envelope
+sobre o balcão. Ao fundo, cadeiras de cabeleireiro e espelhos iluminados, fora de
+foco. Luz quente e dramática, clima de tensão silenciosa. Sem texto na imagem,
+sem logotipos. Estilo fotografia editorial, lente 35mm.
+
+
+2) NOME DO ARQUIVO: dor.jpg   (seção "Você se reconhece em alguma dessas situações?")
+-------------------------------------------------------------------------------------
+Foto realista em formato paisagem 4:3 de um salão de beleza brasileiro movimentado:
+uma cabeleireira escovando uma cliente, um barbeiro atendendo ao lado e uma manicure
+ao fundo. Em primeiro plano, sobre a bancada, um caderno de anotações à mão com
+contas e dinheiro em espécie, sugerindo acertos informais. Luz natural do dia,
+cores suaves verde-água e lilás. Sem texto legível, sem logotipos.
+
+
+3) NOME DO ARQUIVO: parentes.jpg   (seção "É da família, não precisa de contrato")
+--------------------------------------------------------------------------------
+Foto realista em formato paisagem 4:3 de mãe e filha brasileiras trabalhando juntas
+no salão de beleza da família: a mãe, cerca de 50 anos, corta o cabelo de uma
+cliente; a filha, cerca de 25 anos, faz as unhas de outra cliente ao lado. Ambiente
+acolhedor, luz natural, sorrisos discretos, sensação de negócio familiar. Sem texto,
+sem logotipos.
+
+
+4) NOME DO ARQUIVO: contrato.jpg   (seção do contrato de parceria homologado)
+----------------------------------------------------------------------------
+Foto realista em formato paisagem 4:3 de uma dona de salão de beleza e uma
+profissional parceira (cabeleireira) assinando um contrato sobre uma mesa clara,
+em um escritório de sindicato organizado. Uma terceira pessoa, consultor de camisa
+social, aponta o local da assinatura. Close nas mãos e nos documentos, rostos
+parcialmente visíveis, clima de confiança e segurança. Tons verde-água e branco.
+Sem texto legível nos papéis, sem logotipos.
+
+
+5) NOME DO ARQUIVO: nota-fiscal.jpg   (seção "Nota fiscal: não é favor, é lei")
+------------------------------------------------------------------------------
+Foto realista em formato paisagem 4:3 de uma esteticista brasileira, cerca de 30
+anos, de jaleco, sentada em sua estação de trabalho no salão, emitindo uma nota
+fiscal de serviço no celular, com expressão tranquila e organizada. Ao lado, uma
+pasta com documentos arquivados e uma calculadora. Fundo de salão claro e moderno
+desfocado. Sem texto legível na tela, sem logotipos.
+
+
+6) NOME DO ARQUIVO: protegido.jpg   (chamada final, ao lado do botão do Wagner)
+-----------------------------------------------------------------------------
+Foto realista em formato retrato ou quadrado de uma dona de salão de beleza
+brasileira, cerca de 40 anos, sorrindo com tranquilidade e braços cruzados em pé
+no meio do seu salão moderno e cheio de clientes sendo atendidas, transmitindo
+segurança e negócio protegido. Luz clara, ambiente premium, tons verde-água e lilás.
+Sem texto, sem logotipos.

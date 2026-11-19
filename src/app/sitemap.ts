@@ -21,6 +21,7 @@ const PAGINAS_FIXAS: { caminho: string; prioridade: number; frequencia: Metadata
   { caminho: '/faca-parte', prioridade: 0.9, frequencia: 'monthly' },
   { caminho: '/faca-parte/associado', prioridade: 0.9, frequencia: 'monthly' },
   { caminho: '/faca-parte/parceiro', prioridade: 0.9, frequencia: 'monthly' },
+  { caminho: '/lei-salao-parceiro', prioridade: 0.9, frequencia: 'monthly' },
   { caminho: '/parceiros', prioridade: 0.8, frequencia: 'weekly' },
   { caminho: '/associados', prioridade: 0.8, frequencia: 'weekly' },
   { caminho: '/blog', prioridade: 0.7, frequencia: 'weekly' },
