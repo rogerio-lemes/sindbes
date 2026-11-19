@@ -27,6 +27,9 @@ const WAGNER_DISPLAY = '(34) 98427-4161'
 const MSG_WHATS = 'Olá, Wagner! Vi a página da Lei Salão-Parceiro no site do Sindibes e quero regularizar meu salão.'
 const LINK_WHATS = `https://wa.me/${WAGNER_WHATS}?text=${encodeURIComponent(MSG_WHATS)}`
 
+/** Imagem de prévia do link ao compartilhar (1200x630, gerada por material/gerar-og-lei.js). */
+const OG_IMAGEM = '/images/og/lei-salao-parceiro.jpg'
+
 /** Imagens da página (1 por seção visual). */
 const IMG = {
   hero: '/images/lei-salao-parceiro/hero.jpg',
@@ -51,7 +54,13 @@ export const metadata: Metadata = {
     description: 'Ação trabalhista, multa e autuação fiscal: saiba como proteger seu salão com o contrato de parceria homologado pelo Sindibes.',
     url: URL_PAGINA,
     type: 'article',
-    images: [{ url: IMG.hero, width: 1536, height: 1024, alt: 'Dono de salão de beleza preocupado com a Lei Salão-Parceiro' }],
+    // Prévia do link (WhatsApp/Facebook): alerta + chamada para responder e falar com o Wagner
+    images: [{ url: OG_IMAGEM, width: 1200, height: 630, alt: 'Alerta ao dono de salão: Lei Salão-Parceiro. Responda e fale com o Wagner no WhatsApp' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Lei Salão-Parceiro: o perigo oculto do seu salão',
+    images: [OG_IMAGEM],
   },
 }
 
