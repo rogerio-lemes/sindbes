@@ -12,7 +12,7 @@ import {
   FilePlus, Search, Briefcase, SearchCheck,
   // Serviços (keyword map)
   GraduationCap, Scale, Gift, HeartPulse, DollarSign,
-  BarChart3, Smile, ShieldCheck, CreditCard, Sparkles, Scissors,
+  BarChart3, Smile, ShieldCheck, CreditCard, Sparkles, Scissors, FileSignature,
   // outros
   type LucideIcon,
 } from 'lucide-react'
@@ -154,6 +154,8 @@ export default function Header() {
                     onClick={() => setServicesOpen(false)}
                   />
                 ))}
+                {/* Página fixa: Lei Salão-Parceiro (não vem do cadastro de serviços) */}
+                <DropItem href="lei-salao-parceiro" label="Lei Salão-Parceiro" icon={FileSignature} onClick={() => setServicesOpen(false)} />
               </div>
             )}
           </div>
@@ -253,6 +255,7 @@ export default function Header() {
           {servicos.map((s) => (
             <MobileItem key={s.slug} href={s.slug} label={s.nome} icon={servicoIcon(s.slug)} onClick={closeMobile} />
           ))}
+          <MobileItem href="lei-salao-parceiro" label="Lei Salão-Parceiro" icon={FileSignature} onClick={closeMobile} />
 
           <div className="px-6 py-2 mt-1">
             <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Institucional</span>

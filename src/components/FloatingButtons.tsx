@@ -6,6 +6,10 @@ import Image from 'next/image'
 import { useTenant } from '@/components/TenantProvider'
 import { useDeveSumir } from '@/components/OverlayProvider'
 
+/** WhatsApp pessoal do Wagner (consultor do Sindibes): a foto do canto leva direto para ele. */
+const WAGNER_WHATS = '5534984274161'
+const MSG_WAGNER = 'Olá, Wagner! Vim pelo site do Sindibes e quero tirar uma dúvida sobre os benefícios para o meu negócio.'
+
 export default function FloatingButtons() {
   const { config } = useTenant()
   const [showBackTop, setShowBackTop] = useState(false)
@@ -38,11 +42,13 @@ export default function FloatingButtons() {
           Altura da coluna: 2 botões de 56px + 12px de espaço = 124px.
           Os balões do atendimento começam acima disso (ver AtendimentoChat). */}
       <div className="fixed bottom-28 md:bottom-6 right-6 z-40 flex flex-col items-center gap-3">
-        {/* Foto do atendente: abre o chat de atendimento */}
-        <button
-          onClick={() => window.dispatchEvent(new Event('abrir-atendimento'))}
+        {/* Foto do atendente: abre direto o WhatsApp do Wagner com a mensagem pronta */}
+        <a
+          href={`https://wa.me/${WAGNER_WHATS}?text=${encodeURIComponent(MSG_WAGNER)}`}
+          target="_blank"
+          rel="noopener noreferrer"
           className="relative w-14 h-14 rounded-full overflow-hidden border-2 border-secondary shadow-lg hover:scale-110 transition-transform"
-          aria-label={`Falar com o atendimento do ${config.nome}`}
+          aria-label="Falar com o Wagner no WhatsApp"
         >
           {config.atendente_foto_url ? (
             <Image
@@ -60,7 +66,7 @@ export default function FloatingButtons() {
           )}
           {/* Indicador de disponibilidade */}
           <span className="absolute bottom-0.5 right-0.5 w-3.5 h-3.5 rounded-full bg-[#25D366] border-2 border-white" />
-        </button>
+        </a>
 
         <a
           href={`tel:${config.phone || config.whatsapp}`}
