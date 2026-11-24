@@ -28,6 +28,19 @@ const blogImages: Record<string, string> = {
   'beneficios-para-associados-sindibes-passo-a-passo-': IMAGES.blog6,
 }
 
+/**
+ * Prévia do link (WhatsApp/Facebook) com arte própria por serviço.
+ * A arte é gerada por material/gerar-og-*.js e tem chamada para o Wagner.
+ */
+const OG_SERVICOS: Record<string, { imagem: string; titulo: string; descricao: string; alt: string }> = {
+  'plano-odontologico': {
+    imagem: '/images/og/plano-odontologico.jpg',
+    titulo: 'Plano Odontológico Sindibes: seu sorriso em dia, pagando menos',
+    descricao: 'Consultas, limpeza, canal e dependentes com valores até 50% menores. Responda e cote seu plano com o Wagner.',
+    alt: 'Plano Odontológico Sindibes até 50% mais barato. Responda e cote com o Wagner no WhatsApp',
+  },
+}
+
 type PageProps = {
   params: Promise<{ slug: string }>
 }
@@ -38,10 +51,26 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const servico = await getServicoPorSlug(tenantId, slug)
   if (servico) {
+    const og = OG_SERVICOS[slug]
     return {
       title: servico.seo_title || `${servico.nome} | ${config.nome}`,
       description: servico.seo_description || `${servico.nome} - ${config.nome}`,
       alternates: { canonical: `/${slug}` },
+      ...(og && {
+        openGraph: {
+          title: og.titulo,
+          description: og.descricao,
+          url: `https://sindibes.com.br/${slug}`,
+          type: 'website',
+          locale: 'pt_BR',
+          images: [{ url: `https://sindibes.com.br${og.imagem}`, width: 1200, height: 630, alt: og.alt }],
+        },
+        twitter: {
+          card: 'summary_large_image',
+          title: og.titulo,
+          images: [`https://sindibes.com.br${og.imagem}`],
+        },
+      }),
     }
   }
 
