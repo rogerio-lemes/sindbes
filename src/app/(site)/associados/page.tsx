@@ -6,6 +6,7 @@ import type { Associado } from '@/lib/associados'
 import { listarAssociados } from '@/lib/cadastros-publicos'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import { Sparkles, MapPin, ArrowRight, Store, BadgeCheck } from 'lucide-react'
+import ImagemCapa from '@/components/vitrine/ImagemCapa'
 
 // Filiados aprovados no painel aparecem aqui em até 1 minuto
 export const revalidate = 60
@@ -27,7 +28,7 @@ function AssociadoCard({ a, i = 0 }: { a: Associado; i?: number }) {
       style={{ transitionDelay: `${i * 70}ms` }}
     >
       <div className="relative h-48 overflow-hidden">
-        <Image src={a.capa} alt={a.nome} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
+        <ImagemCapa src={a.capa} alt={a.nome} className="group-hover:scale-110 transition-transform duration-700" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
         <span className="absolute top-3 left-3 bg-white/95 text-primary text-xs font-semibold px-3 py-1 rounded-full shadow backdrop-blur-sm">
           {a.categoria}

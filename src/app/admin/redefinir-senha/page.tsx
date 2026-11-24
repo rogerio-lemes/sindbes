@@ -1,19 +1,12 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { createClient, SupabaseClient } from '@supabase/supabase-js'
 import { Eye, EyeOff, Settings, CheckCircle2 } from 'lucide-react'
-import { SUPABASE_ANON_KEY } from '@/lib/supabase/options'
-
-function getSupabase(): SupabaseClient {
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co',
-    SUPABASE_ANON_KEY || 'placeholder'
-  )
-}
+import { getBrowserClient } from '@/lib/supabase/browser'
 
 export default function RedefinirSenhaAdmin() {
   const [ready, setReady] = useState(false)
+  const [verificando, setVerificando] = useState(true)
   const [password, setPassword] = useState('')
   const [confirm, setConfirm] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -22,13 +15,22 @@ export default function RedefinirSenhaAdmin() {
   const [saving, setSaving] = useState(false)
 
   useEffect(() => {
-    const { data } = getSupabase().auth.onAuthStateChange((event) => {
+    const auth = getBrowserClient().auth
+    let ativo = true
+    const { data } = auth.onAuthStateChange((event) => {
       if (event === 'PASSWORD_RECOVERY') setReady(true)
     })
-    getSupabase().auth.getSession().then(({ data: { session } }) => {
-      if (session) setReady(true)
-    })
-    return () => data.subscription.unsubscribe()
+    auth.getSession()
+      .then(({ data: { session } }) => {
+        if (ativo && session) setReady(true)
+      })
+      .finally(() => {
+        if (ativo) setVerificando(false)
+      })
+    return () => {
+      ativo = false
+      data.subscription.unsubscribe()
+    }
   }, [])
 
   async function handleSubmit(e: React.FormEvent) {
@@ -43,7 +45,7 @@ export default function RedefinirSenhaAdmin() {
       return
     }
     setSaving(true)
-    const { error: updateError } = await getSupabase().auth.updateUser({ password })
+    const { error: updateError } = await getBrowserClient().auth.updateUser({ password })
     setSaving(false)
     if (updateError) {
       setError(updateError.message)
@@ -69,6 +71,8 @@ export default function RedefinirSenhaAdmin() {
             <CheckCircle2 className="w-10 h-10 text-green-500 mx-auto" />
             <p className="text-sm text-gray-600">Senha atualizada! Redirecionando para o login...</p>
           </div>
+        ) : verificando && !ready ? (
+          <p className="text-sm text-gray-500 text-center">Verificando o link de recuperação…</p>
         ) : !ready ? (
           <p className="text-sm text-gray-500 text-center">
             Link inválido ou expirado. Solicite um novo link de recuperação na tela de login.

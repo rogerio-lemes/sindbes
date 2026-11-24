@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { PARCEIROS, type Parceiro } from '@/lib/parceiros'
 import { Handshake, BadgePercent, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react'
+import ImagemCapa from '@/components/vitrine/ImagemCapa'
 
 /**
  * Recebe a lista já pronta do servidor (fixos + aprovados no painel).
@@ -45,7 +46,7 @@ export default function ParceirosSlider({ parceiros = PARCEIROS }: { parceiros?:
           >
             <div className="grid grid-cols-1 md:grid-cols-2 h-full">
               <div className="relative h-56 md:h-full overflow-hidden">
-                <Image src={p.capa} alt={p.nome} fill className="object-cover group-hover:scale-105 transition-transform duration-700" />
+                <ImagemCapa src={p.capa} alt={p.nome} className="group-hover:scale-105 transition-transform duration-700" />
                 <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-black/50 to-transparent" />
                 <span className="absolute top-4 left-4 bg-white/95 text-primary text-xs font-semibold px-3 py-1.5 rounded-full backdrop-blur-sm">{p.categoria}</span>
               </div>

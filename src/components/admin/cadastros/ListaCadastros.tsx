@@ -272,8 +272,8 @@ function Capa({ url, alt }: { url: string | null; alt: string }) {
     )
   }
   return (
-    <span className="relative w-20 h-14 rounded-lg overflow-hidden bg-gray-100 block shrink-0 border border-gray-100">
-      <Image src={url} alt={alt} fill className="object-cover" unoptimized sizes="80px" />
+    <span className="relative w-20 h-14 rounded-lg overflow-hidden bg-white block shrink-0 border border-gray-100">
+      <Image src={url} alt={alt} fill className="object-contain p-0.5" unoptimized sizes="80px" />
     </span>
   )
 }

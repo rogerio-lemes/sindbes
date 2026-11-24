@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Montserrat } from 'next/font/google'
+import RedirecionarRecuperacao from '@/components/auth/RedirecionarRecuperacao'
 import './globals.css'
 
 const montserrat = Montserrat({
@@ -31,6 +32,7 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       </head>
       <body className="font-montserrat antialiased">
+        <RedirecionarRecuperacao />
         {children}
       </body>
     </html>

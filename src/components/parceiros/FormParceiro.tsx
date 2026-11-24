@@ -59,7 +59,7 @@ export default function FormParceiro() {
   const [descricao, setDescricao] = useState(['', ''])
   const [servicos, setServicos] = useState(['', '', ''])
   const [desconto, setDesconto] = useState('')
-  // Foto de capa
+  // Logomarca da empresa
   const [capa, setCapa] = useState<CapaPreview | null>(null)
   const [erroCapa, setErroCapa] = useState<string | null>(null)
   const [drag, setDrag] = useState(false)
@@ -99,18 +99,18 @@ export default function FormParceiro() {
   }
   const removeRede = (i: number) => setRedes(r => r.filter((_, j) => j !== i))
 
-  // Upload capa
+  // Envio da logomarca
   const handleCapa = async (file: File | null) => {
     setErroCapa(null)
     if (!file) return
     if (!file.type.startsWith('image/')) { setErroCapa('Selecione uma imagem (JPG, PNG, WEBP).'); return }
     if (file.size > MAX_MB * 1024 * 1024) { setErroCapa(`A imagem deve ter no máximo ${MAX_MB} MB.`); return }
-    // Reduz a foto no navegador antes de guardar para envio
+    // Reduz a imagem no navegador antes de guardar para envio
     setPreparando(true)
     try {
       const reduzida = await comprimirImagem(file)
       if (reduzida.size > MAX_ENVIO_BYTES) {
-        setErroCapa('Não foi possível reduzir esta imagem. Tente outra foto em JPG.'); return
+        setErroCapa('Não foi possível reduzir a logomarca. Tente uma imagem menor.'); return
       }
       if (capa) URL.revokeObjectURL(capa.url)
       setCapa({ file: reduzida, url: URL.createObjectURL(reduzida), tamanho: fmtSize(reduzida.size) })
@@ -120,7 +120,7 @@ export default function FormParceiro() {
   const submit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (preparando) return
-    if (!capa) { setErroEnvio('A foto de capa é obrigatória.'); return }
+    if (!capa) { setErroEnvio('A logomarca é obrigatória.'); return }
     setEnviando(true); setErroEnvio(null)
     try {
       const fd = new FormData()
@@ -467,18 +467,18 @@ export default function FormParceiro() {
 
       <hr className="border-gray-100" />
 
-      {/* ── 8. Foto de capa (obrigatória) ── */}
+      {/* ── 8. Logomarca (obrigatória) ── */}
       <fieldset>
         <legend className="flex items-center gap-2 text-sm font-bold text-text mb-2">
-          <ImageIcon className="w-4 h-4 text-primary" /> Foto de capa *
+          <ImageIcon className="w-4 h-4 text-primary" /> Logomarca *
           <span className="font-normal text-gray-400 text-xs">(aparece no topo da página e nos cards)</span>
         </legend>
-        <p className="text-xs text-gray-400 mb-3">Proporção 16:9 recomendada · até 15 MB, reduzimos automaticamente · JPG, PNG ou WEBP</p>
+        <p className="text-xs text-gray-400 mb-3">Até 15 MB, reduzimos automaticamente · JPG, PNG ou WEBP</p>
 
         {capa ? (
           <div className="relative rounded-2xl overflow-hidden border border-gray-200 bg-gray-50">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={capa.url} alt="Capa" className="w-full h-48 object-cover" />
+            <img src={capa.url} alt="Logomarca da empresa" className="w-full h-48 object-contain" />
             <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center gap-2 opacity-0 hover:opacity-100 transition-opacity">
               <button type="button" onClick={() => { URL.revokeObjectURL(capa.url); setCapa(null) }}
                 className="inline-flex items-center gap-1.5 px-4 py-2 bg-red-500 text-white text-sm font-semibold rounded-xl">
@@ -486,7 +486,7 @@ export default function FormParceiro() {
               </button>
               <button type="button" onClick={() => inputRef.current?.click()}
                 className="inline-flex items-center gap-1.5 px-4 py-2 bg-white text-gray-700 text-sm font-semibold rounded-xl">
-                <Upload className="w-4 h-4" /> Trocar foto
+                <Upload className="w-4 h-4" /> Trocar logomarca
               </button>
             </div>
             <span className="absolute bottom-2 right-2 bg-black/60 text-white text-xs px-2 py-1 rounded-lg">
@@ -504,8 +504,8 @@ export default function FormParceiro() {
             }`}
           >
             <Upload className="w-8 h-8 text-gray-300 mx-auto mb-2" />
-            <p className="text-sm text-gray-500">Arraste a foto ou clique para selecionar</p>
-            <p className="text-xs text-gray-400 mt-1">JPG, PNG ou WEBP · até 15 MB, reduzimos automaticamente · proporção 16:9 recomendada</p>
+            <p className="text-sm text-gray-500">Arraste a logomarca ou clique para selecionar</p>
+            <p className="text-xs text-gray-400 mt-1">JPG, PNG ou WEBP · até 15 MB</p>
           </div>
         )}
         <input ref={inputRef} type="file" accept="image/*" className="hidden"
@@ -527,7 +527,7 @@ export default function FormParceiro() {
           ? <><svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
-            </svg>{preparando ? 'Preparando fotos…' : 'Enviando…'}</>
+            </svg>{preparando ? 'Preparando logomarca…' : 'Enviando…'}</>
           : <><Send className="w-4 h-4" />Enviar proposta de parceria</>}
       </button>
       <p className="text-center text-xs text-gray-400">Suas informações são tratadas com sigilo.</p>

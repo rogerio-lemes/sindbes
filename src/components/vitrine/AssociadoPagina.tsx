@@ -17,6 +17,7 @@ import Gallery from '@/components/Gallery'
 import AssociadoContactForm from '@/components/AssociadoContactForm'
 import FaixaPrevia from '@/components/vitrine/FaixaPrevia'
 import { MapPin, Phone, Clock, Mail, AtSign, MessageCircle, Sparkles, Images, Info } from 'lucide-react'
+import ImagemCapa from '@/components/vitrine/ImagemCapa'
 
 export default function AssociadoPagina({ associado, outros, previa }: { associado: Associado; outros: Associado[]; previa?: boolean }) {
   const a = associado
@@ -31,7 +32,7 @@ export default function AssociadoPagina({ associado, outros, previa }: { associa
 
       {/* Cover */}
       <section className="relative h-[320px] md:h-[420px] overflow-hidden">
-        <Image src={a.capa} alt={a.nome} fill className="object-cover" priority />
+        <ImagemCapa src={a.capa} alt={a.nome} modo="hero" priority />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
         <div className="relative z-10 h-full max-w-[1200px] mx-auto px-4 flex flex-col justify-end pb-8">
           <div className="flex items-center gap-2 mb-3">
@@ -156,7 +157,7 @@ export default function AssociadoPagina({ associado, outros, previa }: { associa
                 const conteudo = (
                   <>
                     <div className="relative h-36 overflow-hidden">
-                      <Image src={o.capa} alt={o.nome} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                      <ImagemCapa src={o.capa} alt={o.nome} className="group-hover:scale-105 transition-transform duration-500" />
                     </div>
                     <div className="p-4">
                       <span className="text-[11px] text-secondary font-semibold uppercase tracking-wide">{o.categoria}</span>

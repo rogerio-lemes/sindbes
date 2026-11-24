@@ -46,7 +46,7 @@ export const PARCEIRO_CAMPOS = [
   { campo: 'Textos', detalhe: 'resumo curto e descrição' },
   { campo: 'Serviços', detalhe: 'lista do que oferece' },
   { campo: 'O desconto', detalhe: 'benefício para associados' },
-  { campo: 'Foto de capa', detalhe: 'até 1 MB' },
+  { campo: 'Logomarca', detalhe: 'até 15 MB' },
 ]
 
 export const ASSOCIADO_GANHA = [
@@ -83,7 +83,7 @@ Em troca, você oferece uma condição especial (desconto ou benefício) para os
 O cadastro é rápido e é feito direto neste link:
 ${LINKS.formParceiro}
 
-Separe uma foto de capa e os dados da empresa (endereço, redes sociais e os serviços que vocês oferecem). Depois de enviar, nossa equipe analisa e entra em contato.
+Separe a logomarca e os dados da empresa (endereço, redes sociais e os serviços que vocês oferecem). Depois de enviar, nossa equipe analisa e entra em contato.
 
 Qualquer dúvida, é só responder aqui. Será um prazer ter vocês com a gente!`
 
@@ -111,7 +111,7 @@ Antes de começar, tenha em mãos:
 - Um resumo curto e uma descrição da empresa
 - A lista de serviços ou produtos oferecidos
 - O desconto ou benefício que será oferecido aos associados
-- Uma foto de capa (até 1 MB)
+- A logomarca da empresa (até 15 MB)
 
 Assim que recebermos, nossa equipe analisa a proposta e entra em contato para dar continuidade.
 

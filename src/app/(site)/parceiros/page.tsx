@@ -8,6 +8,7 @@ import {
   Handshake, BadgePercent, ArrowRight, Sparkles,
   MapPin, Phone, Mail, Clock, UserCheck,
 } from 'lucide-react'
+import ImagemCapa from '@/components/vitrine/ImagemCapa'
 
 // Parceiros aprovados no painel aparecem aqui em até 1 minuto
 export const revalidate = 60
@@ -159,7 +160,7 @@ export default async function ParceirosPage() {
                 className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300 border border-gray-100"
               >
                 <div className="relative h-48 overflow-hidden">
-                  <Image src={p.capa} alt={p.nome} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
+                  <ImagemCapa src={p.capa} alt={p.nome} className="group-hover:scale-110 transition-transform duration-700" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
                   <span className="absolute top-3 left-3 bg-white/95 text-primary text-xs font-semibold px-3 py-1 rounded-full backdrop-blur-sm">
                     {p.categoria}

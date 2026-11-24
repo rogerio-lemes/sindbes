@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { BadgePercent, ExternalLink, MessageCircle, Sparkles } from 'lucide-react'
 import { PARCEIROS, type Parceiro } from '@/lib/parceiros'
+import ImagemCapa from '@/components/vitrine/ImagemCapa'
 
 // Pool de parceiros reais (não exemplo) com capa cadastrada.
 // A lista vem do servidor (fixos + aprovados no painel); sem ela, usa só os fixos.
@@ -30,7 +31,7 @@ export function PartnerBannerSidebar({ parceiros }: { parceiros?: Parceiro[] } =
     <div className="rounded-2xl overflow-hidden border border-gray-100 shadow-sm bg-white">
       {/* imagem de capa */}
       <div className="relative h-32 w-full">
-        <Image src={p.capa} alt={p.nome} fill className="object-cover" sizes="260px" />
+        <ImagemCapa src={p.capa} alt={p.nome} sizes="260px" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
         <span className="absolute top-2 left-2 inline-flex items-center gap-1 bg-secondary text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
           <Sparkles className="w-2.5 h-2.5" /> Parceiro Oficial
@@ -81,7 +82,7 @@ export function PartnerBannerInline({ parceiros }: { parceiros?: Parceiro[] } = 
     <div className="my-8 rounded-2xl overflow-hidden border border-gray-100 shadow-sm bg-white flex flex-col sm:flex-row">
       {/* imagem */}
       <div className="relative h-40 sm:h-auto sm:w-52 flex-shrink-0">
-        <Image src={p.capa} alt={p.nome} fill className="object-cover" sizes="(max-width:640px) 100vw, 208px" />
+        <ImagemCapa src={p.capa} alt={p.nome} sizes="(max-width:640px) 100vw, 208px" />
         <div className="absolute inset-0 bg-gradient-to-r from-transparent to-black/30 hidden sm:block" />
         <span className="absolute top-3 left-3 inline-flex items-center gap-1 bg-secondary text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
           <Sparkles className="w-2.5 h-2.5" /> Parceiro Sindibes

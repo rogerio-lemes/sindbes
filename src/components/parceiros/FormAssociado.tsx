@@ -91,7 +91,7 @@ export default function FormAssociado() {
   }
   const removeRede = (i: number) => setRedes(r => r.filter((_, j) => j !== i))
 
-  // Capa
+  // Logomarca do negócio
   const handleCapa = async (file: File | null) => {
     setErroCapa(null)
     if (!file) return
@@ -102,7 +102,7 @@ export default function FormAssociado() {
     try {
       const reduzida = await comprimirImagem(file)
       if (reduzida.size > MAX_ENVIO_BYTES) {
-        setErroCapa('Não foi possível reduzir esta imagem. Tente outra foto em JPG.'); return
+        setErroCapa('Não foi possível reduzir a logomarca. Tente uma imagem menor.'); return
       }
       if (capa) URL.revokeObjectURL(capa.url)
       setCapa({ file: reduzida, url: URL.createObjectURL(reduzida), tamanho: fmtSize(reduzida.size) })
@@ -150,7 +150,7 @@ export default function FormAssociado() {
   const submit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (preparando) return
-    if (!capa) { setErroEnvio('A foto de capa do negócio é obrigatória.'); return }
+    if (!capa) { setErroEnvio('A logomarca do negócio é obrigatória.'); return }
     const total = capa.file.size + fotos.reduce((t, f) => t + f.file.size, 0)
     if (total > MAX_TOTAL_BYTES) {
       setErroEnvio('As fotos somam mais do que conseguimos enviar. Remova uma ou duas e tente de novo.'); return
@@ -357,19 +357,19 @@ export default function FormAssociado() {
 
       <hr className="border-gray-100" />
 
-      {/* ── Foto de capa (obrigatória) ── */}
+      {/* ── Logomarca (obrigatória) ── */}
       <fieldset>
         <legend className="flex items-center gap-2 text-sm font-bold text-text mb-2">
           <ImageIcon className="w-4 h-4 text-secondary" />
-          Foto de capa do negócio *
-          <span className="font-normal text-gray-400 text-xs">(fachada ou ambiente · até 15 MB, reduzimos automaticamente)</span>
+          Logomarca do negócio *
+          <span className="font-normal text-gray-400 text-xs">(até 15 MB, reduzimos automaticamente)</span>
         </legend>
-        <p className="text-xs text-gray-400 mb-3">Aparecerá no topo da sua página. Proporção 16:9 recomendada.</p>
+        <p className="text-xs text-gray-400 mb-3">Aparecerá no topo da sua página.</p>
 
         {capa ? (
           <div className="relative rounded-2xl overflow-hidden border border-gray-200">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={capa.url} alt="Capa" className="w-full h-44 object-cover" />
+            <img src={capa.url} alt="Logomarca do negócio" className="w-full h-44 object-contain" />
             <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center gap-2 opacity-0 hover:opacity-100 transition-opacity">
               <button type="button" onClick={() => { URL.revokeObjectURL(capa.url); setCapa(null) }}
                 className="inline-flex items-center gap-1.5 px-4 py-2 bg-red-500 text-white text-sm font-semibold rounded-xl">
@@ -377,7 +377,7 @@ export default function FormAssociado() {
               </button>
               <button type="button" onClick={() => capaRef.current?.click()}
                 className="inline-flex items-center gap-1.5 px-4 py-2 bg-white text-gray-700 text-sm font-semibold rounded-xl">
-                <Upload className="w-4 h-4" /> Trocar foto
+                <Upload className="w-4 h-4" /> Trocar logomarca
               </button>
             </div>
             <span className="absolute bottom-2 right-2 bg-black/60 text-white text-xs px-2 py-1 rounded-lg">{capa.tamanho}</span>
@@ -391,7 +391,7 @@ export default function FormAssociado() {
             className={`border-2 border-dashed rounded-2xl p-8 text-center cursor-pointer transition-all ${dragCapa ? 'border-secondary bg-secondary/5 scale-[1.01]' : 'border-gray-200 bg-gray-50 hover:border-secondary hover:bg-secondary/5'}`}
           >
             <Upload className="w-7 h-7 text-gray-300 mx-auto mb-2" />
-            <p className="text-sm text-gray-500">Arraste a foto ou clique para selecionar</p>
+            <p className="text-sm text-gray-500">Arraste a logomarca ou clique para selecionar</p>
             <p className="text-xs text-gray-400 mt-1">JPG, PNG ou WEBP · até 15 MB, reduzimos automaticamente</p>
           </div>
         )}

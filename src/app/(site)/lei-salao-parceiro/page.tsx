@@ -28,7 +28,7 @@ const MSG_WHATS = 'Olá, Wagner! Vi a página da Lei Salão-Parceiro no site do 
 const LINK_WHATS = `https://wa.me/${WAGNER_WHATS}?text=${encodeURIComponent(MSG_WHATS)}`
 
 /** Imagem de prévia do link ao compartilhar (1200x630, gerada por material/gerar-og-lei.js). */
-const OG_IMAGEM = '/images/og/lei-salao-parceiro.jpg'
+const OG_IMAGEM = '/images/og/lei-salao-parceiro-v2.jpg'
 
 /** Imagens da página (1 por seção visual). */
 const IMG = {

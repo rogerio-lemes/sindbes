@@ -19,6 +19,7 @@ import {
   CheckCircle2, Globe, MessageCircle, BadgePercent, Sparkles, ArrowRight, Handshake,
   Trophy, Search, FileSearch, Clock, MapPin,
 } from 'lucide-react'
+import ImagemCapa from '@/components/vitrine/ImagemCapa'
 
 // Ícones aplicados na ordem dos destaques cadastrados no parceiro
 const ICONES_DESTAQUE = [Trophy, Search, FileSearch, Clock, MapPin]
@@ -38,7 +39,7 @@ export default function ParceiroPagina({ parceiro, outros, previa }: { parceiro:
 
       {/* Cover */}
       <section className="relative h-[320px] md:h-[420px] overflow-hidden">
-        <Image src={p.capa} alt={p.nome} fill className="object-cover" priority />
+        <ImagemCapa src={p.capa} alt={p.nome} modo="hero" priority />
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20" />
         <div className="relative z-10 h-full max-w-[1200px] mx-auto px-4 flex flex-col justify-end pb-8">
           <div className="flex items-center gap-2 mb-3">
@@ -185,7 +186,7 @@ export default function ParceiroPagina({ parceiro, outros, previa }: { parceiro:
                 const conteudo = (
                   <>
                     <div className="relative h-36 overflow-hidden">
-                      <Image src={o.capa} alt={o.nome} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                      <ImagemCapa src={o.capa} alt={o.nome} className="group-hover:scale-105 transition-transform duration-500" />
                     </div>
                     <div className="p-4">
                       <span className="text-[11px] text-secondary font-semibold uppercase">{o.categoria}</span>

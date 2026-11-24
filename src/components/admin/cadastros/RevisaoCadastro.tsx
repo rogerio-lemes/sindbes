@@ -425,9 +425,9 @@ export default function RevisaoCadastro({ tipo, id }: { tipo: TipoCadastro; id: 
       <div className="bg-white rounded-2xl border border-gray-100 p-5 mb-5">
         <div className="flex flex-col xl:flex-row xl:items-center gap-5">
           <div className="flex items-center gap-4 min-w-0 flex-1">
-            <span className="relative w-20 h-20 rounded-xl overflow-hidden bg-gray-100 shrink-0 border border-gray-100 flex items-center justify-center">
+            <span className="relative w-20 h-20 rounded-xl overflow-hidden bg-white shrink-0 border border-gray-100 flex items-center justify-center">
               {camposEdit.foto_capa_url
-                ? <Image src={camposEdit.foto_capa_url} alt={camposEdit.nome} fill className="object-cover" unoptimized sizes="80px" />
+                ? <Image src={camposEdit.foto_capa_url} alt={camposEdit.nome} fill className="object-contain p-1" unoptimized sizes="80px" />
                 : <ImageIcon className="w-6 h-6 text-gray-300" />}
             </span>
             <div className="min-w-0">

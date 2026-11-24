@@ -6,7 +6,7 @@
  * Visual de alerta + chamada para responder no WhatsApp e falar com o Wagner.
  *
  * Uso: node material/gerar-og-lei.js
- * Saída: public/images/og/lei-salao-parceiro.jpg
+ * Saída: public/images/og/lei-salao-parceiro-v2.jpg (novo nome força o WhatsApp a buscar de novo)
  */
 const fs = require('fs')
 const path = require('path')
@@ -22,58 +22,50 @@ const ICONE_WHATS = `<svg viewBox="0 0 32 32" width="40" height="40" fill="#fff"
 const HTML = `<!doctype html><html><head><meta charset="utf-8"><style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body { width:1200px; height:630px; overflow:hidden; font-family:"Segoe UI",system-ui,sans-serif; background:#1B2444; }
+/* Composição em 3 colunas: o quadrado central (630x630) tem a mensagem inteira,
+   porque o WhatsApp às vezes mostra só um recorte quadrado do meio. */
 .tela { position:relative; width:1200px; height:630px; overflow:hidden; background:#1B2444; }
-.foto { position:absolute; right:0; top:0; width:560px; height:630px; }
-.foto img { width:100%; height:100%; object-fit:cover; object-position:40% 30%; filter:saturate(.85) contrast(1.05); }
-.foto::before { content:""; position:absolute; inset:0; z-index:1;
-  background:linear-gradient(90deg,#1B2444 0%,rgba(27,36,68,.75) 30%,rgba(27,36,68,.15) 70%,rgba(27,36,68,.35) 100%); }
-.brilho { position:absolute; inset:0; background:radial-gradient(ellipse 70% 80% at 0% 0%,rgba(220,38,38,.42),transparent 60%); }
+.lado { position:absolute; top:0; width:330px; height:630px; overflow:hidden; }
+.lado img { width:100%; height:100%; object-fit:cover; }
+.esq { left:0; } .esq img { object-position:62% 30%; filter:saturate(.8); }
+.dir { right:0; } .dir img { object-position:50% 15%; }
+.esq::after { content:""; position:absolute; inset:0; background:linear-gradient(90deg,rgba(27,36,68,.25),#1B2444 96%); }
+.dir::after { content:""; position:absolute; inset:0; background:linear-gradient(270deg,rgba(27,36,68,.05),#1B2444 96%); }
+.brilho { position:absolute; inset:0; background:radial-gradient(ellipse 45% 70% at 50% 0%,rgba(220,38,38,.45),transparent 70%); }
 .faixa { position:absolute; left:0; right:0; top:0; height:12px; background:linear-gradient(90deg,#dc2626,#FFC94D 50%,#dc2626); z-index:3; }
-.txt { position:absolute; left:60px; top:52px; width:690px; color:#fff; z-index:2; }
-.topo { display:flex; align-items:center; gap:18px; }
-.marca { background:#fff; border-radius:14px; padding:8px 14px; box-shadow:0 10px 26px rgba(0,0,0,.35); }
-.marca img { height:46px; display:block; }
-.selo { display:inline-flex; align-items:center; gap:12px; background:#dc2626; color:#fff; font-size:20px; font-weight:800;
-  letter-spacing:.12em; text-transform:uppercase; border-radius:40px; padding:10px 22px 10px 12px; box-shadow:0 10px 30px rgba(220,38,38,.55); }
-.selo i { width:40px; height:40px; border-radius:50%; background:rgba(255,255,255,.22); display:flex; align-items:center; justify-content:center;
-  box-shadow:0 0 0 6px rgba(255,255,255,.12); }
-h1 { margin-top:30px; font-size:62px; line-height:1.03; font-weight:800; letter-spacing:-1.5px; }
+.centro { position:absolute; left:285px; width:630px; top:0; height:630px; z-index:2; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; text-align:center; color:#fff; padding:0 24px; }
+.selo { display:inline-flex; align-items:center; gap:12px; background:#dc2626; color:#fff; font-size:23px; font-weight:800;
+  letter-spacing:.1em; text-transform:uppercase; border-radius:40px; padding:10px 24px 10px 12px; box-shadow:0 10px 30px rgba(220,38,38,.6); }
+.selo i { width:42px; height:42px; border-radius:50%; background:rgba(255,255,255,.22); display:flex; align-items:center; justify-content:center; }
+h1 { margin-top:26px; font-size:76px; line-height:1; font-weight:900; letter-spacing:-2px; text-shadow:0 6px 24px rgba(0,0,0,.5); }
 h1 em { font-style:normal; color:#FFC94D; }
-.sub { margin-top:16px; font-size:25px; line-height:1.35; color:rgba(255,255,255,.88); }
-.sub b { color:#fff; }
-.cta { position:absolute; left:60px; bottom:44px; z-index:3; display:flex; align-items:center; gap:18px;
-  background:#25D366; color:#fff; border-radius:22px; padding:16px 30px 16px 20px;
-  box-shadow:0 18px 40px rgba(0,0,0,.45), 0 0 0 6px rgba(37,211,102,.25); }
-.cta .t1 { font-size:29px; font-weight:800; line-height:1.05; }
-.cta .t2 { font-size:19px; font-weight:600; opacity:.95; margin-top:4px; }
-.wagner { position:absolute; right:40px; bottom:40px; z-index:3; display:flex; align-items:center; gap:14px;
-  background:rgba(255,255,255,.96); border-radius:20px; padding:12px 20px 12px 12px; box-shadow:0 16px 36px rgba(0,0,0,.4); }
-.wagner .av { width:74px; height:74px; border-radius:50%; overflow:hidden; border:3px solid #25D366; position:relative; }
-.wagner .av img { width:100%; height:100%; object-fit:cover; object-position:50% 12%; transform:scale(1.5); transform-origin:50% 18%; }
-.wagner .n { font-size:24px; font-weight:800; color:#1B2444; }
-.wagner .c { font-size:16px; font-weight:600; color:#2E9E8D; margin-top:2px; }
-.wagner .on { font-size:15px; color:#16a34a; font-weight:700; margin-top:3px; }
-.lei { position:absolute; right:40px; top:44px; z-index:3; font-size:17px; font-weight:700; color:#fff; letter-spacing:.1em;
-  border:2px solid rgba(255,255,255,.5); border-radius:30px; padding:8px 18px; background:rgba(27,36,68,.45); }
+.lei { margin-top:16px; font-size:30px; font-weight:700; color:#fff; }
+.lei span { color:#8FD9CE; }
+.cta { margin-top:30px; display:flex; align-items:center; gap:14px; background:#25D366; color:#fff; border-radius:20px;
+  padding:16px 28px 16px 18px; box-shadow:0 16px 36px rgba(0,0,0,.45), 0 0 0 6px rgba(37,211,102,.28); text-align:left; }
+.cta .t1 { font-size:30px; font-weight:800; line-height:1.05; }
+.cta .t2 { font-size:19px; font-weight:600; margin-top:3px; }
+.marca { position:absolute; left:34px; top:40px; z-index:3; background:#fff; border-radius:14px; padding:8px 14px; box-shadow:0 10px 26px rgba(0,0,0,.35); }
+.marca img { height:44px; display:block; }
+.nome { position:absolute; right:30px; bottom:34px; z-index:3; text-align:right; color:#fff; }
+.nome b { display:block; font-size:28px; font-weight:800; }
+.nome span { display:block; font-size:17px; color:#8FD9CE; font-weight:600; }
+.nome em { display:inline-block; margin-top:6px; font-style:normal; font-size:15px; font-weight:700; background:#25D366; border-radius:20px; padding:4px 12px; }
 </style></head><body>
 <div class="tela">
-  <div class="foto"><img src="${b64('lei-salao-parceiro/hero.jpg')}"></div>
+  <div class="lado esq"><img src="${b64('lei-salao-parceiro/hero.jpg')}"></div>
+  <div class="lado dir"><img src="${b64('atendente-wagner.jpg')}"></div>
   <div class="brilho"></div>
   <div class="faixa"></div>
-  <div class="lei">LEI 13.352/2016</div>
-  <div class="txt">
-    <div class="topo">
-      <div class="marca"><img src="${b64('logo.jpg')}"></div>
-      <div class="selo"><i>${ICONE_ALERTA}</i>Alerta ao dono de salão</div>
-    </div>
-    <h1>Seu salão pode estar<br>em <em>risco</em> sem a<br>Lei Salão-Parceiro</h1>
-    <div class="sub">Profissional sem contrato homologado, até parente,<br>pode virar <b>ação trabalhista e multa</b>.</div>
+  <div class="marca"><img src="${b64('logo.jpg')}"></div>
+  <div class="centro">
+    <div class="selo"><i>${ICONE_ALERTA}</i>Alerta ao dono de salão</div>
+    <h1>Seu salão está<br>em <em>risco?</em></h1>
+    <div class="lei">Lei <span>Salão-Parceiro</span> · 13.352/2016</div>
+    <div class="cta">${ICONE_WHATS}<div><div class="t1">Responda esta mensagem</div><div class="t2">e seja atendido agora pelo Wagner</div></div></div>
   </div>
-  <div class="cta">${ICONE_WHATS}<div><div class="t1">Responda esta mensagem</div><div class="t2">e seja atendido agora pelo Wagner</div></div></div>
-  <div class="wagner">
-    <div class="av"><img src="${b64('atendente-wagner.jpg')}"></div>
-    <div><div class="n">Wagner</div><div class="c">Consultor do Sindibes</div><div class="on">● online no WhatsApp</div></div>
-  </div>
+  <div class="nome"><b>Wagner</b><span>Consultor do Sindibes</span><em>● online no WhatsApp</em></div>
 </div></body></html>`
 
 async function main() {
@@ -85,9 +77,9 @@ async function main() {
     '--headless', '--disable-gpu', '--no-sandbox', '--hide-scrollbars',
     '--window-size=1200,630', '--screenshot=' + png, 'file:///' + h.replace(/\\/g, '/'),
   ], { stdio: 'ignore' })
-  const saida = path.join(RAIZ, 'public/images/og/lei-salao-parceiro.jpg')
+  const saida = path.join(RAIZ, 'public/images/og/lei-salao-parceiro-v2.jpg')
   const info = await sharp(png).resize(1200, 630).jpeg({ quality: 86, mozjpeg: true }).toFile(saida)
   fs.rmSync(tmp, { recursive: true, force: true })
-  console.log(`lei-salao-parceiro.jpg: ${info.width}x${info.height}, ${(info.size / 1024).toFixed(0)} KB`)
+  console.log(`lei-salao-parceiro-v2.jpg: ${info.width}x${info.height}, ${(info.size / 1024).toFixed(0)} KB`)
 }
 main()

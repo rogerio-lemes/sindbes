@@ -72,12 +72,12 @@ export default function EditorFotos({
       {/* Capa */}
       <div>
         <div className="flex items-center justify-between mb-2">
-          <span className="text-sm font-medium text-gray-700">Foto de capa</span>
+          <span className="text-sm font-medium text-gray-700">Logomarca</span>
           <span className="text-xs text-gray-400">Aparece no topo da página e nas listagens</span>
         </div>
         {capa ? (
-          <div className="relative h-52 rounded-xl overflow-hidden border border-gray-200 bg-gray-50">
-            <Image src={capa} alt="Foto de capa" fill className="object-cover" unoptimized />
+          <div className="relative h-52 rounded-xl overflow-hidden border border-gray-200 bg-white">
+            <Image src={capa} alt="Logomarca" fill className="object-contain p-2" unoptimized />
             {enviandoCapa && (
               <div className="absolute inset-0 bg-white/70 flex items-center justify-center">
                 <Loader2 className="w-6 h-6 animate-spin text-primary" />
